@@ -1,4 +1,18 @@
+# Ignore everything
 /*
-/*/
-!/src/
+
+# Track .gitignore
 !.gitignore
+
+# Keep track of all src contents
+/WNXT/*
+!/WNXT
+!/WNXT/src/
+
+/WPC/*
+!/WPC
+!/WPC/src/
+
+/WShared/*
+!/WShared
+!/WShared/src/
