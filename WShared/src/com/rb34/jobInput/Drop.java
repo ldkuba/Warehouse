@@ -1,4 +1,4 @@
-package com.rb34.jobInput.implementation;
+package com.rb34.jobInput;
 
 import com.rb34.jobInput.interfaces.IDrop;
 

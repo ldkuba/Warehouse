@@ -12,6 +12,10 @@ public interface IItem{
 	//Gets Weight of item
 	float getWeight();
 
+	//Sets X and Y Locations of item
+	void setX(int x);
+	void setY(int y);
+	
 	//Gets X and Y locations of item
 	int getX();
 	int getY();

@@ -1,4 +1,4 @@
-package com.rb34.jobInput.implementation;
+package com.rb34.jobInput;
 
 import com.rb34.jobInput.interfaces.IItem;
 
@@ -10,12 +10,10 @@ public class Item implements IItem {
 	private int xLoc;
 	private int yLoc;
 
-	public Item(String itemID, float reward, float weight,int xLoc,int yLoc){
+	public Item(String itemID, float reward, float weight){
 		this.itemID = itemID;
 		this.reward = reward;
 		this.weight = reward;
-		this.xLoc = xLoc;
-		this.yLoc = yLoc;
 	}
 	@Override
 	public String getItemID() {
@@ -40,6 +38,14 @@ public class Item implements IItem {
 	@Override
 	public int getY() {
 		return yLoc;
+	}
+	@Override
+	public void setX(int xLoc) {
+		this.xLoc = xLoc;
+	}
+	@Override
+	public void setY(int yLoc) {
+		this.yLoc = yLoc;
 	}
 
 }
