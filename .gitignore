@@ -15,4 +15,4 @@
 
 /WShared/*
 !/WShared
-!/WShared/src/
+!/src/
