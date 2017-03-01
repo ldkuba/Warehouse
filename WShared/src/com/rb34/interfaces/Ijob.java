@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public interface Ijob{
 
 	//Gets unique job ID
-	public Iitem getItem();
+	public String getJobId();
 
 	//Gets list of items to be collected
 	//and the number of items.
