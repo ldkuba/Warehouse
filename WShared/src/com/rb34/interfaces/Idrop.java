@@ -1,10 +1,10 @@
 package com.rb34.interfaces;
 
 //Interface for drop location object
-public interface Idrop{
+public interface IDrop{
 
 	//Gets X and Y coordinates of drop location
-	public int getX();
-	public int getY();
+	int getX();
+	int getY();
 
 }

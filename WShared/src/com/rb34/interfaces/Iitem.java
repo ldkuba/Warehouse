@@ -1,15 +1,18 @@
 package com.rb34.interfaces;
 
 //Interface for Item object
-public interface Iitem{
+public interface IItem{
 
 	//Gets unique Item ID
-	public String getItemID();
+	String getItemID();
 
-	//Gets Reward of Item
-	public int getReward();
+	//Gets Reward of item
+	float getReward();
+	
+	//Gets Weight of item
+	float getWeight();
 
 	//Gets X and Y locations of item
-	public void getX();
-	public void getY();
+	int getX();
+	int getY();
 }
