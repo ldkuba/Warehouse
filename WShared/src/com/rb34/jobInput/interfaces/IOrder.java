@@ -1,4 +1,4 @@
-package com.rb34.interfaces;
+package com.rb34.jobInput.interfaces;
 
 //Interface for Job object
 public interface IOrder{

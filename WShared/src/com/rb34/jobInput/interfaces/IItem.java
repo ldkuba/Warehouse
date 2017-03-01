@@ -1,4 +1,4 @@
-package com.rb34.interfaces;
+package com.rb34.jobInput.interfaces;
 
 //Interface for Item object
 public interface IItem{
