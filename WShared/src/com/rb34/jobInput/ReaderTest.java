@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class ReaderTest {
 
 	
-	public ArrayList<Item> createItemList(){
+	public static ArrayList<Item> createItemList(){
 		BufferedReader reader = null;
 		ArrayList<Item> itemList = new ArrayList <Item>();
 
@@ -26,6 +26,8 @@ public class ReaderTest {
 		        Item newItem = new Item(itemID,reward,weight);
 		        itemList.add(newItem);
 		    }
+		    reader.close();
+		    return itemList;
 
 		    
 		} catch (IOException e) {
@@ -42,6 +44,11 @@ public class ReaderTest {
 	}
 	
 	public static void main(String[] args) {
+		ArrayList<Item> itemList = createItemList();
+		System.out.println(itemList.get(0).getItemID());
+		System.out.println(itemList.get(1).getItemID());
+		System.out.println(itemList.get(2).getItemID());
+		System.out.println(itemList.get(3).getItemID());
 		
 		
 	}
