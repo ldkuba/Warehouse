@@ -44,12 +44,39 @@ public class ReaderTest {
 	}
 	
 	public static void main(String[] args) {
-		ArrayList<Item> itemList = createItemList();
-		System.out.println(itemList.get(0).getItemID());
-		System.out.println(itemList.get(1).getItemID());
-		System.out.println(itemList.get(2).getItemID());
-		System.out.println(itemList.get(3).getItemID());
+		//ItemList created
+		ArrayList<Item> itemList = new ArrayList <Item>();
 		
+		Item itemA = new Item("aa",1.0f,0.2f);
+		itemA.setX(1);
+		itemA.setY(5);
+		Item itemB = new Item("aa",1.0f,0.2f);
+		itemB.setX(3);
+		itemB.setY(3);
+		Item itemC = new Item("aa",1.0f,0.2f);
+		itemC.setX(7);
+		itemC.setY(7);
+		
+		itemList.add(itemA);
+		itemList.add(itemB);
+		itemList.add(itemC);
+		
+		//JobList
+		ArrayList<Job> jobList = new ArrayList <Job>();
+		
+		Job jobA = new Job("1000");
+		jobA.addItem(itemA, 20);
+		jobA.addItem(itemC, 5);
+		jobList.add(jobA);
+		
+		Job jobB = new Job("1001");
+		jobB.addItem(itemB, 10);
+		jobList.add(jobB);
+		
+		System.out.println(jobList.get(0).getJobId());
+		System.out.println(jobList.get(0).getCount(itemA));
+		System.out.println(jobList.get(0).getCount(itemC));
+		System.out.println(jobList.get(0).getItems());
 		
 	}
 
