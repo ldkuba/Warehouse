@@ -1,4 +1,5 @@
 package com.rb34.jobInput.interfaces;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -19,5 +20,6 @@ public interface IJob{
 	
 	//Gets Items in HashTable
 	Collection <String> getItemsID();
+	
 	
 }
