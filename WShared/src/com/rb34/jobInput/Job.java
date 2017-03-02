@@ -9,13 +9,12 @@ import com.rb34.jobInput.interfaces.*;
 public class Job implements IJob {
 
 	private String jobId;
-	private HashMap<IItem, Integer> orderList;
-	private Collection <IItem> itemCollection;
+	private HashMap<String, IOrder> orderList;
 	
 	
 	public Job(String jobId){
 		this.jobId = jobId;
-		this.orderList = new HashMap<IItem, Integer>();
+		this.orderList = new HashMap<String, IOrder>();
 	}
 	@Override
 	public String getJobId() {
@@ -23,20 +22,19 @@ public class Job implements IJob {
 	}
 
 	@Override
-	public int getCount(IItem item) {
-		// TODO Auto-generated method stub
-		return orderList.get(item);
+	public int getCount(String itemID) {
+		return orderList.get(itemID).getCount();
 	}
 	@Override
-	public HashMap<IItem, Integer> getOrderList(){
+	public HashMap<String, IOrder> getOrderList(){
 		return orderList;
 	}
 	@Override
-	public Collection<IItem> getItems() {
+	public Collection<String> getItemsID() {
 		return orderList.keySet();
 	}
 	@Override
-	public void addItem(IItem item, int count) {
-		orderList.put(item, count);
+	public void addItem(String itemID, IOrder order) {
+		orderList.put(itemID, order);
 	}
 }

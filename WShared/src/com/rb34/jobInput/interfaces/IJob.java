@@ -9,15 +9,15 @@ public interface IJob{
 	String getJobId();
 	
 	//gets numbers of Items required
-	int getCount(IItem item);
+	int getCount(String itemID);
 	
 	//Adds item to Hash Table (Key = Item , Value = count)
-	void addItem(IItem item, int count);
+	void addItem(String itemID, IOrder order);
 
 	//Gets hashMap, where the key is the Item and the value is the number of items
-	HashMap <IItem, Integer> getOrderList ();
+	HashMap <String, IOrder> getOrderList ();
 	
 	//Gets Items in HashTable
-	Collection <IItem> getItems();
+	Collection <String> getItemsID();
 	
 }

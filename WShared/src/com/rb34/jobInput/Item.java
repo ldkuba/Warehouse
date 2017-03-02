@@ -13,7 +13,7 @@ public class Item implements IItem {
 	public Item(String itemID, float reward, float weight){
 		this.itemID = itemID;
 		this.reward = reward;
-		this.weight = reward;
+		this.weight = weight;
 	}
 	@Override
 	public String getItemID() {
