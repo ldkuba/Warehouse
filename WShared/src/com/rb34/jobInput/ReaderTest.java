@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class ReaderTest {
 
@@ -103,7 +104,11 @@ public class ReaderTest {
 			System.out.println(jobList.get(i).getItemsID());
 			
 			//Got a nullPointerException when trying to get Count for a specific Item
-			//System.out.println(jobList.get(i).getCount("ab"));
+			for(int j = 0; j < jobList.get(j).getItemsID().size() - 1; j++){
+				String [] itemNames = new String [jobList.get(j).getItemsID().size() - 1];
+				jobList.get(i).getOrderList().keySet().toArray(itemNames);
+				System.out.println(jobList.get(i).getOrderList().get(itemNames[j]));
+			}
 		}
 	}
 }
