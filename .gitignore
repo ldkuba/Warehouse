@@ -8,11 +8,14 @@
 /WNXT/*
 !/WNXT
 !/WNXT/src/
+!/WNXT/testsrc/
 
 /WPC/*
 !/WPC
 !/WPC/src/
+!/WPC/testsrc/
 
 /WShared/*
 !/WShared
 !/WShared/src/
+!/WShared/testsrc/
