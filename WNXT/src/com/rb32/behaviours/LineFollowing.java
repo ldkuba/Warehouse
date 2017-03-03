@@ -30,16 +30,16 @@ public class LineFollowing implements Behavior
 		lightSensorR = right;
 		lightSensorL = left;
 		
-		pilot = new DifferentialPilot(56, 26, Motor.A, Motor.B);
+		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 		
 		this.whiteInit = whiteInitR; //This sets the base value of both to be the same, so can make comparisons.
 		this.whiteInitL = whiteInitR;
 		
-		pilot.setTravelSpeed(125.0);
+		pilot.setTravelSpeed(100.0);
 		
-		Motor.B.setSpeed(125f);
-		Motor.C.setSpeed(125f);
-		pilot.setRotateSpeed(150);
+		Motor.B.setSpeed(100f);
+		Motor.C.setSpeed(100f);
+		//pilot.setRotateSpeed(150);
 		
 	}
 
@@ -69,9 +69,9 @@ public class LineFollowing implements Behavior
 			int readingL = lightSensorL.getLightValue();
 
 			if (whiteInit - reading > 1) { //if greater than 1 must be on white so make it arc left
-				pilot.arcForward(-20);
+				pilot.arcForward(-400);
 			} else {
-				pilot.arcForward(20); //if less than 1 must be on black so make it arc a little right
+				pilot.arcForward(400); //if less than 1 must be on black so make it arc a little right
 				
 			}
 

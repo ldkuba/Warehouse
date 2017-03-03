@@ -9,6 +9,7 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
+import com.rb32.main.JunctionFollower.PathChoices;
 
 public class TurnBehavior implements Behavior {
 	private LightSensor lightSensorR;
@@ -16,52 +17,51 @@ public class TurnBehavior implements Behavior {
 
 	private DifferentialPilot pilot;
 
-	private int turnDirection = 0;
+	private int turnDirection;
 
-	private boolean supressed = true;
+	private boolean supressed;
 
 	private Random rand;
 
-	private int whiteInit;
+	private int whiteInitL;
 	private int whiteInitR;
 
 	private ArrayList<PathChoices> path;
-	
-	public enum PathChoices {
-		LEFT, RIGHT, FORWARD
-	}
 
-	public TurnBehavior(LightSensor left, LightSensor right, int whiteInitL,
+/*	public TurnBehavior(LightSensor left, LightSensor right, int whiteInitL,
 			int whiteInitR) {
 		lightSensorR = right;
 		lightSensorL = left;
 
-		pilot = new DifferentialPilot(43, 171, Motor.B, Motor.C);
+		pilot = new DifferentialPilot(56, 26, Motor.A, Motor.B);
 
-		pilot.setTravelSpeed(200.0);
-		pilot.setRotateSpeed(100.0);
+		pilot.setTravelSpeed(125.0);
+		pilot.setRotateSpeed(150.0);
 
 		rand = new Random();
 
-		this.whiteInit = whiteInitL;
+		this.whiteInitL = whiteInitL;
 		this.whiteInitR = whiteInitR;
 
 		path = null;
-	}
+		turnDirection = 0;
+		supressed = true;
+		
+		no longer need this constrctor??
+	}*/
 
-	public TurnBehavior(LightSensor left, LightSensor right, int whiteInitL,
+	public TurnBehavior(LightSensor left, LightSensor right,
 			int whiteInitR, ArrayList<PathChoices> path) {
 		lightSensorR = right;
 		lightSensorL = left;
 
-		pilot = new DifferentialPilot(43, 171, Motor.B, Motor.C);
+		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 
-		pilot.setTravelSpeed(200.0);
-		pilot.setRotateSpeed(100.0);
+		pilot.setTravelSpeed(125.0);
+		pilot.setRotateSpeed(150.0);
 
 		rand = new Random();
 
-		this.whiteInit = whiteInitL;
 		this.whiteInitR = whiteInitR;
 
 		this.path = path;
@@ -72,7 +72,7 @@ public class TurnBehavior implements Behavior {
 	}
 
 	public void calibrate(int whiteL, int whiteR) {
-		this.whiteInit = whiteL;
+		this.whiteInitL = whiteL;
 		this.whiteInitR = whiteR;
 	}
 
@@ -80,7 +80,7 @@ public class TurnBehavior implements Behavior {
 	public boolean takeControl() {
 		int reading = lightSensorL.getLightValue();
 
-		if (whiteInit - reading > 1) {
+		if (whiteInitL - reading > 1) {
 			return true;
 		} else {
 			return false;
@@ -93,20 +93,18 @@ public class TurnBehavior implements Behavior {
 
 		pilot.stop();
 
-		int reading = lightSensorL.getLightValue();
+		int readingL = lightSensorL.getLightValue();
 		int readingR = lightSensorR.getLightValue();
 
-		LCD.clear();
-
-		LCD.drawInt(reading, 3, 1);
-		LCD.drawInt(whiteInit, 3, 3);
-		LCD.drawInt(whiteInit - reading, 3, 5);
-		LCD.drawChar('L', 3, 7);
-
-		LCD.drawInt(readingR, 8, 1);
-		LCD.drawInt(whiteInitR, 8, 3);
-		LCD.drawInt(whiteInitR - readingR, 8, 5);
-		LCD.drawChar('R', 8, 7);
+		/*
+		 * LCD.clear();
+		 * 
+		 * LCD.drawInt(readingL, 3, 1); LCD.drawInt(whiteInitL, 3, 3);
+		 * LCD.drawInt(whiteInitL - readingL, 3, 5); LCD.drawChar('L', 3, 7);
+		 * 
+		 * LCD.drawInt(readingR, 8, 1); LCD.drawInt(whiteInitR, 8, 3);
+		 * LCD.drawInt(whiteInitR - readingR, 8, 5); LCD.drawChar('R', 8, 7);
+		 */
 
 		if (path != null) {
 			if (path.isEmpty()) {
@@ -116,26 +114,25 @@ public class TurnBehavior implements Behavior {
 				path.remove(0);
 			}
 		} else {
-			turnDirection = rand.nextInt() % 3;
+			System.out.println("Waiting for directions.");
 		}
 
-		if (turnDirection == 0) {
-			pilot.arc(85.5, 90, true);
+		if (turnDirection == 0) { //change to switch 
+			pilot.arc(80.5, 90, true);
 		} else if (turnDirection == 1) {
-			pilot.arc(-85.5, -90, true);
+			pilot.arc(-80.5, -90, true);
 		} else if (turnDirection == 2) {
 			pilot.travel(50.0, true);
 		}
 
 		while (!supressed && pilot.isMoving()) {
-			// setTurnDirection(rand.nextInt()%3);
 
 			if (Button.ESCAPE.isDown()) {
 				System.exit(0);
 			}
 		}
 
-		supressed = true;
+		suppress();
 	}
 
 	@Override
