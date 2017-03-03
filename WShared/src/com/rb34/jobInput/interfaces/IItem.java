@@ -3,7 +3,7 @@ package com.rb34.jobInput.interfaces;
 //Interface for Item object
 public interface IItem{
 
-	//Gets unique Item ID
+	//Gets unique ID of item
 	String getItemID();
 
 	//Gets Reward of item
@@ -12,11 +12,11 @@ public interface IItem{
 	//Gets Weight of item
 	float getWeight();
 
-	//Sets X and Y Locations of item
+	//Sets X and Y pick-up Locations of item
 	void setX(int x);
 	void setY(int y);
 	
-	//Gets X and Y locations of item
+	//Gets X and Y pick-up locations of item
 	int getX();
 	int getY();
 }

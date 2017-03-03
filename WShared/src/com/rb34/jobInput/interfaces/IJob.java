@@ -1,5 +1,4 @@
 package com.rb34.jobInput.interfaces;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -12,13 +11,20 @@ public interface IJob{
 	//gets numbers of Items required
 	int getCount(String itemID);
 	
-	//Adds item to Hash Table (Key = Item , Value = count)
+	//Adds item to Hash Table (Key = item ID , Value = order object)
+	//Order object contains [Item, count];
 	void addItem(String itemID, IOrder order);
+	
+	//returns true or false depending if this job was cancelled previously
+	boolean getCancelled();
+	
+	//sets true or false depending if this job was cancelled previously
+	void setCancelled(boolean wasCancelled);
 
-	//Gets hashMap, where the key is the Item and the value is the number of items
+	//Gets hashMap, where the key is the Item ID and the value is the Order
 	HashMap <String, IOrder> getOrderList ();
 	
-	//Gets Items in HashTable
+	//Gets all IDs of the items required by the job.
 	Collection <String> getItemsID();
 	
 	

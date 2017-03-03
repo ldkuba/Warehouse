@@ -1,6 +1,5 @@
 package com.rb34.jobInput;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -11,7 +10,7 @@ public class Job implements IJob {
 
 	private String jobId;
 	private HashMap<String, IOrder> orderList;
-	
+	private boolean wasCancelled;
 	
 	public Job(String jobId){
 		this.jobId = jobId;
@@ -37,6 +36,14 @@ public class Job implements IJob {
 	@Override
 	public void addItem(String itemID, IOrder order) {
 		orderList.put(itemID, order);
+	}
+	@Override
+	public boolean getCancelled() {
+		return wasCancelled;
+	}
+	@Override
+	public void setCancelled(boolean wasCancelled) {
+		this.wasCancelled  = wasCancelled;
 	}
 
 }
