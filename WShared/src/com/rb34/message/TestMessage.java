@@ -9,8 +9,8 @@ public class TestMessage extends AbstractMessage
 		this.text = text;
 	}
 	
-	public String getText()
-	{
+	public String getText() 
+	{	
 		return this.text;
 	}
 }

@@ -11,10 +11,8 @@ public class DummyMainPC
 		master = new Master();
 	}
 	
-	
-	
 	public static void main(String[] args)
 	{
-		
+		DummyMainPC dummy = new DummyMainPC();
 	}
 }

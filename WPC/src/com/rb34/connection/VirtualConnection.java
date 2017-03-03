@@ -5,6 +5,10 @@ import lejos.pc.comm.NXTCommException;
 
 public class VirtualConnection implements Connection
 {
+	public VirtualConnection()
+	{
+		
+	}
 
 	@Override
 	public void run()
