@@ -23,29 +23,30 @@ public class LineFollowing implements Behavior
 	
 	private TurnBehavior turnBehavior;
 	
-	public LineFollowing(LightSensor left, LightSensor right, int whiteInitL, int whiteInitR, TurnBehavior turnBehavior) 
+	public LineFollowing(LightSensor left, LightSensor right, int whiteInitR, TurnBehavior turnBehavior) 
 	{
 		this.turnBehavior = turnBehavior;
 		
 		lightSensorR = right;
 		lightSensorL = left;
 		
-		pilot = new DifferentialPilot(43, 171, Motor.B, Motor.C);
+		pilot = new DifferentialPilot(56, 26, Motor.A, Motor.B);
 		
-		this.whiteInit = whiteInitR;
+		this.whiteInit = whiteInitR; //This sets the base value of both to be the same, so can make comparisons.
 		this.whiteInitL = whiteInitR;
 		
-		pilot.setTravelSpeed(100.0);
+		pilot.setTravelSpeed(125.0);
 		
-		Motor.B.setSpeed(100.0f);
-		Motor.C.setSpeed(100.0f);
+		Motor.B.setSpeed(125f);
+		Motor.C.setSpeed(125f);
+		pilot.setRotateSpeed(150);
 		
 	}
 
 	@Override
 	public boolean takeControl() 
 	{
-		return true;
+		return true; //always true-so will follow line until another behaviour takes control
 	}
 
 	@Override
@@ -56,10 +57,10 @@ public class LineFollowing implements Behavior
 		this.whiteInitL = this.lightSensorL.getLightValue();//this gets the value for white at the start, sets 'base' while value.
 		this.whiteInit = this.lightSensorR.getLightValue();
 		
-		/*if(this.turnBehavior != null)
+		if(this.turnBehavior != null)
 		{
 			this.turnBehavior.calibrate(this.whiteInitL, this.whiteInit);
-		}*/
+		}
 		
 		while (!supressed) 
 		{
@@ -67,17 +68,19 @@ public class LineFollowing implements Behavior
 			int reading = lightSensorR.getLightValue();
 			int readingL = lightSensorL.getLightValue();
 
-			if (whiteInit - reading > 1) {
-				pilot.arcForward(-400);
+			if (whiteInit - reading > 1) { //if greater than 1 must be on white so make it arc left
+				pilot.arcForward(-20);
 			} else {
-				pilot.arcForward(400);
+				pilot.arcForward(20); //if less than 1 must be on black so make it arc a little right
+				
 			}
 
-			if (Button.ESCAPE.isDown()) {
+			if (Button.ESCAPE.isDown()) { //make sure that robot will stop program if escape button is pressed.
 				System.exit(0);
+				suppress();
 			}
 
-			LCD.clear();
+/*			LCD.clear();
 			LCD.drawInt(reading, 8, 1);
 			LCD.drawInt(whiteInit, 8, 3);
 			LCD.drawInt(whiteInit - reading, 8, 5);
@@ -86,7 +89,8 @@ public class LineFollowing implements Behavior
 			LCD.drawInt(readingL, 3, 1);
 			LCD.drawInt(whiteInitL, 3, 3);
 			LCD.drawInt(whiteInitL - readingL, 3, 5);
-			LCD.drawChar('L', 3, 7);		
+			LCD.drawChar('L', 3, 7);
+			checks values when trying to debug-prints on robot*/		
 			
 			Delay.msDelay(20);
 
