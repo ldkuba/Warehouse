@@ -3,9 +3,9 @@ package com.rb34.jobInput.interfaces;
 //Interface for Job object
 public interface IOrder{
 
-	//Gets unique job ID
+	//Gets Item in that particular order
 	IItem getItem();
 	
-	//gets numbers of Items required
+	//gets numbers of those particular Items required
 	int getCount();
 }
