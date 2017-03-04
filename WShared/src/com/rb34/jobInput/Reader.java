@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ReaderTest {
+public class Reader {
 
 	public static ArrayList<Job> createJobList() {
 		BufferedReader reader = null;
