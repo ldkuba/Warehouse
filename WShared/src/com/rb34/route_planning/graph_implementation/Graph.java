@@ -11,26 +11,28 @@ import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.function.BiFunction;
 
+import com.rb34.job_assignment.JobAssigner;
+import com.rb34.route_planning.graph_entities.Heuristic;
 import com.rb34.route_planning.graph_entities.IEdge;
 import com.rb34.route_planning.graph_entities.IGraph;
 import com.rb34.route_planning.graph_entities.IVertex;
 import com.rb34.route_planning.graph_entities.Result;
 
 import rp.robotics.mapping.GridMap;
+import rp.robotics.mapping.MapUtils;
+import sun.font.CreatedFontTracker;
 
 public class Graph implements IGraph {
 	Map<String, IVertex> vertices;
 	GridMap gridMap;
 
-	// Constructor with no parameters
+	// Constructor with GridMap parameter
 	public Graph() {
 		vertices = new HashMap<>();
-	}
-
-	// Constructor with GridMap parameter
-	public Graph(GridMap map) {
-		vertices = new HashMap<>();
-		gridMap = map;
+		
+		// should get the real map here instead of this "real warehouse"
+		gridMap = MapUtils.createRealWarehouse();
+		
 		// Add the junctions from the map to the collection of vertices
 		for (int i = 0; i < gridMap.getXSize(); i++)
 			for (int j = 0; j < gridMap.getYSize(); j++)
@@ -49,6 +51,11 @@ public class Graph implements IGraph {
 
 			}
 
+	}
+	
+	public void executeRoute(String startVertexId, String endVertexId) {
+		ArrayList<IVertex> path = aStar(startVertexId, endVertexId).getPath().get();
+		// create object from route execution that converts the path and sends commands to the robot
 	}
 
 	// Add vertex to graph
@@ -82,34 +89,32 @@ public class Graph implements IGraph {
 		return vertices.get(vertexId);
 	}
 
-	// A* algorithm that returns a Result object
+	// A* algorithm 
 	@Override
-	public Result aStar(String startVertexId, String endVertexId, BiFunction<IVertex, IVertex, Float> heuristics) {
+	public Result aStar(String startVertexId, String endVertexId) {
 		Result result = new Result();
-		if (getVertex(startVertexId) == null || getVertex(endVertexId) == null) return null;
+		
+		if (getVertex(startVertexId) == null || getVertex(endVertexId) == null)
+			return null;
+
+		BiFunction<IVertex, IVertex, Float> heuristic = new Heuristic();
 		Comparator<IVertex> comparator = new Comparator<IVertex>() {
 			@Override
 			public int compare(IVertex o1, IVertex o2) {
-				return (int) (o1.getLabel().getCost() + heuristics.apply(o1, getVertex(endVertexId))
-						- (o2.getLabel().getCost() + heuristics.apply(o2, getVertex(endVertexId))));
+				return (int) (o1.getLabel().getCost() + heuristic.apply(o1, getVertex(endVertexId))
+						- (o2.getLabel().getCost() + heuristic.apply(o2, getVertex(endVertexId))));
 			}
 		};
-
 		ArrayList<IVertex> closedList = new ArrayList<>();
 		PriorityQueue<IVertex> openList = new PriorityQueue<>(comparator);
-
 		for (IVertex vertex : getVertices()) {
 			vertex.getLabel().setCost(MAX_VALUE);
 		}
-
 		getVertex(startVertexId).getLabel().setCost(0f);
 		openList.offer(getVertex(startVertexId));
-
 		boolean targetInClosedList = false;
-
 		while (!openList.isEmpty()) {
 			IVertex currentVertex = openList.poll();
-
 			if (targetInClosedList) {
 				Float pathCost = getVertex(endVertexId).getLabel().getCost();
 				ArrayList<IVertex> path = new ArrayList<>();
@@ -124,7 +129,6 @@ public class Graph implements IGraph {
 				result.setPathCost(pathCost);
 				break;
 			}
-
 			for (IEdge edge : currentVertex.getSuccessors()) {
 				String successorName = edge.getTgt().getLabel().getName();
 				IVertex successor = getVertex(successorName);
@@ -137,14 +141,11 @@ public class Graph implements IGraph {
 					openList.offer(successor);
 				} else if (tentativeCost >= successor.getLabel().getCost())
 					continue;
-
 			}
-
 			closedList.add(currentVertex);
 			if (currentVertex.getLabel().getName().equals(endVertexId))
 				targetInClosedList = true;
 		}
-
 		return result;
 	}
 }

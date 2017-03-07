@@ -14,7 +14,7 @@ public interface IGraph {
 
 	IVertex getVertex(String vertexId);
 
-	default Result aStar(String startVertexId, String endVertexId, BiFunction<IVertex, IVertex, Float> heuristics) {
+	default Result aStar(String startVertexId, String endVertexId) {
 		return new Result();
 	}
 }
