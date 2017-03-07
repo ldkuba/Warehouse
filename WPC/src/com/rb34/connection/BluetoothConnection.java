@@ -1,22 +1,32 @@
 package com.rb34.connection;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 
-import com.rb34.message.TestMessage;
+import com.rb34.message.Message;
+import com.rb34.message.MessageListener;
 
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTCommException;
 import lejos.pc.comm.NXTInfo;
+import network.Receiver;
+import network.Sender;
 
 public class BluetoothConnection implements Connection
 {
 	private NXTInfo nxtInfo;
 
-	private ObjectInputStream inputStream;
-	private ObjectOutputStream outputStream;
-
+	/* EXPERIMANTAL
+	private MyObjectInputStream inputStream;
+	private MyObjectOutputStream outputStream;
+	*/
+	
+	private DataInputStream inputStream;
+	private DataOutputStream outputStream;
+	
+	private Sender sender;
+	private Receiver receiver;
+	
 	private boolean running = true;
 
 	public BluetoothConnection(NXTInfo nxtInfo)
@@ -27,27 +37,21 @@ public class BluetoothConnection implements Connection
 	@Override
 	public void run()
 	{
-		while (running)
+		receiver = new Receiver(inputStream);
+		sender = new Sender(outputStream);
+		
+		receiver.start();
+		sender.start();
+		
+		try
 		{
-			TestMessage msg = new TestMessage("Hellooooooooooo");
-			try
-			{
-				outputStream.writeObject(msg);
-				outputStream.flush();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			
-			try
-			{
-				Thread.sleep(300);
-			} catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-			
+			receiver.join();
+			sender.join();
+		} catch (InterruptedException e)
+		{
+			e.printStackTrace();
 		}
+		
 	}
 
 	@Override
@@ -55,14 +59,8 @@ public class BluetoothConnection implements Connection
 	{
 		if (comm.open(nxtInfo))
 		{
-			try
-			{
-				inputStream = new ObjectInputStream(comm.getInputStream());
-				outputStream = new ObjectOutputStream(comm.getOutputStream());
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
+			inputStream = new DataInputStream(comm.getInputStream());
+			outputStream = new DataOutputStream(comm.getOutputStream());
 		}
 
 		return isConnected();
@@ -73,5 +71,15 @@ public class BluetoothConnection implements Connection
 	{
 		return outputStream != null;
 	}
+	
+	public void addListener(MessageListener listener)
+	{
+		receiver.addListener(listener);
+	}
 
+	public void send(Message msg)
+	{
+		sender.send(msg);
+	}
+	
 }

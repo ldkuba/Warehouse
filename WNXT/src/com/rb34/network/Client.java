@@ -1,19 +1,27 @@
 package com.rb34.network;
 
-import java.io.IOException;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 
-import com.rb34.io.MyObjectInputStream;
-import com.rb34.io.MyObjectOutputStream;
-import com.rb34.message.AbstractMessage;
-import com.rb34.message.TestMessage;
+import com.rb34.message.Message;
+import com.rb34.message.MessageListener;
 
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
+import network.Receiver;
+import network.Sender;
 
 public class Client
 {
-	private MyObjectInputStream inputStream;
-	private MyObjectOutputStream outputStream;
+	/**
+	 * Experimental - Object Serializer private MyObjectInputStream inputStream;
+	 * private MyObjectOutputStream outputStream;
+	 */
+	private DataInputStream inputStream;
+	private DataOutputStream outputStream;
+	
+	private Receiver receiver;
+	private Sender sender;
 
 	private boolean running = true;
 
@@ -25,42 +33,31 @@ public class Client
 			public void run()
 			{
 				BTConnection connection = Bluetooth.waitForConnection();
+				
+				System.out.println("Connected!");
 
+				inputStream = connection.openDataInputStream();
+				outputStream = connection.openDataOutputStream();
+				
+				receiver = new Receiver(inputStream);
+				sender = new Sender(outputStream);
+				
+				receiver.start();
+				sender.start();
+				
 				try
 				{
-					inputStream = new MyObjectInputStream(connection.openInputStream());
-					outputStream = new MyObjectOutputStream(connection.openOutputStream());
-				} catch (IOException e)
+					receiver.join();
+					sender.join();
+				} catch (InterruptedException e)
 				{
 					e.printStackTrace();
 				}
-				
-				while (running)
-				{
-					try
-					{
-						AbstractMessage m = (AbstractMessage) inputStream.readObject();
-						
-						if(m instanceof TestMessage)
-						{
-							TestMessage msg = (TestMessage) m;
-							
-							System.out.println(msg.getText());
-						}
-						
-					} catch (ClassNotFoundException e)
-					{
-						e.printStackTrace();
-					} catch (IOException e)
-					{
-						e.printStackTrace();
-					}
-				}
 			}
 		});
-		
+
 		clientThread.start();
-			
+
 		try
 		{
 			clientThread.join();
@@ -68,6 +65,16 @@ public class Client
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void send(Message msg)
+	{
+		sender.send(msg);
+	}
+	
+	public void addListener(MessageListener listener)
+	{
+		receiver.addListener(listener);
 	}
 
 }

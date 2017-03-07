@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.rb34.connection.BluetoothConnection;
 import com.rb34.connection.Connection;
+import com.rb34.message.MessageListener;
 
-import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTCommException;
 import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTInfo;
@@ -22,7 +22,7 @@ public class Master
 		
 		try
 		{
-			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "Aaron", "0016531B59FF"));
+			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "NiXTy", "001653157A48"));
 			connections.add(connection1);
 			connection1.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
 
@@ -54,6 +54,11 @@ public class Master
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void addListener(MessageListener listener)
+	{
+		
 	}
 
 }
