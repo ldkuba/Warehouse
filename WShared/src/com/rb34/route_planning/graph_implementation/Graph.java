@@ -31,7 +31,6 @@ public class Graph implements IGraph {
 	public Graph(GridMap map) {
 		vertices = new HashMap<>();
 		gridMap = map;
-
 		// Add the junctions from the map to the collection of vertices
 		for (int i = 0; i < gridMap.getXSize(); i++)
 			for (int j = 0; j < gridMap.getYSize(); j++)
@@ -87,7 +86,7 @@ public class Graph implements IGraph {
 	@Override
 	public Result aStar(String startVertexId, String endVertexId, BiFunction<IVertex, IVertex, Float> heuristics) {
 		Result result = new Result();
-
+		if (getVertex(startVertexId) == null || getVertex(endVertexId) == null) return null;
 		Comparator<IVertex> comparator = new Comparator<IVertex>() {
 			@Override
 			public int compare(IVertex o1, IVertex o2) {
