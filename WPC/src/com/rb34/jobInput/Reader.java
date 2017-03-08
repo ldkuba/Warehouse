@@ -1,15 +1,18 @@
 package com.rb34.jobInput;
 
 import java.io.BufferedReader;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+
 public class Reader {
 
+	final static Logger logger = Logger.getLogger(Reader.class);
+	
 	//Reads drop csv files and populates a list.
 	public static ArrayList <Drop> createDropList(){
 		BufferedReader reader = null;
@@ -20,13 +23,17 @@ public class Reader {
 			reader = new BufferedReader(new FileReader(fileDrop));
 
 			String dropLoc;
+			int logCount = 0;
+			logger.debug("Starts reading each line");
 			while ((dropLoc = reader.readLine()) != null && dropLoc.length() > 0) {
-
+				logger.debug("reads a new line" + logCount++);
 				String[] dropInfo = dropLoc.split(",");
 				int xLoc = Integer.parseInt(dropInfo[0]);
 				int yLoc = Integer.parseInt(dropInfo[1]);
+				
 				Drop newDropLoc = new Drop(xLoc,yLoc);
 				dropList.add(newDropLoc);
+				logger.debug("Adds need drop into dropList");
 			}
 			
 			reader.close();
@@ -48,12 +55,11 @@ public class Reader {
 		BufferedReader reader = null;
 		ArrayList<Item> itemList = new ArrayList<Item>();
 
-		
-		try {
-			
+		try {			
 			//First: Reads items.csv and creates an ArrayList of Items
 			File fileItems = new File("myDocs/items.csv");
 			reader = new BufferedReader(new FileReader(fileItems));
+			logger.debug("opens items.csv");
 
 			String item;
 			while ((item = reader.readLine()) != null && item.length() > 0) {
@@ -66,10 +72,12 @@ public class Reader {
 
 			}
 			reader.close();
+			logger.debug("closes items.csv");
 
 			//Second: Reads locations.csv and creates and uses the Item set methods to add the location to each item
 			File fileLoc = new File("myDocs/locations.csv");
 			reader = new BufferedReader(new FileReader(fileLoc));
+			logger.debug("opens locations.csv");
 
 			String location;
 			int i = 0;
@@ -84,11 +92,13 @@ public class Reader {
 				
 			}
 			reader.close();
+			logger.debug("closes locations.csv");
  
 			//Third: Reads jobs.csv and creates a list of jobs.
 			ArrayList<Job> jobList = new ArrayList<Job>();	
 			File fileJobs = new File("myDocs/jobs.csv"); reader = new
 			BufferedReader(new FileReader(fileJobs));
+			logger.debug("opens jobs.csv");
 			
 			int count = 9999;
 			String itemID;
@@ -121,9 +131,11 @@ public class Reader {
 			}
 			 
 			reader.close();
+			logger.debug("closes jobs.csv");
 			
 			File fileCancellations = new File("myDocs/cancellations.csv");
 			reader = new BufferedReader(new FileReader(fileCancellations));
+			logger.debug("opens cancellations.csv");
 			
 			String line;
 			boolean wasCancelled = false;
@@ -143,6 +155,7 @@ public class Reader {
 			}
 			 
 			reader.close();
+			logger.debug("closes cancellation.csv");
 			return jobList;
 
 		} catch (IOException e) {
