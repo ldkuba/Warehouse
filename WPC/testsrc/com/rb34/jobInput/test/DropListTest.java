@@ -1,7 +1,11 @@
 package com.rb34.jobInput.test;
 
+import static org.junit.Assert.assertEquals;
+
 import com.rb34.jobInput.*;
+
 import java.util.ArrayList;
+
 import org.junit.Test;
 
 public class DropListTest {
@@ -15,5 +19,11 @@ public class DropListTest {
 			System.out.println(" Y:" + dropList.get(i).getY());
 			System.out.println("-----------------");
 		}
+	}
+	@Test
+	public void sizeOfDropList() {
+		ArrayList<Drop> dropList = Reader.createDropList();
+		assertEquals("Number of jobs in list should be 2", 2, dropList.size());
+
 	}
 }

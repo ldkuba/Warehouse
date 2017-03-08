@@ -1,4 +1,6 @@
 package com.rb34.jobSelection.test;
+import static org.junit.Assert.assertEquals;
+
 import com.rb34.jobInput.Item;
 import com.rb34.jobInput.Job;
 import com.rb34.jobInput.Order;
@@ -14,9 +16,20 @@ import org.junit.Test;
 
 public class rewardSortTest {
 	
+	private ArrayList<Job> jobList = Reader.createJobList();
+	
 	@Test
+	
+	public void sortedListSize(){
+		jobList = Selection.rewardSelection(jobList);
+		// assert statements
+		assertEquals("Number of jobs in list should be 20000", 20000, jobList.size());
+		
+	}
+	
+	
+	//@Test
 	public void printSortedList(){
-		ArrayList<Job> jobList = Reader.createJobList();
  		jobList = Selection.rewardSelection(jobList);
 		for (int i = 0; i <= jobList.size() - 1; i++) {
 			System.out.print("Job ID: " + jobList.get(i).getJobId());
@@ -28,11 +41,7 @@ public class rewardSortTest {
 				System.out.println(element.getItem().getReward() + " - " + element.getCount());
 				System.out.println("---------------");
 			}
-			
-			
-			
-			
-			
+
 			System.out.println("=========================================================");
 			
 		}
