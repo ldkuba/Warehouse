@@ -21,7 +21,7 @@ public class Execute {
 
 		ArrayList<IVertex> path = result.getPath().get();
 
-		MovementConv converter = new MovementConv();
+		convertToMovement converter = new convertToMovement();
 
 		/*
 		 * System.out.println("Visited Nodes: "); ArrayList<IVertex> visited =
@@ -29,7 +29,7 @@ public class Execute {
 		 * System.out.print(node.getLabel().getName() + "; "); }
 		 */
 
-		boolean debug = false;
+		boolean debug = true;
 		if (debug  == true) {
 			System.out.println("");
 
