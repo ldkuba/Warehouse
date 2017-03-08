@@ -1,7 +1,6 @@
 package com.rb34.route_execution;
 
 import java.util.ArrayList;
-
 import com.rb34.route_planning.graph_entities.IVertex;
 
 public class MovementConv {
@@ -30,7 +29,7 @@ public class MovementConv {
 			String coordY = parts[1];//vertex.getLabel().getName().split("|")[2];
 			int X = Integer.valueOf(coordX);
 			int Y = Integer.valueOf(coordY);
-			
+			//System.out.println(Heading.getHeading());
 			if(X == prevX){
 
 				if(Heading.getHeading().equals("E") && Y > prevY) {
@@ -90,21 +89,25 @@ public class MovementConv {
 				} else if(Heading.getHeading().equals("S") && X < prevX) {
 					movement.add("RIGHT");
 					Heading.setHeading("W");
-				}	
+				} 
 
 
-			}
+			} 
 		
+			
 			prevX = X;
 			prevY = Y;
 			
 			movement = returnVal;
 			
+			
+			
 		}
-		
 		//System.out.print(" Final Heading: " + Heading.getHeading() + "\n");
 		return returnVal;
 		
 	}
+	
+	
 
 }
