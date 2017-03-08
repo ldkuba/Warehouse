@@ -28,11 +28,7 @@ public class rewardSortTest {
 				System.out.println(element.getItem().getReward() + " - " + element.getCount());
 				System.out.println("---------------");
 			}
-			
-			
-			
-			
-			
+
 			System.out.println("=========================================================");
 			
 		}
