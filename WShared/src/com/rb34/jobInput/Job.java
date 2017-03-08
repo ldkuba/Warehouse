@@ -53,7 +53,7 @@ public class Job implements IJob,  Comparable<Job> {
 		Iterator<IOrder> itr = getOrderList().values().iterator();
 		while (itr.hasNext()) {
 			IOrder element = itr.next();
-			netReward += element.getItem().getReward();
+			netReward += element.getItem().getReward() * element.getCount();
 		}
 		return netReward;
 	}
