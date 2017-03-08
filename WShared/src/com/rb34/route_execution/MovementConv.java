@@ -13,7 +13,7 @@ public class MovementConv {
 		String name1 = path.get(0).getLabel().getName();
 		String[] parts1 = name1.split("\\|");
 		String tempX = parts1[0];//startPoint.split("|")[0];
-		String tempY = parts1[0];//startPoint.split("|")[2];
+		String tempY = parts1[1];//startPoint.split("|")[2];
 		int prevX = Integer.valueOf(tempX);
 		int prevY = Integer.valueOf(tempY);
 		movement.clear();
