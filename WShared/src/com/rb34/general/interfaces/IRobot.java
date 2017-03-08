@@ -1,5 +1,9 @@
 package com.rb34.general.interfaces;
 
+import java.util.ArrayList;
+
+import com.rb34.jobInput.interfaces.IItem;
+
 public interface IRobot {
 	
 	//Sets and gets unique robot ID
@@ -14,11 +18,19 @@ public interface IRobot {
 	boolean onRoute();
 	
 	// Sets X and Y coordinates of specific Robot
-	void setXLoc(int xLoc);
-	void setYLoc(int yLoc);
+	void setXCurrentLoc(int xLoc);
+	void setYCurrentLoc(int yLoc);
 	
 	// Gets X and Y coordinates of specific Robot
-	int getXLoc();
-	int getYLoc();
+	int getXCurrentLoc();
+	int getYCurrentLoc();
 	
+	void setXDropLoc(int xDropLoc);
+	void setYDropLoc(int yDropLoc);
+	
+	int getXDropLoc();
+	int getYDropLoc();
+	
+	ArrayList <IItem> getItemsToPick();
+	void setItemsToPick(ArrayList<IItem> itemsToPick);
 }

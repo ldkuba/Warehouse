@@ -24,4 +24,9 @@ public class RobotManager implements IRobotManager {
 		
 	}
 
+	@Override
+	public ArrayList<IRobot> getRobots() {
+		return robotList;
+	}
+
 }

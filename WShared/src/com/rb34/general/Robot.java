@@ -1,15 +1,20 @@
 package com.rb34.general;
 
+import java.util.ArrayList;
+
 import com.rb34.general.interfaces.IRobot;
+import com.rb34.jobInput.interfaces.IItem;
 
 public class Robot implements IRobot {
 
-	private int robotID;
 	private int xLoc;
 	private int yLoc;
+	private int xDrop;
+	private int yDrop;
+	private int robotID;
 	private boolean onJob;
 	private boolean onRoute;
-	
+	private ArrayList <IItem> itemList;	
 	
 	public Robot(){
 		this.robotID = 0;
@@ -17,26 +22,6 @@ public class Robot implements IRobot {
 		this.yLoc = 0;
 		this.onJob = false;
 		this.onRoute = false;
-	}
-	
-	@Override
-	public void setXLoc(int xLoc) {
-		this.xLoc = xLoc;	
-	}
-
-	@Override
-	public void setYLoc(int yLoc) {
-		this.yLoc = yLoc;
-	}
-
-	@Override
-	public int getXLoc() {
-		return xLoc;
-	}
-
-	@Override
-	public int getYLoc() {
-		return yLoc;
 	}
 
 	@Override
@@ -68,6 +53,60 @@ public class Robot implements IRobot {
 	@Override
 	public boolean onJob() {
 		return onJob;
+	}
+
+	@Override
+	public void setXCurrentLoc(int xLoc) {
+		this.xLoc = xLoc;
+		
+	}
+
+	@Override
+	public void setYCurrentLoc(int yLoc) {
+		this.yLoc = yLoc;
+	}
+
+	@Override
+	public int getXCurrentLoc() {
+		return xLoc;
+	}
+
+	@Override
+	public int getYCurrentLoc() {
+		// TODO Auto-generated method stub
+		return yLoc;
+	}
+
+	@Override
+	public void setXDropLoc(int xDropLoc) {
+		this.xDrop = xDropLoc;
+	}
+
+	@Override
+	public void setYDropLoc(int yDropLoc) {
+		this.yDrop = yDropLoc;
+	}
+
+	@Override
+	public int getXDropLoc() {
+		// TODO Auto-generated method stub
+		return xDrop;
+	}
+
+	@Override
+	public int getYDropLoc() {
+		// TODO Auto-generated method stub
+		return yDrop;
+	}
+
+	@Override
+	public ArrayList<IItem> getItemsToPick() {
+		return itemList;
+	}
+
+	@Override
+	public void setItemsToPick(ArrayList<IItem> itemsToPick) {
+		this.itemList = itemsToPick;
 	}
 
 }
