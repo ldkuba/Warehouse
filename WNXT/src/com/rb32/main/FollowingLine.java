@@ -13,15 +13,19 @@ public class FollowingLine {
 	private LightSensor lightSensorL;
 	private LineFollowing lineFollowing;
 	private StopBehaviour stop;
+	int whiteInitL;
+	int whiteInitR;
 
 	public FollowingLine() {
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
+	
+		while(whiteInitL == 0 || whiteInitR == 0) {
+			whiteInitL = lightSensorL.getLightValue();
+			whiteInitR = lightSensorR.getLightValue();
+		}
 
-		int whiteInitR = lightSensorR.getLightValue();
-
-		lineFollowing = new LineFollowing(lightSensorL, lightSensorR,
-				whiteInitR, null);
+		lineFollowing = new LineFollowing(lightSensorL, lightSensorR, null);
 
 		Behavior[] behaviors = {lineFollowing};
 		arbitrator = new Arbitrator(behaviors);
