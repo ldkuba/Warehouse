@@ -10,7 +10,7 @@ public class RobotManager implements IRobotManager {
 	private ArrayList <IRobot> robotList;
 	
 	public RobotManager(){
-		robotList = new ArrayList<IRobot>();
+		robotList = new ArrayList<>();
 	}
 	
 	@Override
@@ -21,7 +21,6 @@ public class RobotManager implements IRobotManager {
 	@Override
 	public void addRobot(IRobot newRobot) {
 		robotList.add(newRobot);
-		
 	}
 
 }
