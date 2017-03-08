@@ -2,10 +2,16 @@ package com.rb34.route_execution;
 
 
 import java.util.ArrayList;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.rb34.route_planning.graph_entities.IVertex;
 
 
 public class convertToMovement {
+		
+	private static final Logger log4j = LogManager.getLogger(convertToMovement.class.getName());
 	
 	public ArrayList<String> execute(ArrayList<IVertex> path) {
 		
@@ -96,8 +102,12 @@ public class convertToMovement {
 				}		
 			}
 			prevX = X;
-			prevY = Y;	
+			prevY = Y;
+			
+			log4j.info("Current Position: " + "(" + prevX + "," + prevY + ")" );
+			log4j.info("Current Heading: " + Heading.getHeading());
 		}
+		
 		
 		return movement;
 	}
