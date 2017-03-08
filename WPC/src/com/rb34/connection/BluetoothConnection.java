@@ -85,6 +85,11 @@ public class BluetoothConnection implements Connection
 
 	public void send(Message msg)
 	{
+		while(sender == null)
+		{
+			
+		}
+		
 		sender.send(msg);
 	}
 	

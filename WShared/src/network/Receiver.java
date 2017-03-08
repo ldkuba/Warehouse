@@ -42,8 +42,20 @@ public class Receiver extends Thread
 				if (type == 0)
 				{
 					int length = inputStream.readInt();
+					
+					System.out.println("Size: " + length);
+					
+					boolean ff = true;
+					
+					while(ff)
+					{
+						
+					}
+					
 					byte[] bytes = new byte[length];
-					inputStream.read(bytes);
+					
+					inputStream.read(bytes, 0, length);
+				
 					TestMessage msg = TestMessage.fromByteArray(bytes);
 
 					for (int i = 0; i < listeners.size(); i++)

@@ -21,12 +21,7 @@ public class DummyMainNXT
 
 		TestMessage msg = new TestMessage();
 		msg.setText("HELLO MASTER");
-
-		for (int i = 0; i < 2; i++)
-		{
-			client.send(msg);
-			// System.out.print("HALLALAALALALLLOOOOOOOO");
-		}
+		client.send(msg);
 
 		try
 		{

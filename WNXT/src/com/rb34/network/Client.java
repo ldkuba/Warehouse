@@ -65,6 +65,11 @@ public class Client extends Thread
 	
 	public void send(Message msg)
 	{
+		while(sender == null)
+		{
+			
+		}
+		
 		sender.send(msg);
 	}
 
