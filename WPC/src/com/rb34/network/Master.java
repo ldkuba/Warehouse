@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import com.rb34.connection.BluetoothConnection;
 import com.rb34.connection.Connection;
 import com.rb34.message.MessageListener;
+import com.rb34.message.TestMessage;
 
 import lejos.pc.comm.NXTCommException;
 import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTInfo;
 
-public class Master
+public class Master extends Thread
 {
 	private ArrayList<Connection> connections;
 
@@ -18,11 +19,16 @@ public class Master
 
 	public Master()
 	{
+
+	}
+
+	public void run()
+	{
 		connections = new ArrayList<Connection>();
-		
+
 		try
 		{
-			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "NiXTy", "001653157A48"));
+			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "WALL-E", "001653115A7E"));
 			connections.add(connection1);
 			connection1.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
 
@@ -53,12 +59,51 @@ public class Master
 		{
 			e.printStackTrace();
 		}
+	}
 
+	public boolean areAllConnected()
+	{
+		if(connections == null)
+		{
+			return false;
+		}
+		
+		for(int i = 0; i < connections.size(); i++)
+		{
+			if(!connections.get(i).isConnected())
+			{
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	public void addListener(MessageListener listener)
 	{
+		while(areAllConnected())
+		{
+			
+		}
 		
+		while(connections == null)
+		{
+			
+		}
+		
+		for(Connection connection : this.connections)
+		{
+			connection.addListener(listener);
+		}
+	}
+
+	public void send(TestMessage msg, int robotId)
+	{
+		if(connections.size() > robotId)
+		{
+			if(connections.get(robotId) != null)
+				connections.get(robotId).send(msg);
+		}
 	}
 
 }

@@ -26,9 +26,11 @@ public class Sender extends Thread
 	public void run()
 	{
 		while(true)
-		{
+		{			
 			if(!messageQueue.isEmpty())
 			{
+				System.out.println("SENDING MESSAGE");
+				
 				byte[] message = messageQueue.get(0).toByteArray();
 				
 				try

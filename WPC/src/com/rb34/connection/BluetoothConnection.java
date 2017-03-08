@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 
 import com.rb34.message.Message;
 import com.rb34.message.MessageListener;
+import com.rb34.message.TestMessage;
 
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTCommException;
@@ -69,11 +70,16 @@ public class BluetoothConnection implements Connection
 	@Override
 	public boolean isConnected()
 	{
-		return outputStream != null;
+		return sender != null;
 	}
 	
 	public void addListener(MessageListener listener)
 	{
+		while(receiver == null)
+		{
+			
+		}
+		
 		receiver.addListener(listener);
 	}
 
