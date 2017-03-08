@@ -1,11 +1,11 @@
 package com.rb34.job_assignment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.rb34.jobInput.Item;
 import com.rb34.jobInput.Job;
-import com.rb34.jobInput.Order;
 import com.rb34.jobInput.interfaces.IOrder;
 
 public class ItemSorter {
@@ -75,11 +75,12 @@ public class ItemSorter {
 		return sortedItems;
 	}
 
+	// create every permutation for the order of items (Yay brute force)
 	private static void permute(List<Integer> array, int k, ArrayList<ArrayList<Integer>> permutations) {
 		for (int i = k; i < array.size(); i++) {
-			java.util.Collections.swap(array, i, k);
+			Collections.swap(array, i, k);
 			permute(array, k + 1, permutations);
-			java.util.Collections.swap(array, k, i);
+			Collections.swap(array, k, i);
 		}
 		if (k == array.size() - 1) {
 			ArrayList<Integer> list = new ArrayList<>();
