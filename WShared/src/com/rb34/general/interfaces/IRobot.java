@@ -1,5 +1,7 @@
 package com.rb34.general.interfaces;
 
+import com.rb34.jobInput.Job;
+
 public interface IRobot {
 	//Sets the status of the robot(Idle, Running, Stuck...)
 	enum Status{
@@ -19,5 +21,7 @@ public interface IRobot {
 	// Gets X and Y coordinates of specific Robot
 	int getXLoc();
 	int getYLoc();
-	
+
+	void setCurrentJob(Job job);
+	Job getCurrentJob();
 }
