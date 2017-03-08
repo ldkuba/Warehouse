@@ -5,6 +5,4 @@ public interface IRobotManager {
 	IRobot getRobot(int robotId);
 	
 	void addRobot(IRobot newRobot);
-	
-	
 }
