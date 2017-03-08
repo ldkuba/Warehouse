@@ -90,27 +90,4 @@ public class ItemSorter {
 		}
 	}
 
-	public static void main(String[] args) {
-		Item p1 = new Item("p1", 0f, 0f);
-		p1.setX(3);
-		p1.setY(4);
-
-		Item p2 = new Item("p2", 0f, 0f);
-		p2.setX(5);
-		p2.setY(6);
-
-		Item p3 = new Item("p3", 0f, 0f);
-		p3.setX(0);
-		p3.setY(2);
-
-		Job job = new Job("1000");
-		job.addItem("p1", new Order(p1, 1));
-		job.addItem("p2", new Order(p2, 1));
-		job.addItem("p3", new Order(p3, 1));
-
-		ItemSorter is = new ItemSorter(job, 2, 2, 0, 0);
-		for (Item item : is.getSortedItems()) {
-			System.out.print(item.getItemID() + " ");
-		}
-	}
 }
