@@ -27,5 +27,8 @@ public interface IJob{
 	//Gets all IDs of the items required by the job.
 	Collection <String> getItemsID();
 	
+	//Gets total reward 
+	float getTotalReward();
+	
 	
 }
