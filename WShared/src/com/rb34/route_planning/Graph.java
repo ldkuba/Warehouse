@@ -1,4 +1,4 @@
-package com.rb34.route_planning.graph_implementation;
+package com.rb34.route_planning;
 
 import static java.lang.Float.MAX_VALUE;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.function.BiFunction;
 
-import com.rb34.job_assignment.JobAssigner;
+import com.rb34.route_execution.Execute;
 import com.rb34.route_planning.graph_entities.Heuristic;
 import com.rb34.route_planning.graph_entities.IEdge;
 import com.rb34.route_planning.graph_entities.IGraph;
@@ -20,7 +20,6 @@ import com.rb34.route_planning.graph_entities.Result;
 
 import rp.robotics.mapping.GridMap;
 import rp.robotics.mapping.MapUtils;
-import sun.font.CreatedFontTracker;
 
 public class Graph implements IGraph {
 	Map<String, IVertex> vertices;
@@ -55,7 +54,8 @@ public class Graph implements IGraph {
 	
 	public void executeRoute(String startVertexId, String endVertexId) {
 		ArrayList<IVertex> path = aStar(startVertexId, endVertexId).getPath().get();
-		// create object from route execution that converts the path and sends commands to the robot
+		Execute execute = new Execute();
+		execute.runRoute(path);
 	}
 
 	// Add vertex to graph
