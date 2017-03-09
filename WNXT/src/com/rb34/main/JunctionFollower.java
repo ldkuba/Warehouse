@@ -46,7 +46,8 @@ public class JunctionFollower {
 		path1.add(PathChoices.LEFT);*/
 		
 		
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, path1);
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR);
+		turnBehavior.setPath(path1);
 		followLine = new LineFollowing(lightSensorL, lightSensorR, turnBehavior);
 		waitBehavior = new WaitBehavior(turnBehavior);
 		

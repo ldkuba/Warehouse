@@ -13,7 +13,6 @@ import java.util.function.BiFunction;
 
 import org.apache.log4j.Logger;
 
-import com.rb34.job_assignment.ItemSorter;
 import com.rb34.route_execution.Execute;
 import com.rb34.route_planning.graph_entities.Heuristic;
 import com.rb34.route_planning.graph_entities.IEdge;
