@@ -12,6 +12,21 @@ import org.apache.logging.log4j.Logger;
 
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
+
+import lejos.robotics.RangeFinder;
+import rp.robotics.MobileRobotWrapper;
+import rp.robotics.control.RandomGridWalk;
+import rp.robotics.mapping.GridMap;
+import rp.robotics.mapping.MapUtils;
+import rp.robotics.navigation.GridPose;
+import rp.robotics.navigation.Heading;
+import rp.robotics.simulation.MapBasedSimulation;
+import rp.robotics.simulation.MovableRobot;
+import rp.robotics.simulation.SimulatedRobots;
+import rp.robotics.visualisation.GridMapVisualisation;
+import rp.robotics.visualisation.KillMeNow;
+import rp.robotics.visualisation.MapVisualisationComponent;
+
 import java.awt.GridBagConstraints;
 import java.awt.Font;
 import java.awt.Insets;
@@ -22,6 +37,8 @@ import java.awt.Color;
 public class WarehouseWindow {
 
 	private JFrame frame;
+	static RobotManager manager;
+	Robot rb1;
 	private static final Logger log4j = LogManager.getLogger(WarehouseWindow.class.getName());
 
 	/**
@@ -52,8 +69,8 @@ public class WarehouseWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		RobotManager manager = new RobotManager();
-		Robot rb1 = new Robot();
+		manager = new RobotManager();
+		rb1 = new Robot();
 		manager.addRobot(rb1);
 		
 		frame = new JFrame();
@@ -109,7 +126,38 @@ public class WarehouseWindow {
 		gbc_lblJobid.gridy = 3;
 		frame.getContentPane().add(lblJobid, gbc_lblJobid);
 		
-		 int delay = 1000; //milliseconds
+		
+		GridMap gridMap = MapUtils.createRealWarehouse();
+		MapBasedSimulation sim = new MapBasedSimulation(gridMap);
+		GridPose gridStart = new GridPose(manager.getRobot(0).getXLoc(), manager.getRobot(0).getYLoc(), Heading.PLUS_X);
+		MobileRobotWrapper<MovableRobot> wrapper = sim.addRobot(
+				SimulatedRobots.makeConfiguration(false, true),gridMap.toPose(gridStart));
+		
+		RangeFinder ranger = sim.getRanger(wrapper);
+
+		SimulationController controller = new SimulationController(wrapper.getRobot(),
+				gridMap, gridStart, ranger);
+		
+		new Thread(controller).start();
+		GridMapVisualisation viz = new GridMapVisualisation(gridMap,
+				sim.getMap());
+		
+		MapVisualisationComponent.populateVisualisation(viz, sim);
+		
+		
+		
+		
+		
+		JFrame frame2 = new JFrame("Warehouse Map");
+		frame2.add(viz);
+		frame.addWindowListener(new KillMeNow());
+		frame2.pack();
+		frame2.setSize(450,300);
+		frame2.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame2.setVisible(true);
+		
+		 int delay = 2000; //milliseconds
 	      ActionListener taskPerformer = new ActionListener() {
 	          public void actionPerformed(ActionEvent evt) {
 	              String status = manager.getRobot(0).getRobotStatus().toString(); 
@@ -135,9 +183,7 @@ public class WarehouseWindow {
 	              String location = "("+ manager.getRobot(0).getXLoc() + "," + manager.getRobot(0).getYLoc() + ")";
 	              lblCoords.setText(location);
 	              log4j.trace("Updated Robot Position: " + location);
-	              
-	              
-	              
+
 	              /*
 	              Commented out for now as it crashes when no ID is returned
 	              
@@ -150,6 +196,15 @@ public class WarehouseWindow {
 	          }
 	      };
 	      new Timer(delay, taskPerformer).start();
+	}
+	
+	
+	public  static int getX() {
+		return manager.getRobot(0).getXLoc();
+	}
+	
+	public  static int getY() {
+		return manager.getRobot(0).getYLoc();
 	}
 
 }
