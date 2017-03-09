@@ -1,4 +1,4 @@
-package com.rb34.route_planning.graph_implementation;
+package com.rb34.route_planning;
 
 import static org.junit.Assert.*;
 
