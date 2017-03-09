@@ -7,6 +7,8 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
+
+import com.rb34.general.PathChoices;
 import com.rb34.robot_interface.RobotScreen;
 
 public class TurnBehavior implements Behavior {
@@ -74,7 +76,9 @@ public class TurnBehavior implements Behavior {
 		readingR = lightSensorR.getLightValue();
 
 		if (path != null) {
-			if (!path.isEmpty()) {
+			if (path.isEmpty()) {
+				actionDone = true;
+			} else if (!path.isEmpty()) {
 				turnDirection = path.get(0).ordinal();
 				path.remove(0);
 				actionDone = false;
