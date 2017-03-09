@@ -11,7 +11,6 @@ public class RobotScreen {
 	// 99, 63
 	
 	public RobotScreen (int x, int y, String state) {
-		xyAxis = "I am at " + x + ":" + y;
 		this.x = x;
 		this.y = y;
 		this.state = state;
@@ -34,3 +33,4 @@ public class RobotScreen {
 		printEverything();
 	}
 }
+
