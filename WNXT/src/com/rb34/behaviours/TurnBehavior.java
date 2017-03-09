@@ -1,4 +1,4 @@
-package com.rb32.behaviours;
+package com.rb34.behaviours;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,7 +9,10 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
-import com.rb32.behaviours.PathChoices;
+
+import com.rb34.behaviours.PathChoices;
+
+import org.apache.log4j.Logger;
 
 public class TurnBehavior implements Behavior {
 	private LightSensor lightSensorR;
@@ -17,6 +20,7 @@ public class TurnBehavior implements Behavior {
 	private DifferentialPilot pilot;
 	private int turnDirection;
 	private boolean supressed;
+	final static Logger logger = Logger.getLogger(TurnBehavior.class);
 
 	private ArrayList<PathChoices> path;
 	private boolean actionDone;
@@ -25,21 +29,17 @@ public class TurnBehavior implements Behavior {
 	int whiteInitR;
 	int whiteInitL;
 
-	public TurnBehavior(LightSensor left, LightSensor right, ArrayList<PathChoices> path) {
+	public TurnBehavior(LightSensor left, LightSensor right) {
 		lightSensorR = right;
 		lightSensorL = left;
 
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 
 		pilot.setTravelSpeed(150);
-		//pilot.setRotateSpeed(150.0);
-
-		this.path = path;
 	}
-
-	public void calibrate(int readingR, int readingL) {
-		this.readingR = readingR;
-		this.readingL = readingL;
+	
+	public void setPath(ArrayList<PathChoices> path) {
+		this.path = path;
 	}
 	
 	public boolean rightOnBlack() {

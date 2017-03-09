@@ -1,11 +1,7 @@
-package com.rb32.main;
+package com.rb34.main;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import com.rb32.behaviours.LineFollowing;
-import com.rb32.behaviours.TurnBehavior;
-import com.rb32.behaviours.WaitBehavior;
 
 import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
@@ -13,7 +9,11 @@ import lejos.nxt.SensorPort;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
-import com.rb32.behaviours.PathChoices;
+
+import com.rb34.behaviours.LineFollowing;
+import com.rb34.behaviours.PathChoices;
+import com.rb34.behaviours.TurnBehavior;
+import com.rb34.behaviours.WaitBehavior;
 
 public class JunctionFollower {
 
@@ -49,7 +49,8 @@ public class JunctionFollower {
 		path1.add(PathChoices.LEFT);*/
 		
 		
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, path1);
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR);
+		turnBehavior.setPath(path1);
 		followLine = new LineFollowing(lightSensorL, lightSensorR, turnBehavior);
 		waitBehavior = new WaitBehavior(turnBehavior);
 		

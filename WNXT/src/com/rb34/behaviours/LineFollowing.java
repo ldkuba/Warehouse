@@ -1,4 +1,4 @@
-package com.rb32.behaviours;
+package com.rb34.behaviours;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
@@ -98,27 +98,7 @@ public class LineFollowing implements Behavior
 			pilot.forward();
 
 			checkLeft();
-			//System.out.println("Left Initial: " +whiteInitL);
-			//System.out.println("New left:" +lightSensorL.getLightValue());
 			checkRight();
-			//System.out.println("Right: "+rightOnBlack());
-			//System.out.println("Right Initial: " +whiteInitR);
-			//System.out.println("New right:" +lightSensorR.getLightValue());
-
-
-	/*		if (!rightOnBlack() && !leftOnBlack()) { //if greater than 1 must be on white so forward
-				pilot.forward();
-				System.out.println("Forward");
-				Delay.msDelay(10);
-			} else if (rightOnBlack() && !leftOnBlack())  {
-				pilot.rotateRight(); 
-				System.out.println("Recorrecting A");
-				Delay.msDelay(10);
-			} else if (!rightOnBlack() && leftOnBlack()) {
-				pilot.rotateLeft();
-				System.out.println("Recorrecting B");
-				Delay.msDelay(10);
-			}*/
 
 			if (Button.ESCAPE.isDown()) { //make sure that robot will stop program if escape button is pressed.
 				System.exit(0);
