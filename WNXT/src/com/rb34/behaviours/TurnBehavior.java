@@ -86,16 +86,13 @@ public class TurnBehavior implements Behavior {
 
 		if (turnDirection == 0) { // change to switch
 			pilot.arc(80.5, 90, true);
-			System.out.println("Action 0");
 		} else if (turnDirection == 1) {
 			pilot.arc(-80.5, -90, true);
-			System.out.println("Action 1");
 		} else if (turnDirection == 2) {
 			pilot.travel(75.0, true);
 			System.out.println("Action 2");
 		} else if (turnDirection == 3) {
 			pilot.rotate(180, true);
-			System.out.println("Action 3");
 		}
 
 		while (!supressed && pilot.isMoving()) {
