@@ -10,8 +10,8 @@ import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
-import com.rb34.behaviours.PathChoices;
 import com.rb34.behaviours.TurnBehavior;
+import com.rb34.general.PathChoices;
 import com.rb34.robot_interface.RobotScreen;
 
 public class WaitBehavior implements Behavior {

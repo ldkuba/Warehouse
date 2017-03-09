@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.rb34.behaviours.DistanceKeeping;
 import com.rb34.behaviours.LineFollowing;
-import com.rb34.behaviours.PathChoices;
 import com.rb34.behaviours.TurnBehavior;
+import com.rb34.general.PathChoices;
 import com.rb34.robot_interface.RobotScreen;
 
 import lejos.nxt.LightSensor;
