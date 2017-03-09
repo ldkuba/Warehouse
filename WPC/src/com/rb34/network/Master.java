@@ -15,7 +15,7 @@ public class Master extends Thread
 {
 	private ArrayList<Connection> connections;
 
-	private boolean running;
+	private boolean running = true;
 
 	public Master()
 	{
@@ -28,7 +28,7 @@ public class Master extends Thread
 
 		try
 		{
-			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "WALL-E", "001653115A7E"));
+			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "AntMar", "0016530A61AF"));
 			connections.add(connection1);
 			connection1.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
 
@@ -52,7 +52,7 @@ public class Master extends Thread
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();
-				}
+				}																																															
 			}
 
 		} catch (NXTCommException e)
