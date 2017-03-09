@@ -1,31 +1,34 @@
 package com.rb34.general.interfaces;
 
+import com.rb34.jobInput.Job;
 import java.util.ArrayList;
 
 import com.rb34.jobInput.Item;
 import com.rb34.jobInput.interfaces.IItem;
 
 public interface IRobot {
-	
-	//Sets and gets unique robot ID
-	void setRobotId(int Id);
-	int getRobotId();
-	
-	//Sets the status of the robot(Busy/Stuck/Free...etc)
-	void setOnJob(boolean onJob);
-	boolean onJob();
-	
-	void setOnRoute(boolean onRoute);
-	boolean onRoute();
-	
+	//Sets the status of the robot(Idle, Running, Stuck...)
+	enum Status{
+		IDLE,
+		RUNNING,
+		STUCK,
+		AT_ITEM,
+		AT_DROPOFF
+	};
+	Status getRobotStatus();
+	void setRobotStatus(Status state);
+
 	// Sets X and Y coordinates of specific Robot
-	void setXCurrentLoc(int xLoc);
-	void setYCurrentLoc(int yLoc);
+	void setXLoc(int xLoc);
+	void setYLoc(int yLoc);
 	
 	// Gets X and Y coordinates of specific Robot
-	int getXCurrentLoc();
-	int getYCurrentLoc();
-	
+	int getXLoc();
+	int getYLoc();
+
+	void setCurrentJob(Job job);
+	Job getCurrentJob();
+
 	void setXDropLoc(int xDropLoc);
 	void setYDropLoc(int yDropLoc);
 	

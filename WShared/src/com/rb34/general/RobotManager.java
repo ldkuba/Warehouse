@@ -2,6 +2,7 @@ package com.rb34.general;
 
 import java.util.ArrayList;
 
+import com.rb34.general.interfaces.IRobot;
 import com.rb34.general.interfaces.IRobotManager;
 
 public class RobotManager implements IRobotManager {
@@ -9,7 +10,7 @@ public class RobotManager implements IRobotManager {
 	private ArrayList <Robot> robotList;
 	
 	public RobotManager(){
-		robotList = new ArrayList<Robot>();
+		robotList = new ArrayList<>();
 	}
 	
 	@Override
@@ -20,7 +21,6 @@ public class RobotManager implements IRobotManager {
 	@Override
 	public void addRobot(Robot newRobot) {
 		robotList.add(newRobot);
-		
 	}
 
 	@Override

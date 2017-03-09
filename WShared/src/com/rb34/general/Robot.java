@@ -1,112 +1,101 @@
 package com.rb34.general;
 
-import java.util.ArrayList;
-
 import com.rb34.general.interfaces.IRobot;
 import com.rb34.jobInput.Item;
 
-public class Robot implements IRobot {
+import com.rb34.jobInput.Job;
+
+
+import java.util.ArrayList;
+
+public class Robot implements IRobot{
 
 	private int xLoc;
 	private int yLoc;
 	private int xDrop;
 	private int yDrop;
-	private int robotID;
-	private boolean onJob;
-	private boolean onRoute;
-	private ArrayList <Item> itemList;	
-	
+	private Status state;
+	private Job job;
+	private ArrayList<Item> itemList;
+
 	public Robot(){
-		this.robotID = 0;
 		this.xLoc = 0;
 		this.yLoc = 0;
-		this.onJob = false;
-		this.onRoute = false;
+		this.state = Status.IDLE;
+		this.job = null;
+	}
+
+	public void recievedMessge(){
+		//TODO
 	}
 
 	@Override
-	public void setRobotId(int Id) {
-		this.robotID = Id;		
+	public Status getRobotStatus(){
+		return state;
 	}
 
 	@Override
-	public int getRobotId() {
-		return robotID;
+	public void setRobotStatus(Status state){
+		this.state = state;
 	}
 
 	@Override
-	public void setOnJob(boolean onJob) {
-		this.onJob = onJob;
-	}
-
-	@Override
-	public void setOnRoute(boolean onRoute) {
-		this.onRoute = onRoute;
-		
-	}
-
-	@Override
-	public boolean onRoute() {
-		return onRoute;
-	}
-
-	@Override
-	public boolean onJob() {
-		return onJob;
-	}
-
-	@Override
-	public void setXCurrentLoc(int xLoc) {
+	public void setXLoc(int xLoc){
 		this.xLoc = xLoc;
-		
 	}
 
 	@Override
-	public void setYCurrentLoc(int yLoc) {
+	public void setYLoc(int yLoc){
 		this.yLoc = yLoc;
 	}
 
 	@Override
-	public int getXCurrentLoc() {
+	public int getXLoc(){
 		return xLoc;
 	}
 
 	@Override
-	public int getYCurrentLoc() {
-		// TODO Auto-generated method stub
+	public int getYLoc(){
 		return yLoc;
 	}
 
 	@Override
-	public void setXDropLoc(int xDropLoc) {
+	public void setCurrentJob(Job job){
+		this.job = job;
+	}
+
+	@Override
+	public Job getCurrentJob(){
+		return job;
+	}
+
+	@Override
+	public void setXDropLoc(int xDropLoc){
 		this.xDrop = xDropLoc;
 	}
 
 	@Override
-	public void setYDropLoc(int yDropLoc) {
+	public void setYDropLoc(int yDropLoc){
 		this.yDrop = yDropLoc;
 	}
 
 	@Override
-	public int getXDropLoc() {
-		// TODO Auto-generated method stub
+	public int getXDropLoc(){
 		return xDrop;
 	}
 
 	@Override
-	public int getYDropLoc() {
-		// TODO Auto-generated method stub
+	public int getYDropLoc(){
 		return yDrop;
 	}
 
 	@Override
-	public ArrayList<Item> getItemsToPick() {
+	public ArrayList<Item> getItemsToPick(){
 		return itemList;
 	}
 
 	@Override
-	public void setItemsToPick(ArrayList<Item> itemsToPick) {
+	public void setItemsToPick(ArrayList<Item> itemsToPick){
 		this.itemList = itemsToPick;
 	}
-
 }

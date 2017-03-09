@@ -46,7 +46,7 @@ public class Job implements IJob,  Comparable<Job> {
 	public void setCancelled(boolean wasCancelled) {
 		this.wasCancelled  = wasCancelled;
 	}
-	
+
 	public float getTotalReward(){
 		float netReward = 0;
 		

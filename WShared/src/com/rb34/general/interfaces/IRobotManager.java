@@ -9,6 +9,6 @@ public interface IRobotManager {
 	Robot getRobot(int robotId);
 	
 	void addRobot(Robot newRobot);
-	
+
 	ArrayList <Robot> getRobots();
 }
