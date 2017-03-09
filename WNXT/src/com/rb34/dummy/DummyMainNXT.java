@@ -16,12 +16,17 @@ public class DummyMainNXT
 			public void receivedTestMessage(TestMessage msg)
 			{
 				System.out.println(msg.getText());
+				
 			}
 		});
-
-		TestMessage msg = new TestMessage();
-		msg.setText("HELLO MASTER");
-		client.send(msg);
+		
+		TestMessage msg1 = new TestMessage();
+		msg1.setText("HELLO M");
+		
+		for(int i = 0; i < 1; i++)
+		{
+			client.send(msg1);
+		}
 
 		try
 		{

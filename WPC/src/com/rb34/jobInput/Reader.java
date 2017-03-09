@@ -5,14 +5,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.core.Logger;
+
+
 
 public class Reader {
 
-	final static Logger logger = Logger.getLogger(Reader.class);
 	
+	 static Logger logger = Logger.getLogger(Reader.class);
+
+	 
 	//Reads drop csv files and populates a list.
 	public static ArrayList <Drop> createDropList(){
 		BufferedReader reader = null;

@@ -3,7 +3,7 @@ package com.rb34.job_assignment;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.core.Logger;
 
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;

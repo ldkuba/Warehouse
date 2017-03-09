@@ -1,7 +1,8 @@
-package com.rb32.main;
+package com.rb34.main;
 
-import com.rb32.behaviours.LineFollowing;
-import com.rb32.behaviours.StopBehaviour;
+import com.rb34.behaviours.LineFollowing;
+import com.rb34.behaviours.StopBehaviour;
+
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.robotics.subsumption.Arbitrator;

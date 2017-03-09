@@ -2,16 +2,17 @@ package com.rb34.connection;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 
 import com.rb34.message.Message;
 import com.rb34.message.MessageListener;
 import com.rb34.message.TestMessage;
+import com.rb34.network.Receiver;
+import com.rb34.network.Sender;
 
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTCommException;
 import lejos.pc.comm.NXTInfo;
-import network.Receiver;
-import network.Sender;
 
 public class BluetoothConnection implements Connection
 {
@@ -46,11 +47,16 @@ public class BluetoothConnection implements Connection
 		
 		try
 		{
+			inputStream.close();
+			outputStream.close();
 			receiver.join();
 			sender.join();
 		} catch (InterruptedException e)
 		{
 			e.printStackTrace();
+		} catch (IOException e2)
+		{
+			e2.printStackTrace();
 		}
 		
 	}

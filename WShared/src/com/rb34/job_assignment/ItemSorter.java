@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.core.Logger;
 
 import com.rb34.jobInput.Item;
 import com.rb34.jobInput.Job;
