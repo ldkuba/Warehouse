@@ -7,20 +7,25 @@ import com.rb34.general.interfaces.IRobotManager;
 
 public class RobotManager implements IRobotManager {
 
-	private ArrayList <IRobot> robotList;
+	private ArrayList <Robot> robotList;
 	
 	public RobotManager(){
 		robotList = new ArrayList<>();
 	}
 	
 	@Override
-	public IRobot getRobot(int robotId) {
+	public Robot getRobot(int robotId) {
 		return robotList.get(robotId);
 	}
 
 	@Override
-	public void addRobot(IRobot newRobot) {
+	public void addRobot(Robot newRobot) {
 		robotList.add(newRobot);
+	}
+
+	@Override
+	public ArrayList<Robot> getRobots() {
+		return robotList;
 	}
 
 }
