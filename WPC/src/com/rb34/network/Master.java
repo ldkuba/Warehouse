@@ -52,7 +52,7 @@ public class Master extends Thread
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();
-				}
+				}																																															
 			}
 
 		} catch (NXTCommException e)

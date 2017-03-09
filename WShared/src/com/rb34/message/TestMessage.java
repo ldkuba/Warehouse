@@ -24,7 +24,7 @@ public class TestMessage implements Message
 	
 	public byte[] toByteArray()
 	{
-		int lengthInBytes = 1 + 2*text.length();
+		int lengthInBytes = 4 + 2*text.length();
 		
 		//GENERAL MESSAGE PARAMS
 		byte[] output = {type};
