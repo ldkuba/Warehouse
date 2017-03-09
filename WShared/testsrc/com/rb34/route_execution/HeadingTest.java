@@ -3,7 +3,7 @@ package com.rb34.route_execution;
 // Maintains the Heading of the robot
 //Replace with pose class in lejos?
 
-public class Heading {
+public class HeadingTest {
 	
 	private static String heading = "E";
 	public static String getHeading() {

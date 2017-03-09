@@ -9,9 +9,9 @@ import org.apache.logging.log4j.Logger;
 import com.rb34.route_planning.graph_entities.IVertex;
 
 
-public class convertToMovement {
+public class ConvertToMovement {
 		
-	private static final Logger log4j = LogManager.getLogger(convertToMovement.class.getName());
+	private static final Logger log4j = LogManager.getLogger(ConvertToMovement.class.getName());
 	
 	public ArrayList<String> execute(ArrayList<IVertex> path) {
 		

@@ -20,7 +20,7 @@ public class Execute {
 			throw new IllegalArgumentException("Path is empty");
 		 } 
 		 
-		convertToMovement converter = new convertToMovement();
+		ConvertToMovement converter = new ConvertToMovement();
 		log4j.trace("Initialised Movement Converting Object");
 		
 		String choosenPath = "";

@@ -1,4 +1,4 @@
-package localisation;
+package com.rb34.robot_interface;
 
 import lejos.nxt.LCD;
 
@@ -11,7 +11,6 @@ public class RobotScreen {
 	// 99, 63
 	
 	public RobotScreen (int x, int y, String state) {
-		xyAxis = "I am at " + x + ":" + y;
 		this.x = x;
 		this.y = y;
 		this.state = state;

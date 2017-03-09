@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Execute {
+public class ExecuteTest {
 
 	private ArrayList<String> robotInstructions;
 	private ArrayList<IVertex> vertexPath;
@@ -21,7 +21,7 @@ public class Execute {
 			throw new IllegalArgumentException("Path is empty");
 		 } 
 			
-		convertToMovement converter = new convertToMovement();
+		ConvertToMovement converter = new ConvertToMovement();
 		log4j.trace("Initialised Movement Converting Object");
 		
 		String choosenPath = "";
