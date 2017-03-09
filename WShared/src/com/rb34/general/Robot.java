@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.rb34.general.interfaces.IRobot;
 import com.rb34.jobInput.Item;
-import com.rb34.jobInput.interfaces.IItem;
 
 public class Robot implements IRobot {
 
