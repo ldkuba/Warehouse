@@ -54,7 +54,7 @@ public class JunctionFollower implements MessageListener {
 		
 		
 		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen);
-		//turnBehavior.setPath(path1);
+		turnBehavior.setPath(path1);
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
 		waitBehavior = new WaitBehavior(turnBehavior, screen);
 		
