@@ -46,9 +46,10 @@ public class JunctionFollower implements MessageListener {
 		path1.add(PathChoices.FORWARD);
 		path1.add(PathChoices.FORWARD);
 		path1.add(PathChoices.FORWARD);
-		path1.add(PathChoices.FORWARD);
 		path1.add(PathChoices.RIGHT);
 		path1.add(PathChoices.FORWARD);
+		path1.add(PathChoices.FORWARD);
+		path1.add(PathChoices.RIGHT);
 		path1.add(PathChoices.FORWARD);
 		path1.add(PathChoices.LEFT);
 		
