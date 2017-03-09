@@ -3,7 +3,7 @@ package com.rb34.job_assignment;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-import org.apache.logging.log4j.core.Logger;
+import org.apache.log4j.*;
 
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
@@ -72,7 +72,7 @@ public class JobAssigner {
 					robot.setItemsToPick(items);
 
 					// start route planning
-					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY());
+					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY(), robot.getRobotId());
 					logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
 							+ robot.getYLoc() + " to" + item.getX() + "|" + item.getY());
 
@@ -92,12 +92,12 @@ public class JobAssigner {
 						items.remove(0);
 						robot.setItemsToPick(items);
 
-						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY());
+						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY(), robot.getRobotId());
 					} else {
 						logger.debug(
 								"Robot doing job " + robot.getCurrentJob().getJobId() + " is heading to the drop off");
 						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(),
-								robot.getXDropLoc() + "|" + robot.getYDropLoc());
+								robot.getXDropLoc() + "|" + robot.getYDropLoc(), robot.getRobotId());
 					}
 				}
 			}
