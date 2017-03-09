@@ -32,7 +32,7 @@ public class Graph implements IGraph {
 
 	// Constructor with GridMap parameter
 	public Graph() {
-		logger.trace("Started route planning");
+		logger.debug("Started route planning");
 		vertices = new HashMap<>();
 		
 		// should get the real map here instead of this "real warehouse"
@@ -55,7 +55,7 @@ public class Graph implements IGraph {
 					addEdge(sourceVertex.getLabel().getName(), targetVertex.getLabel().getName(), 1f);
 
 			}
-
+		logger.debug("Generated graph from map");
 	}
 	
 	public void executeRoute(String startVertexId, String endVertexId) {
@@ -65,7 +65,7 @@ public class Graph implements IGraph {
 		for (IVertex vertex : path) {
 			logMessage += vertex.getLabel().getName() + " ";
 		}
-		logger.trace(logMessage);
+		logger.debug("The generated path is: " + logMessage);
 		Execute execute = new Execute();
 		execute.runRoute(path);
 	}
@@ -141,6 +141,7 @@ public class Graph implements IGraph {
 				result.setVisitedVertices(closedList);
 				result.setPath(path);
 				result.setPathCost(pathCost);
+				logger.debug("Found path");
 				break;
 			}
 			for (IEdge edge : currentVertex.getSuccessors()) {
