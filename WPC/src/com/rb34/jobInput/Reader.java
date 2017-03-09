@@ -17,9 +17,10 @@ public class Reader {
 	public static ArrayList <Drop> createDropList(){
 		BufferedReader reader = null;
 		ArrayList<Drop> dropList = new ArrayList<Drop>();
+		final String FILE_PATH = "myDocs/";
 		
 		try {
-			File fileDrop = new File("myDocs/drops.csv");
+			File fileDrop = new File(FILE_PATH + "drops.csv");
 			reader = new BufferedReader(new FileReader(fileDrop));
 
 			String dropLoc;
@@ -54,10 +55,11 @@ public class Reader {
 	public static ArrayList<Job> createJobList() {
 		BufferedReader reader = null;
 		ArrayList<Item> itemList = new ArrayList<Item>();
+		final String FILE_PATH = "myDocs/";
 
 		try {			
 			//First: Reads items.csv and creates an ArrayList of Items
-			File fileItems = new File("myDocs/items.csv");
+			File fileItems = new File(FILE_PATH + "items.csv");
 			reader = new BufferedReader(new FileReader(fileItems));
 			logger.debug("opens items.csv");
 
@@ -75,7 +77,7 @@ public class Reader {
 			logger.debug("closes items.csv");
 
 			//Second: Reads locations.csv and creates and uses the Item set methods to add the location to each item
-			File fileLoc = new File("myDocs/locations.csv");
+			File fileLoc = new File(FILE_PATH + "locations.csv");
 			reader = new BufferedReader(new FileReader(fileLoc));
 			logger.debug("opens locations.csv");
 
@@ -96,8 +98,8 @@ public class Reader {
  
 			//Third: Reads jobs.csv and creates a list of jobs.
 			ArrayList<Job> jobList = new ArrayList<Job>();	
-			File fileJobs = new File("myDocs/jobs.csv"); reader = new
-			BufferedReader(new FileReader(fileJobs));
+			File fileJobs = new File(FILE_PATH + "jobs.csv");
+			reader = new BufferedReader(new FileReader(fileJobs));
 			logger.debug("opens jobs.csv");
 			
 			int count = 9999;
@@ -133,7 +135,7 @@ public class Reader {
 			reader.close();
 			logger.debug("closes jobs.csv");
 			
-			File fileCancellations = new File("myDocs/cancellations.csv");
+			File fileCancellations = new File(FILE_PATH + "cancellations.csv");
 			reader = new BufferedReader(new FileReader(fileCancellations));
 			logger.debug("opens cancellations.csv");
 			
