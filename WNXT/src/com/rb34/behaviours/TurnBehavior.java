@@ -20,7 +20,8 @@ public class TurnBehavior implements Behavior {
 	private DifferentialPilot pilot;
 	private int turnDirection;
 	private boolean supressed;
-	final static Logger logger = Logger.getLogger(TurnBehavior.class);
+	private final int THRESHOLD = 40;
+	// final static Logger logger = Logger.getLogger(TurnBehavior.class);
 
 	private ArrayList<PathChoices> path;
 	private boolean actionDone;
@@ -37,21 +38,21 @@ public class TurnBehavior implements Behavior {
 
 		pilot.setTravelSpeed(150);
 	}
-	
+
 	public void setPath(ArrayList<PathChoices> path) {
 		this.path = path;
 	}
-	
+
 	public boolean rightOnBlack() {
-		if (lightSensorR.getLightValue() <= 40) {
+		if (lightSensorR.getLightValue() <= THRESHOLD) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	public boolean leftOnBlack() {
-		if (lightSensorL.getLightValue() <= 40) {
+		if (lightSensorL.getLightValue() <= THRESHOLD) {
 			return true;
 		} else {
 			return false;
@@ -75,7 +76,6 @@ public class TurnBehavior implements Behavior {
 		readingL = lightSensorL.getLightValue();
 		readingR = lightSensorR.getLightValue();
 
-
 		if (path != null) {
 			if (!path.isEmpty()) {
 				turnDirection = path.get(0).ordinal();
@@ -84,15 +84,19 @@ public class TurnBehavior implements Behavior {
 			}
 		}
 
-		if (turnDirection == 0) { // change to switch
+		switch (turnDirection) {
+		case 0:
 			pilot.arc(80.5, 90, true);
-		} else if (turnDirection == 1) {
+			break;
+		case 1:
 			pilot.arc(-80.5, -90, true);
-		} else if (turnDirection == 2) {
+			break;
+		case 2:
 			pilot.travel(75.0, true);
-			System.out.println("Action 2");
-		} else if (turnDirection == 3) {
+			break;
+		case 3:
 			pilot.rotate(180, true);
+			break;
 		}
 
 		while (!supressed && pilot.isMoving()) {
