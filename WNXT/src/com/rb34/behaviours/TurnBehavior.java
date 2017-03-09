@@ -1,4 +1,4 @@
-package com.rb32.behaviours;
+package com.rb34.behaviours;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,7 +9,7 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
-import com.rb32.behaviours.PathChoices;
+import com.rb34.behaviours.PathChoices;
 
 public class TurnBehavior implements Behavior {
 	private LightSensor lightSensorR;

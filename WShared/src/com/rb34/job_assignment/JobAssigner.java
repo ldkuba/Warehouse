@@ -56,8 +56,8 @@ public class JobAssigner {
 					// update the robot data
 					robot.setCurrentJob(job);
 					robot.setRobotStatus(Status.RUNNING);
-					robot.setDropX(drop.getX());
-					robot.setDropY(drop.getY());
+					robot.setXDropLoc(drop.getX());
+					robot.setYDropLoc(drop.getY());
 					logger.trace("Gave job " + job.getJobId() + " to robot");
 					
 					// get the first item
@@ -87,7 +87,7 @@ public class JobAssigner {
 					} else {
 						logger.trace("Robot doing job " + robot.getCurrentJob().getJobId() + " is heading to the drop off");
 						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(),
-								robot.getDropX() + "|" + robot.getDropY());
+								robot.getXDropLoc() + "|" + robot.getYDropLoc());
 					}
 				}
 			}

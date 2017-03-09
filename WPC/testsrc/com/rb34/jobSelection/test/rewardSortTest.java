@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import com.rb34.jobInput.Item;
 import com.rb34.jobInput.Job;
 import com.rb34.jobInput.Order;
+import com.rb34.jobInput.Reader;
 import com.rb34.jobInput.interfaces.IOrder;
 import com.rb34.jobSelection.*;
 
