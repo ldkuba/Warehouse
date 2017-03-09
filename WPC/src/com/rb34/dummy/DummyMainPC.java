@@ -1,6 +1,7 @@
 package com.rb34.dummy;
 
 import com.rb34.message.MessageListener;
+import com.rb34.message.NewPathMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.network.Master;
 
@@ -18,6 +19,12 @@ public class DummyMainPC
 			public void receivedTestMessage(TestMessage msg)
 			{
 				System.out.println(msg.getText());
+			}
+
+			@Override
+			public void recievedNewPathMessage(NewPathMessage msg)
+			{
+				
 			}
 		});
 
