@@ -11,6 +11,7 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
+import com.rb34.robot_interface.RobotScreen;
 
 public class JunctionFollower {
 
@@ -24,10 +25,13 @@ public class JunctionFollower {
 	private LineFollowing followLine;
 	private TurnBehavior turnBehavior;
 	private WaitBehavior waitBehavior;
+	private static RobotScreen screen;
 	
-	public JunctionFollower() {
+	public JunctionFollower(RobotScreen _screen) {
+		this.screen = _screen;
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
+		
 		
 		path1 = new ArrayList<PathChoices>();
 		
@@ -46,12 +50,12 @@ public class JunctionFollower {
 		path1.add(PathChoices.LEFT);*/
 		
 		
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR);
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen);
 		turnBehavior.setPath(path1);
-		followLine = new LineFollowing(lightSensorL, lightSensorR, turnBehavior);
-		waitBehavior = new WaitBehavior(turnBehavior);
+		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
+		waitBehavior = new WaitBehavior(turnBehavior, screen);
 		
-		Behavior[] behaviors = {followLine, turnBehavior};
+		Behavior[] behaviors = {followLine, turnBehavior, waitBehavior};
 		arbitrator = new Arbitrator(behaviors);
 		
 		arbitrator.start();
@@ -59,7 +63,7 @@ public class JunctionFollower {
 	}
 	
 	public static void main(String args[]) {
-		JunctionFollower robot = new JunctionFollower();
+		JunctionFollower robot = new JunctionFollower(screen);
 	}
 	
 }

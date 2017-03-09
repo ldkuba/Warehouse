@@ -2,6 +2,7 @@ package com.rb34.main;
 
 import com.rb34.behaviours.LineFollowing;
 import com.rb34.behaviours.StopBehaviour;
+import com.rb34.robot_interface.RobotScreen;
 
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
@@ -14,19 +15,14 @@ public class FollowingLine {
 	private LightSensor lightSensorL;
 	private LineFollowing lineFollowing;
 	private StopBehaviour stop;
-	int whiteInitL;
-	int whiteInitR;
+	private RobotScreen screen;
 
 	public FollowingLine() {
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
-	
-		while(whiteInitL == 0 || whiteInitR == 0) {
-			whiteInitL = lightSensorL.getLightValue();
-			whiteInitR = lightSensorR.getLightValue();
-		}
+		screen = new RobotScreen(0, 0, "Start");
 
-		lineFollowing = new LineFollowing(lightSensorL, lightSensorR, null);
+		lineFollowing = new LineFollowing(lightSensorL, lightSensorR, screen);
 
 		Behavior[] behaviors = {lineFollowing};
 		arbitrator = new Arbitrator(behaviors);

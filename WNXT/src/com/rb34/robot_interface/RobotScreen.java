@@ -30,6 +30,7 @@ public class RobotScreen {
 	
 	public void printState (String state) {
 		this.state = state;
-		printEverything();
+		//printEverything();
+		LCD.drawString("State: " + state, LCD.CELL_WIDTH / 4, 3 * LCD.CELL_HEIGHT / 6);
 	}
 }
