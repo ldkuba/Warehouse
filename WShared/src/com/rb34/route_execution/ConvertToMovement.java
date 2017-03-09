@@ -3,9 +3,9 @@ package com.rb34.route_execution;
 
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.*;
 
+import com.rb34.general.PathChoices;
 import com.rb34.route_planning.graph_entities.IVertex;
 
 
@@ -13,10 +13,10 @@ public class ConvertToMovement {
 		
 	private static final Logger log4j = LogManager.getLogger(ConvertToMovement.class.getName());
 	
-	public ArrayList<String> execute(ArrayList<IVertex> path) {
+	public ArrayList<PathChoices> execute(ArrayList<IVertex> path) {
 		
 		ArrayList<IVertex> vertices = path;
-		ArrayList<String> movement = new ArrayList<String>();
+		ArrayList<PathChoices> movement = new ArrayList<PathChoices>();
 		String[] startPoint = vertices.get(0).getLabel().getName().split("\\|");
 		log4j.trace("Starting Point of Robot: " + startPoint);
 		int prevX = Integer.valueOf(startPoint[0]);
@@ -32,72 +32,72 @@ public class ConvertToMovement {
 			if(Heading.getHeading().equals("N")) {
 				if(X == prevX) {
 					if( Y > prevY) {
-						movement.add("FORWARD");
+						movement.add(PathChoices.FORWARD);
 						Heading.setHeading("N");
 					} else if(Y < prevY) {
-						movement.add("ROTATE");
+						movement.add(PathChoices.ROTATE);
 						Heading.setHeading("S");
 					}	
 				} else if (Y == prevY) {
 					if(X > prevX) {
-						movement.add("RIGHT");
+						movement.add(PathChoices.RIGHT);
 						Heading.setHeading("E");
 					} else if(X < prevX) {
-						movement.add("LEFT");
+						movement.add(PathChoices.LEFT);
 						Heading.setHeading("W");
 					}
 				}		
 			} else if(Heading.getHeading().equals("E")) {
 				if(X == prevX){
 					if(Y > prevY) {
-						movement.add("LEFT");
+						movement.add(PathChoices.LEFT);
 						Heading.setHeading("N");
 					} else if(Y < prevY) {
-						movement.add("RIGHT");
+						movement.add(PathChoices.RIGHT);
 						Heading.setHeading("S");
 					}	
 				} else if(Y == prevY) {
 					if(X > prevX) {
-						movement.add("FORWARD");
+						movement.add(PathChoices.FORWARD);
 						Heading.setHeading("E");
 					} else if(X < prevX) {
-						movement.add("ROTATE");					
+						movement.add(PathChoices.ROTATE);					
 						Heading.setHeading("W");
 					}
 				}		
 			} else if(Heading.getHeading().equals("S")) {
 				if(X == prevX) {
 					if(Y > prevY) {
-						movement.add("ROTATE");
+						movement.add(PathChoices.ROTATE);
 						Heading.setHeading("N");	
 					} else if(Y < prevY){
-						movement.add("FORWARD");
+						movement.add(PathChoices.FORWARD);
 						Heading.setHeading("S");
 					} 
 				} else if(Y == prevY) {
 					if(X > prevX) {
-						movement.add("LEFT");
+						movement.add(PathChoices.LEFT);
 						Heading.setHeading("E");
 					} else if(X < prevX) {
-						movement.add("RIGHT");
+						movement.add(PathChoices.RIGHT);
 						Heading.setHeading("W");
 					}
 				}	
 			} else if(Heading.getHeading().equals("W")) {
 				if(X == prevX) {	
 					if(Y > prevY) {
-						movement.add("RIGHT");
+						movement.add(PathChoices.RIGHT);
 						Heading.setHeading("N");
 					} else if(Y < prevY) {
-						movement.add("LEFT");
+						movement.add(PathChoices.LEFT);
 						Heading.setHeading("S");
 					}
 				} else if(Y == prevY) {
 						if(X > prevX) {
-							movement.add("ROTATE");
+							movement.add(PathChoices.ROTATE);
 							Heading.setHeading("E");
 						} else if(X < prevX) {
-							movement.add("FORWARD");
+							movement.add(PathChoices.FORWARD);
 							Heading.setHeading("W");
 						}
 				}		

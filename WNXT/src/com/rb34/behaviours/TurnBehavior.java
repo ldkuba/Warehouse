@@ -8,10 +8,14 @@ import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
+import com.rb34.general.PathChoices;
+import com.rb34.robot_interface.RobotScreen;
+
 public class TurnBehavior implements Behavior {
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
 	private DifferentialPilot pilot;
+	private RobotScreen screen;
 	private int turnDirection;
 	private boolean supressed;
 	private final int THRESHOLD = 40;
@@ -24,9 +28,10 @@ public class TurnBehavior implements Behavior {
 	int whiteInitR;
 	int whiteInitL;
 
-	public TurnBehavior(LightSensor left, LightSensor right) {
+	public TurnBehavior(LightSensor left, LightSensor right, RobotScreen _screen) {
 		lightSensorR = right;
 		lightSensorL = left;
+		this.screen = _screen;
 
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 
@@ -71,7 +76,9 @@ public class TurnBehavior implements Behavior {
 		readingR = lightSensorR.getLightValue();
 
 		if (path != null) {
-			if (!path.isEmpty()) {
+			if (path.isEmpty()) {
+				actionDone = true;
+			} else if (!path.isEmpty()) {
 				turnDirection = path.get(0).ordinal();
 				path.remove(0);
 				actionDone = false;
@@ -81,15 +88,19 @@ public class TurnBehavior implements Behavior {
 		switch (turnDirection) {
 		case 0:
 			pilot.arc(80.5, 90, true);
+			screen.printState("Left");
 			break;
 		case 1:
 			pilot.arc(-80.5, -90, true);
+			screen.printState("Right");
 			break;
 		case 2:
 			pilot.travel(75.0, true);
+			screen.printState("Forward");
 			break;
 		case 3:
 			pilot.rotate(180, true);
+			screen.printState("Rotate");
 			break;
 		}
 

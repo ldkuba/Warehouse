@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class Robot implements IRobot{
 
+	private int  robotId;
 	private int xLoc;
 	private int yLoc;
 	private int xDrop;
@@ -97,5 +98,13 @@ public class Robot implements IRobot{
 	@Override
 	public void setItemsToPick(ArrayList<Item> itemsToPick){
 		this.itemList = itemsToPick;
+	}
+
+	public int getRobotId() {
+		return robotId;
+	}
+
+	public void setRobotId(int robotId) {
+		this.robotId = robotId;
 	}
 }

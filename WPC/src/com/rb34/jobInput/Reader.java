@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.core.Logger;
+import org.apache.log4j.Logger;
 
 
 
@@ -219,9 +219,9 @@ public class Reader {
  
 			//Third: Reads jobs.csv and creates a list of jobs.
 			ArrayList<Job> jobList = new ArrayList<Job>();	
-			File fileJobs = new File(FILE_PATH + "jobs.csv");
+			File fileJobs = new File(FILE_PATH + "customJobs.csv");
 			reader = new BufferedReader(new FileReader(fileJobs));
-			logger.debug("opens jobs.csv");
+			logger.debug("opens customJobs.csv");
 			
 			int count = 9999;
 			String itemID;

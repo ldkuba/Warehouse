@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import com.rb34.general.interfaces.IRobot;
 import com.rb34.general.interfaces.IRobotManager;
+import com.rb34.message.MessageListener;
+import com.rb34.message.NewPathMessage;
+import com.rb34.message.TestMessage;
 
 public class RobotManager implements IRobotManager {
 

@@ -22,7 +22,7 @@ public class Master extends Thread
 
 	}
 
-	public void run()
+/*	public void run()
 	{
 		connections = new ArrayList<Connection>();
 
@@ -95,7 +95,7 @@ public class Master extends Thread
 		{
 			connection.addListener(listener);
 		}
-	}
+	}*/
 
 	public void send(TestMessage msg, int robotId)
 	{
