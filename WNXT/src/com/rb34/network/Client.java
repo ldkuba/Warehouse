@@ -2,14 +2,15 @@ package com.rb34.network;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 
 import com.rb34.message.Message;
 import com.rb34.message.MessageListener;
+import com.rb34.network.Receiver;
+import com.rb34.network.Sender;
 
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
-import network.Receiver;
-import network.Sender;
 
 public class Client extends Thread
 {
@@ -49,11 +50,16 @@ public class Client extends Thread
 
 		try
 		{
+			inputStream.close();
+			outputStream.close();
 			receiver.join();
 			sender.join();
 		} catch (InterruptedException e)
 		{
 			e.printStackTrace();
+		} catch (IOException e2)
+		{
+			e2.printStackTrace();
 		}
 
 	}
