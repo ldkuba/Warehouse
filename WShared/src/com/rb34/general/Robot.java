@@ -3,6 +3,7 @@ package com.rb34.general;
 import java.util.ArrayList;
 
 import com.rb34.general.interfaces.IRobot;
+import com.rb34.jobInput.Item;
 import com.rb34.jobInput.interfaces.IItem;
 
 public class Robot implements IRobot {
@@ -14,7 +15,7 @@ public class Robot implements IRobot {
 	private int robotID;
 	private boolean onJob;
 	private boolean onRoute;
-	private ArrayList <IItem> itemList;	
+	private ArrayList <Item> itemList;	
 	
 	public Robot(){
 		this.robotID = 0;
@@ -100,12 +101,12 @@ public class Robot implements IRobot {
 	}
 
 	@Override
-	public ArrayList<IItem> getItemsToPick() {
+	public ArrayList<Item> getItemsToPick() {
 		return itemList;
 	}
 
 	@Override
-	public void setItemsToPick(ArrayList<IItem> itemsToPick) {
+	public void setItemsToPick(ArrayList<Item> itemsToPick) {
 		this.itemList = itemsToPick;
 	}
 

@@ -2,6 +2,7 @@ package com.rb34.general.interfaces;
 
 import java.util.ArrayList;
 
+import com.rb34.jobInput.Item;
 import com.rb34.jobInput.interfaces.IItem;
 
 public interface IRobot {
@@ -31,6 +32,6 @@ public interface IRobot {
 	int getXDropLoc();
 	int getYDropLoc();
 	
-	ArrayList <IItem> getItemsToPick();
-	void setItemsToPick(ArrayList<IItem> itemsToPick);
+	ArrayList <Item> getItemsToPick();
+	void setItemsToPick(ArrayList<Item> itemsToPick);
 }
