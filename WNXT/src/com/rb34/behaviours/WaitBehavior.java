@@ -12,15 +12,18 @@ import lejos.robotics.subsumption.Behavior;
 
 import com.rb34.behaviours.PathChoices;
 import com.rb34.behaviours.TurnBehavior;
+import com.rb34.robot_interface.RobotScreen;
 
 public class WaitBehavior implements Behavior {
 	private DifferentialPilot pilot;
 	private TurnBehavior behavior;
+	private RobotScreen screen;
 	private boolean supressed;
 	private int counter;
 
-	public WaitBehavior(TurnBehavior _behavior) {
+	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen) {
 		this.behavior = _behavior;
+		this.screen = _screen;
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 
 		pilot.setTravelSpeed(125.0);
@@ -45,7 +48,7 @@ public class WaitBehavior implements Behavior {
 			counter += 1;
 		}
 
-		//printState();
+		screen.printState("Waiting");
 		
 		if (Button.ESCAPE.isDown()) { // make sure that robot will stop program
 										// if escape button is pressed.

@@ -6,6 +6,7 @@ import com.rb34.behaviours.DistanceKeeping;
 import com.rb34.behaviours.LineFollowing;
 import com.rb34.behaviours.PathChoices;
 import com.rb34.behaviours.TurnBehavior;
+import com.rb34.robot_interface.RobotScreen;
 
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
@@ -24,6 +25,7 @@ public class AvoidingObs {
 	private LineFollowing followLine;
 	private TurnBehavior turnBehavior;
 	private DistanceKeeping keepDistance;
+	private RobotScreen screen;
 
 	private ArrayList<PathChoices> path1;
 
@@ -44,9 +46,9 @@ public class AvoidingObs {
 		int whiteInitL = lightSensorL.getLightValue();
 		int whiteInitR = lightSensorR.getLightValue();
 
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR);
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen);
 		turnBehavior.setPath(path1);
-		followLine = new LineFollowing(lightSensorL, lightSensorR, turnBehavior);
+		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
 		keepDistance = new DistanceKeeping(MAX_DISTANCE, irSensor);
 
 		Behavior[] behaviors = { followLine, turnBehavior, keepDistance };
