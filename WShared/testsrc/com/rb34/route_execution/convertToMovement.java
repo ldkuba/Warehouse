@@ -19,6 +19,7 @@ public class convertToMovement {
 		
 		ArrayList<String> movement = new ArrayList<String>();
 		String[] startPoint = vertices.get(0).getLabel().getName().split("\\|");
+		log4j.trace("Starting Point of Robot: " + startPoint);
 		int prevX = Integer.valueOf(startPoint[0]);
 		int prevY = Integer.valueOf(startPoint[1]);
 		
@@ -106,8 +107,8 @@ public class convertToMovement {
 			prevY = Y;	
 		}
 		
-		log4j.info("Current Position: " + "(" + prevX + "," + prevY + ")" );
-		log4j.info("Current Heading: " + Heading.getHeading());		
+		log4j.trace("Current Position: " + "(" + prevX + "," + prevY + ")" );
+		log4j.trace("Current Heading: " + Heading.getHeading());
 		return movement;
 	}
 	
