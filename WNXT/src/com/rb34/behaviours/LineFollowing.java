@@ -7,6 +7,7 @@ import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
+import com.rb34.robot_interface.RobotScreen;
 
 public class LineFollowing implements Behavior 
 {	
@@ -15,15 +16,14 @@ public class LineFollowing implements Behavior
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
 	private DifferentialPilot pilot;
-	private TurnBehavior turnBehavior;
+	private RobotScreen screen;
 	int reading;
 	int readingL;
 	int whiteInitL;
 	int whiteInitR;
 	
-	public LineFollowing(LightSensor left, LightSensor right, TurnBehavior turnBehavior) 
-	{
-		this.turnBehavior = turnBehavior;
+	public LineFollowing(LightSensor left, LightSensor right, RobotScreen _screen) {
+		this.screen = _screen;
 		
 		lightSensorR = right;
 		lightSensorL = left;
@@ -96,6 +96,7 @@ public class LineFollowing implements Behavior
 		while (!supressed) {
 			
 			pilot.forward();
+			screen.printState("Moving foward");
 
 			checkLeft();
 			//System.out.println("Left Initial: " +whiteInitL);

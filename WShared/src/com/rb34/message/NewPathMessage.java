@@ -2,26 +2,27 @@ package com.rb34.message;
 
 import java.util.ArrayList;
 
+import com.rb34.general.PathChoices;
 import com.rb34.util.ArrayUtils;
 
 public class NewPathMessage
 {
 	private final byte type = 1;
 	
-	String[] commands;
+	PathChoices[] commands;
 	
 	public NewPathMessage()
 	{	
 	}
 	
-	public void setCommands(ArrayList<String> commandsList)
+	public void setCommands(ArrayList<PathChoices> commandsList)
 	{
-		commands = (String[]) commandsList.toArray();		
+		commands = (PathChoices[]) commandsList.toArray();		
 	}
 	
-	public ArrayList<String> getCommands()
+	public ArrayList<PathChoices> getCommands()
 	{
-		ArrayList<String> commandsList = new ArrayList<String>();
+		ArrayList<PathChoices> commandsList = new ArrayList<PathChoices>();
 		
 		for(int i = 0; i < commands.length; i++)
 		{
@@ -33,11 +34,7 @@ public class NewPathMessage
 	
 	public byte[] toByteArray()
 	{
-		int lengthInBytes = 4;
-		for(int i = 0; i < commands.length; i++)
-		{
-			lengthInBytes += (4 + 2*commands[i].length());
-		}
+		int lengthInBytes = 4 + 4*commands.length;
 
 		// GENERAL MESSAGE PARAMS
 		byte[] output = { type };
@@ -47,8 +44,7 @@ public class NewPathMessage
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(commands.length));
 		for(int i = 0; i < commands.length; i++)
 		{
-			output = ArrayUtils.concat(output, ArrayUtils.intToBytes(commands[i].length()*2));
-			output = ArrayUtils.concat(output, ArrayUtils.stringToBytes(commands[i]));
+			output = ArrayUtils.concat(output, ArrayUtils.intToBytes(commands[i].ordinal()));
 		}
 		
 		return output;
@@ -62,14 +58,12 @@ public class NewPathMessage
 		//COMMANDS
 		int commandsLength = ArrayUtils.bytesToInt(bytes, index);
 		index += 4;
-		ArrayList<String> commands = new ArrayList<String>();
+		ArrayList<PathChoices> commands = new ArrayList<PathChoices>();
 		
 		for(int i = 0; i < commandsLength; i++)
 		{
-			int commandLength = ArrayUtils.bytesToInt(bytes, index);
+			commands.add(PathChoices.values()[ArrayUtils.bytesToInt(bytes, index)]);
 			index += 4;
-			byte[] commandBytes = ArrayUtils.subArray(bytes, index, index + commandLength);
-			commands.add(ArrayUtils.bytesToString(commandBytes));
 		}
 		
 		msg.setCommands(commands);
