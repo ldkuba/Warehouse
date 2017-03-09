@@ -14,10 +14,9 @@ import com.rb34.jobInput.Job;
 public class jobListTest {
 
 	
-	private ArrayList<Job> jobList = Reader.createJobList();
-	@Test
+	//@Test
 	public void JobIDChecks() {
-
+		ArrayList<Job> jobList = Reader.createJobList();
 		// assert statements
 		assertEquals("JobID should be 10001", "10001", jobList.get(1)
 				.getJobId());
@@ -31,9 +30,9 @@ public class jobListTest {
 				.getJobId());
 	}
 
-	@Test
+	//@Test
 	public void numOrder() {
-
+		ArrayList<Job> jobList = Reader.createJobList();
 		// assert statements
 		assertEquals("Number of Orders should be 2 ", 2, jobList.get(0)
 				.getOrderList().size());
@@ -46,17 +45,18 @@ public class jobListTest {
 
 	}
 
-	@Test
+	//@Test
 	public void sizeOfJobList() {
-
+		ArrayList<Job> jobList = Reader.createJobList();
 		// assert statements
 		assertEquals("Number of jobs in list should be 20000", 20000,
 				jobList.size());
 	}
 
 	//Not set as a test on purpose
-	//@Test
+	@Test
 	public void printJobList() {
+		ArrayList<Job> jobList = Reader.createSampleJobList();
 		for (int i = 0; i <= jobList.size() - 1; i++) {
 			System.out.println("Job ID: " + jobList.get(i).getJobId());
 			System.out.println("Cancellation: " + jobList.get(i).getCancelled());
