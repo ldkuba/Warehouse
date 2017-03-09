@@ -1,4 +1,4 @@
-package com.rb32.behaviours;
+package com.rb34.behaviours;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;

@@ -1,12 +1,9 @@
 package com.rb34.route_planning;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
-
-import com.rb34.route_planning.graph_entities.Heuristic;
-
-import rp.robotics.mapping.MapUtils;
 
 public class GraphTest {
 	@Test
