@@ -11,6 +11,8 @@ import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.function.BiFunction;
 
+import org.apache.log4j.Logger;
+
 import com.rb34.route_execution.Execute;
 import com.rb34.route_planning.graph_entities.Heuristic;
 import com.rb34.route_planning.graph_entities.IEdge;
@@ -22,11 +24,14 @@ import rp.robotics.mapping.GridMap;
 import rp.robotics.mapping.MapUtils;
 
 public class Graph implements IGraph {
+	final static Logger logger = Logger.getLogger(Graph.class);
+	
 	Map<String, IVertex> vertices;
 	GridMap gridMap;
 
 	// Constructor with GridMap parameter
 	public Graph() {
+		logger.debug("Started route planning");
 		vertices = new HashMap<>();
 		
 		// should get the real map here instead of this "real warehouse"
@@ -49,11 +54,17 @@ public class Graph implements IGraph {
 					addEdge(sourceVertex.getLabel().getName(), targetVertex.getLabel().getName(), 1f);
 
 			}
-
+		logger.debug("Generated graph from map");
 	}
 	
 	public void executeRoute(String startVertexId, String endVertexId) {
 		ArrayList<IVertex> path = aStar(startVertexId, endVertexId).getPath().get();
+		
+		String logMessage = "";
+		for (IVertex vertex : path) {
+			logMessage += vertex.getLabel().getName() + " ";
+		}
+		logger.debug("The generated path is: " + logMessage);
 		Execute execute = new Execute();
 		execute.runRoute(path);
 	}
@@ -94,8 +105,10 @@ public class Graph implements IGraph {
 	public Result aStar(String startVertexId, String endVertexId) {
 		Result result = new Result();
 		
-		if (getVertex(startVertexId) == null || getVertex(endVertexId) == null)
+		if (getVertex(startVertexId) == null || getVertex(endVertexId) == null) {
+			logger.debug("Invalid coordinates");
 			return null;
+		}
 
 		BiFunction<IVertex, IVertex, Float> heuristic = new Heuristic();
 		Comparator<IVertex> comparator = new Comparator<IVertex>() {
@@ -127,6 +140,7 @@ public class Graph implements IGraph {
 				result.setVisitedVertices(closedList);
 				result.setPath(path);
 				result.setPathCost(pathCost);
+				logger.debug("Found path");
 				break;
 			}
 			for (IEdge edge : currentVertex.getSuccessors()) {

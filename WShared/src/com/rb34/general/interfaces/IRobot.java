@@ -1,6 +1,10 @@
 package com.rb34.general.interfaces;
 
 import com.rb34.jobInput.Job;
+import java.util.ArrayList;
+
+import com.rb34.jobInput.Item;
+import com.rb34.jobInput.interfaces.IItem;
 
 public interface IRobot {
 	//Sets the status of the robot(Idle, Running, Stuck...)
@@ -24,4 +28,13 @@ public interface IRobot {
 
 	void setCurrentJob(Job job);
 	Job getCurrentJob();
+
+	void setXDropLoc(int xDropLoc);
+	void setYDropLoc(int yDropLoc);
+	
+	int getXDropLoc();
+	int getYDropLoc();
+	
+	ArrayList <Item> getItemsToPick();
+	void setItemsToPick(ArrayList<Item> itemsToPick);
 }

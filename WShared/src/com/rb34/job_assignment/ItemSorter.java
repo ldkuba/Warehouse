@@ -12,7 +12,7 @@ import com.rb34.jobInput.interfaces.IOrder;
 
 public class ItemSorter {
 	final static Logger logger = Logger.getLogger(ItemSorter.class);
-	
+
 	ArrayList<Item> items;
 	private int robotX;
 	private int robotY;
@@ -20,7 +20,7 @@ public class ItemSorter {
 	private int dropY;
 
 	public ItemSorter(Job job, int rX, int rY, int dX, int dY) {
-		logger.trace("Started ItemSorter");
+		logger.debug("Started ItemSorter");
 		items = new ArrayList<>();
 		for (IOrder order : job.getOrderList().values()) {
 			items.add((Item) order.getItem());
@@ -36,7 +36,7 @@ public class ItemSorter {
 		ArrayList<Integer> indexes = new ArrayList<>();
 
 		int numberOfItems = items.size();
-		logger.trace("Received a job that has " + numberOfItems + " items");
+		logger.debug("Received a job that has " + numberOfItems + " items");
 		int[][] distances = new int[numberOfItems + 2][numberOfItems];
 
 		for (int i = 0; i < numberOfItems; i++) {
@@ -55,7 +55,7 @@ public class ItemSorter {
 
 		ArrayList<ArrayList<Integer>> permutations = new ArrayList<>();
 		permute(indexes, 0, permutations);
-		logger.trace("Generated all possible permutations of items");
+		logger.debug("Generated all possible permutations of items");
 
 		ArrayList<Integer> bestPermutation = null;
 		int shortestDistance = Integer.MAX_VALUE;
@@ -74,11 +74,14 @@ public class ItemSorter {
 				bestPermutation = new ArrayList<>(permutation);
 			}
 		}
-
+		
+		logger.debug("Selected best permutation");
+		String logMessage = "The item order is: ";
 		for (int index : bestPermutation) {
 			sortedItems.add(items.get(index));
+			logMessage += items.get(index).getItemID() + " ";
 		}
-		logger.trace("Selected the best permutation");
+		logger.debug(logMessage);
 		return sortedItems;
 	}
 
