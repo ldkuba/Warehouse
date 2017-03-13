@@ -2,27 +2,27 @@ package com.rb34.route_execution;
 
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.rb34.general.PathChoices;
 import com.rb34.message.NewPathMessage;
-import com.rb34.network.Master;
 import com.rb34.route_planning.graph_entities.IVertex;
 
 public class Execute {
 
 	private ArrayList<PathChoices> robotInstructions;
 	private ArrayList<IVertex> vertexPath;
-	private Master master;
+//	private Master master;
 
 	private static final Logger log4j = LogManager.getLogger(Execute.class.getName());
 	
+	/*
 	public Execute(Master master) {
-		this.master = master;
+	//	this.master = master;
 	}
 	
-	
+	*/
 	
 	public void runRoute(ArrayList<IVertex> path, int robotId) {
 		 vertexPath = path;
@@ -32,7 +32,7 @@ public class Execute {
 			throw new IllegalArgumentException("Path is empty");
 		 } 
 		 
-		convertToMovement converter = new convertToMovement();
+		ConvertToMovement converter = new ConvertToMovement();
 		log4j.trace("Initialised Movement Converting Object");
 		
 		String choosenPath = "";
@@ -50,7 +50,7 @@ public class Execute {
 		int robotID = robotId;
 		NewPathMessage msg = new NewPathMessage();
 		msg.setCommands(robotInstructions);
-		master.send(msg, robotID);
+	//	master.send(msg, robotID);
 	}
 
 }

@@ -3,23 +3,22 @@ package com.rb34.route_execution;
 
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.*;
 
 import com.rb34.general.PathChoices;
 import com.rb34.route_planning.graph_entities.IVertex;
 
 
-public class convertToMovement {
+public class ConvertToMovement {
 		
-	private static final Logger log4j = LogManager.getLogger(convertToMovement.class.getName());
+	final static Logger logger = Logger.getLogger(ConvertToMovement.class);
 	
 	public ArrayList<PathChoices> execute(ArrayList<IVertex> path) {
 		
 		ArrayList<IVertex> vertices = path;
 		ArrayList<PathChoices> movement = new ArrayList<PathChoices>();
 		String[] startPoint = vertices.get(0).getLabel().getName().split("\\|");
-		log4j.trace("Starting Point of Robot: " + startPoint);
+		logger.trace("Starting Point of Robot: " + startPoint);
 		int prevX = Integer.valueOf(startPoint[0]);
 		int prevY = Integer.valueOf(startPoint[1]);
 		
@@ -30,84 +29,84 @@ public class convertToMovement {
 			int X = Integer.valueOf(coords[0]);
 			int Y = Integer.valueOf(coords[1]);
 			
-			if(Heading.getHeading().equals("N")) {
+			if(Robot1Heading.getHeading() ==  Headings.PLUS_Y) {
 				if(X == prevX) {
 					if( Y > prevY) {
 						movement.add(PathChoices.FORWARD);
-						Heading.setHeading("N");
+						Robot1Heading.setHeading(Headings.PLUS_Y);
 					} else if(Y < prevY) {
 						movement.add(PathChoices.ROTATE);
-						Heading.setHeading("S");
+						Robot1Heading.setHeading(Headings.MINUS_Y);
 					}	
 				} else if (Y == prevY) {
 					if(X > prevX) {
 						movement.add(PathChoices.RIGHT);
-						Heading.setHeading("E");
+						Robot1Heading.setHeading(Headings.PLUS_X);
 					} else if(X < prevX) {
 						movement.add(PathChoices.LEFT);
-						Heading.setHeading("W");
+						Robot1Heading.setHeading(Headings.MINUS_X);
 					}
 				}		
-			} else if(Heading.getHeading().equals("E")) {
+			} else if(Robot1Heading.getHeading() == Headings.PLUS_X) {
 				if(X == prevX){
 					if(Y > prevY) {
 						movement.add(PathChoices.LEFT);
-						Heading.setHeading("N");
+						Robot1Heading.setHeading(Headings.PLUS_Y);
 					} else if(Y < prevY) {
 						movement.add(PathChoices.RIGHT);
-						Heading.setHeading("S");
+						Robot1Heading.setHeading(Headings.MINUS_Y);
 					}	
 				} else if(Y == prevY) {
 					if(X > prevX) {
 						movement.add(PathChoices.FORWARD);
-						Heading.setHeading("E");
+						Robot1Heading.setHeading(Headings.PLUS_X);
 					} else if(X < prevX) {
 						movement.add(PathChoices.ROTATE);					
-						Heading.setHeading("W");
+						Robot1Heading.setHeading(Headings.MINUS_X);
 					}
 				}		
-			} else if(Heading.getHeading().equals("S")) {
+			} else if(Robot1Heading.getHeading() == Headings.MINUS_Y) {
 				if(X == prevX) {
 					if(Y > prevY) {
 						movement.add(PathChoices.ROTATE);
-						Heading.setHeading("N");	
+						Robot1Heading.setHeading(Headings.PLUS_Y);	
 					} else if(Y < prevY){
 						movement.add(PathChoices.FORWARD);
-						Heading.setHeading("S");
+						Robot1Heading.setHeading(Headings.MINUS_Y);
 					} 
 				} else if(Y == prevY) {
 					if(X > prevX) {
 						movement.add(PathChoices.LEFT);
-						Heading.setHeading("E");
+						Robot1Heading.setHeading(Headings.PLUS_X);
 					} else if(X < prevX) {
 						movement.add(PathChoices.RIGHT);
-						Heading.setHeading("W");
+						Robot1Heading.setHeading(Headings.MINUS_X);
 					}
 				}	
-			} else if(Heading.getHeading().equals("W")) {
+			} else if(Robot1Heading.getHeading() == Headings.MINUS_X) {
 				if(X == prevX) {	
 					if(Y > prevY) {
 						movement.add(PathChoices.RIGHT);
-						Heading.setHeading("N");
+						Robot1Heading.setHeading(Headings.PLUS_Y);
 					} else if(Y < prevY) {
 						movement.add(PathChoices.LEFT);
-						Heading.setHeading("S");
+						Robot1Heading.setHeading(Headings.MINUS_Y);
 					}
 				} else if(Y == prevY) {
 						if(X > prevX) {
 							movement.add(PathChoices.ROTATE);
-							Heading.setHeading("E");
+							Robot1Heading.setHeading(Headings.PLUS_X);
 						} else if(X < prevX) {
 							movement.add(PathChoices.FORWARD);
-							Heading.setHeading("W");
+							Robot1Heading.setHeading(Headings.MINUS_X);
 						}
 				}		
 			}
 			prevX = X;
 			prevY = Y;
 			
-			log4j.trace("Current Position: " + "(" + prevX + "," + prevY + ")" );
-			log4j.trace("Current Heading: " + Heading.getHeading());
+			logger.trace("Current Position: " + "(" + prevX + "," + prevY + ")" );
+			logger.trace("Current Heading: " + Robot1Heading.getHeading());
 		}
 		
 		
