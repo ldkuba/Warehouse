@@ -28,7 +28,7 @@ public class Master extends Thread
 
 		try
 		{
-			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "AntMar", "0016530A61AF"));
+			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "NiXTy", "001653157A48"));
 			connections.add(connection1);
 			connection1.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
 

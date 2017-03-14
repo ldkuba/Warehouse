@@ -22,18 +22,14 @@ public class DummyMainNXT
 			@Override
 			public void recievedNewPathMessage(NewPathMessage msg)
 			{
-				
+				System.out.println(msg.getCommands().size());
 			}
 		});
 		
 		TestMessage msg1 = new TestMessage();
-		msg1.setText("HELLO M");
+		msg1.setText("HELLO MASTER");
+		client.send(msg1);
 		
-		for(int i = 0; i < 1; i++)
-		{
-			client.send(msg1);
-		}
-
 		try
 		{
 			client.join();

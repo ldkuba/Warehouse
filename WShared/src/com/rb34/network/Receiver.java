@@ -32,10 +32,7 @@ public class Receiver extends Thread
 		{
 			try
 			{
-				int type = inputStream.read();		
-
-				if(type != -1)
-					System.out.println("RECEIVED MESSAGE OF TYPE: " + type);
+				int type = inputStream.read();	
 				
 				if (type == 0)
 				{
@@ -49,7 +46,7 @@ public class Receiver extends Thread
 					byte[] bytes = new byte[length];
 
 					inputStream.read(bytes);
-
+					
 					TestMessage msg = TestMessage.fromByteArray(bytes);
 
 					for (int i = 0; i < listeners.size(); i++)
@@ -58,7 +55,7 @@ public class Receiver extends Thread
 					}
 				} else
 				{
-
+					
 				}
 
 			} catch (IOException e)
