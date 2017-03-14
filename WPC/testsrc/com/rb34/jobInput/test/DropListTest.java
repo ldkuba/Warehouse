@@ -10,10 +10,11 @@ import org.junit.Test;
 
 public class DropListTest {
 	
+	public Reader reader = new Reader();
 	@Test
 	public void DropTest(){
 		System.out.println("----------Drop Location Test ----------");
-		ArrayList<Drop> dropList = Reader.createDropList();
+		ArrayList<Drop> dropList = reader.createDropList();
 		for(int i = 0; i <= dropList.size() - 1; i++){
 			System.out.print("X:" + dropList.get(i).getX());
 			System.out.println(" Y:" + dropList.get(i).getY());
@@ -22,7 +23,7 @@ public class DropListTest {
 	}
 	@Test
 	public void sizeOfDropList() {
-		ArrayList<Drop> dropList = Reader.createDropList();
+		ArrayList<Drop> dropList = reader.createDropList();
 		assertEquals("Number of jobs in list should be 2", 2, dropList.size());
 
 	}
