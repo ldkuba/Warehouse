@@ -9,6 +9,7 @@ import org.apache.log4j.*;
 import com.rb34.jobInput.Item;
 import com.rb34.jobInput.Job;
 import com.rb34.jobInput.interfaces.IOrder;
+import com.rb34.route_planning.Graph;
 
 public class ItemSorter {
 	final static Logger logger = Logger.getLogger(ItemSorter.class);
@@ -34,25 +35,26 @@ public class ItemSorter {
 	public ArrayList<Item> getSortedItems() {
 		ArrayList<Item> sortedItems = new ArrayList<>();
 		ArrayList<Integer> indexes = new ArrayList<>();
+		Graph graph = new Graph();
 
 		int numberOfItems = items.size();
 		logger.debug("Received a job that has " + numberOfItems + " items");
 		int[][] distances = new int[numberOfItems + 2][numberOfItems];
 
 		for (int i = 0; i < numberOfItems; i++) {
+			distances[numberOfItems][i] = graph
+					.aStar(robotX + "|" + robotY, items.get(i).getX() + "|" + items.get(i).getY()).getPathCost().get();
+			distances[numberOfItems + 1][i] = graph
+					.aStar(dropX + "|" + dropY, items.get(i).getX() + "|" + items.get(i).getY()).getPathCost().get();
 			indexes.add(i);
-			distances[numberOfItems][i] = Math.abs(robotX - items.get(i).getX())
-					+ Math.abs(robotY - items.get(i).getY());
-			distances[numberOfItems + 1][i] = Math.abs(dropX - items.get(i).getX())
-					+ Math.abs(dropY - items.get(i).getY());
 			distances[i][i] = 0;
 			for (int j = i + 1; j < numberOfItems; j++) {
-				distances[i][j] = Math.abs(items.get(i).getX() - items.get(j).getX())
-						+ Math.abs(items.get(i).getY() - items.get(j).getY());
+				distances[i][j] = graph.aStar(items.get(j).getX() + "|" + items.get(j).getY(),
+						items.get(i).getX() + "|" + items.get(i).getY()).getPathCost().get();
 				distances[j][i] = distances[i][j];
 			}
 		}
-
+		
 		ArrayList<ArrayList<Integer>> permutations = new ArrayList<>();
 		permute(indexes, 0, permutations);
 		logger.debug("Generated all possible permutations of items");
@@ -74,7 +76,7 @@ public class ItemSorter {
 				bestPermutation = new ArrayList<>(permutation);
 			}
 		}
-		
+
 		logger.debug("Selected best permutation");
 		String logMessage = "The item order is: ";
 		for (int index : bestPermutation) {
