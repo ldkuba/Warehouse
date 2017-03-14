@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.rb34.general.PathChoices;
 import com.rb34.util.ArrayUtils;
 
-public class NewPathMessage
+public class NewPathMessage implements Message
 {
 	private final byte type = 1;
 	

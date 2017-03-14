@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.rb34.connection.BluetoothConnection;
 import com.rb34.connection.Connection;
+import com.rb34.message.Message;
 import com.rb34.message.MessageListener;
-import com.rb34.message.TestMessage;
 
 import lejos.pc.comm.NXTCommException;
 import lejos.pc.comm.NXTCommFactory;
@@ -22,7 +22,7 @@ public class Master extends Thread
 
 	}
 
-/*	public void run()
+	public void run()
 	{
 		connections = new ArrayList<Connection>();
 
@@ -95,9 +95,9 @@ public class Master extends Thread
 		{
 			connection.addListener(listener);
 		}
-	}*/
+	}
 
-	public void send(TestMessage msg, int robotId)
+	public void send(Message msg, int robotId)
 	{
 		if(connections.size() > robotId)
 		{

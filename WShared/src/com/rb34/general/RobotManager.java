@@ -2,13 +2,12 @@ package com.rb34.general;
 
 import java.util.ArrayList;
 
-import com.rb34.general.interfaces.IRobot;
 import com.rb34.general.interfaces.IRobotManager;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
 import com.rb34.message.TestMessage;
 
-public class RobotManager implements IRobotManager {
+public class RobotManager implements IRobotManager, MessageListener{
 
 	private ArrayList <Robot> robotList;
 	
@@ -29,6 +28,18 @@ public class RobotManager implements IRobotManager {
 	@Override
 	public ArrayList<Robot> getRobots() {
 		return robotList;
+	}
+
+	@Override
+	public void receivedTestMessage(TestMessage msg)
+	{
+		
+	}
+
+	@Override
+	public void recievedNewPathMessage(NewPathMessage msg)
+	{
+		
 	}
 
 }
