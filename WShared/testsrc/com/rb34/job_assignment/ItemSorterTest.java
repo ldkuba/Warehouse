@@ -22,7 +22,7 @@ public class ItemSorterTest {
 
 		Item p2 = new Item("p2", 1f, 1f);
 		p2.setX(5);
-		p2.setX(6);
+		p2.setY(6);
 
 		Item p3 = new Item("p3", 1f, 1f);
 		p3.setX(0);
