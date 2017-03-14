@@ -1,20 +1,18 @@
-package com.rb32.main;
+package com.rb34.main;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-import com.rb32.behaviours.LineFollowing;
-import com.rb32.behaviours.TurnBehavior;
-import com.rb32.behaviours.DistanceKeeping;
+import com.rb34.behaviours.DistanceKeeping;
+import com.rb34.behaviours.LineFollowing;
+import com.rb34.behaviours.TurnBehavior;
+import com.rb34.general.PathChoices;
+import com.rb34.robot_interface.RobotScreen;
 
-import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
+import lejos.nxt.addon.OpticalDistanceSensor;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
-import lejos.util.Delay;
-import com.rb32.behaviours.PathChoices;
-import lejos.nxt.addon.OpticalDistanceSensor;
 
 public class AvoidingObs {
 	private Arbitrator arbitrator;
@@ -27,6 +25,7 @@ public class AvoidingObs {
 	private LineFollowing followLine;
 	private TurnBehavior turnBehavior;
 	private DistanceKeeping keepDistance;
+	private RobotScreen screen;
 
 	private ArrayList<PathChoices> path1;
 
@@ -47,8 +46,9 @@ public class AvoidingObs {
 		int whiteInitL = lightSensorL.getLightValue();
 		int whiteInitR = lightSensorR.getLightValue();
 
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, path1);
-		followLine = new LineFollowing(lightSensorL, lightSensorR, turnBehavior);
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen);
+		turnBehavior.setPath(path1);
+		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
 		keepDistance = new DistanceKeeping(MAX_DISTANCE, irSensor);
 
 		Behavior[] behaviors = { followLine, turnBehavior, keepDistance };

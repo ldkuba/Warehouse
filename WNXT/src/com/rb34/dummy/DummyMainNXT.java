@@ -1,6 +1,7 @@
 package com.rb34.dummy;
 
 import com.rb34.message.MessageListener;
+import com.rb34.message.NewPathMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.network.Client;
 
@@ -17,11 +18,21 @@ public class DummyMainNXT
 			{
 				System.out.println(msg.getText());
 			}
-		});
 
-		TestMessage msg = new TestMessage();
-		msg.setText("HELLO MASTER");
-		client.send(msg);
+			@Override
+			public void recievedNewPathMessage(NewPathMessage msg)
+			{
+				
+			}
+		});
+		
+		TestMessage msg1 = new TestMessage();
+		msg1.setText("HELLO M");
+		
+		for(int i = 0; i < 1; i++)
+		{
+			client.send(msg1);
+		}
 
 		try
 		{

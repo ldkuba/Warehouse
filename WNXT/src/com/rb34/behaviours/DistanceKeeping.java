@@ -1,4 +1,4 @@
-package com.rb32.behaviours;
+package com.rb34.behaviours;
 
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
@@ -54,7 +54,7 @@ public class DistanceKeeping implements Behavior {
 		// constants' calculations as well as the loop.
 		double kv = 15;
 		double kp = (kv * 0.6); // The value of kp ki and kd were found using
-		// the ZieglerÐNichols tuning method.
+		// the Zieglerï¿½Nichols tuning method.
 		double ki = (1.2 * (kv / delay));
 		double kd = (0.6 * ((kv * delay) / 8));
 		double error = 0;

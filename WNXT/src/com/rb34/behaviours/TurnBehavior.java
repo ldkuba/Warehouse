@@ -1,22 +1,25 @@
-package com.rb32.behaviours;
+package com.rb34.behaviours;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import lejos.nxt.Button;
-import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
-import com.rb32.behaviours.PathChoices;
+
+import com.rb34.general.PathChoices;
+import com.rb34.robot_interface.RobotScreen;
 
 public class TurnBehavior implements Behavior {
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
 	private DifferentialPilot pilot;
+	private RobotScreen screen;
 	private int turnDirection;
 	private boolean supressed;
+	private final int THRESHOLD = 40;
+	// final static Logger logger = Logger.getLogger(TurnBehavior.class);
 
 	private ArrayList<PathChoices> path;
 	private boolean actionDone;
@@ -25,33 +28,30 @@ public class TurnBehavior implements Behavior {
 	int whiteInitR;
 	int whiteInitL;
 
-	public TurnBehavior(LightSensor left, LightSensor right, ArrayList<PathChoices> path) {
+	public TurnBehavior(LightSensor left, LightSensor right, RobotScreen _screen) {
 		lightSensorR = right;
 		lightSensorL = left;
+		this.screen = _screen;
 
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 
 		pilot.setTravelSpeed(150);
-		//pilot.setRotateSpeed(150.0);
+	}
 
+	public void setPath(ArrayList<PathChoices> path) {
 		this.path = path;
 	}
 
-	public void calibrate(int readingR, int readingL) {
-		this.readingR = readingR;
-		this.readingL = readingL;
-	}
-	
 	public boolean rightOnBlack() {
-		if (lightSensorR.getLightValue() <= 40) {
+		if (lightSensorR.getLightValue() <= THRESHOLD) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	public boolean leftOnBlack() {
-		if (lightSensorL.getLightValue() <= 40) {
+		if (lightSensorL.getLightValue() <= THRESHOLD) {
 			return true;
 		} else {
 			return false;
@@ -75,27 +75,33 @@ public class TurnBehavior implements Behavior {
 		readingL = lightSensorL.getLightValue();
 		readingR = lightSensorR.getLightValue();
 
-
 		if (path != null) {
-			if (!path.isEmpty()) {
+			if (path.isEmpty()) {
+				actionDone = true;
+			} else if (!path.isEmpty()) {
 				turnDirection = path.get(0).ordinal();
 				path.remove(0);
 				actionDone = false;
 			}
 		}
 
-		if (turnDirection == 0) { // change to switch
+		switch (turnDirection) {
+		case 0:
 			pilot.arc(80.5, 90, true);
-			System.out.println("Action 0");
-		} else if (turnDirection == 1) {
+			screen.printState("Left");
+			break;
+		case 1:
 			pilot.arc(-80.5, -90, true);
-			System.out.println("Action 1");
-		} else if (turnDirection == 2) {
+			screen.printState("Right");
+			break;
+		case 2:
 			pilot.travel(75.0, true);
-			System.out.println("Action 2");
-		} else if (turnDirection == 3) {
+			screen.printState("Forward");
+			break;
+		case 3:
 			pilot.rotate(180, true);
-			System.out.println("Action 3");
+			screen.printState("Rotate");
+			break;
 		}
 
 		while (!supressed && pilot.isMoving()) {
