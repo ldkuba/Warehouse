@@ -16,7 +16,7 @@ public class Result {
 	private Optional<ArrayList<IVertex>> visitedVertices = Optional.empty();
 
 	// The total path cost in a found path, if a path has been found:
-	private Optional<Float> pathCost = Optional.empty();
+	private Optional<Integer> pathCost = Optional.empty();
 
 	public void setPath(ArrayList<IVertex> path) {
 		this.path = Optional.of(path);
@@ -34,11 +34,11 @@ public class Result {
 		return this.visitedVertices;
 	}
 
-	public void setPathCost(Float pathCost) {
+	public void setPathCost(Integer pathCost) {
 		this.pathCost = Optional.of(pathCost);
 	}
 
-	public Optional<Float> getPathCost() {
+	public Optional<Integer> getPathCost() {
 		return this.pathCost;
 	}
 }

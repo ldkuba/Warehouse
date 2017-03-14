@@ -5,9 +5,9 @@ import com.rb34.route_planning.graph_entities.IVertex;
 
 public class Edge implements IEdge {
 	private IVertex target;
-	private Float cost;
+	private Integer cost;
 
-	public Edge(IVertex target, Float cost) {
+	public Edge(IVertex target, Integer cost) {
 		this.target = target;
 		this.cost = cost;
 	}
@@ -18,7 +18,7 @@ public class Edge implements IEdge {
 	}
 
 	@Override
-	public Float getCost() {
+	public Integer getCost() {
 		return cost;
 	}
 };

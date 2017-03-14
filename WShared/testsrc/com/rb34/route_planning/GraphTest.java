@@ -9,7 +9,7 @@ public class GraphTest {
 	@Test
 	public void testCost() {
 		Graph graph = new Graph();	
-		assertEquals(5f, graph.aStar("0|0", "0|5").getPathCost().get(), 0f);
+		assertEquals(3, graph.aStar("2|2", "3|4").getPathCost().get(), 0f);
 	}
 	
 	@Test

@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 public interface IGraph {
 	void addVertex(String vertexId, IVertex vertex);
 
-	void addEdge(String vertexSrcId, String vertexTgtId, Float cost);
+	void addEdge(String vertexSrcId, String vertexTgtId, Integer cost);
 
 	Collection<IVertex> getVertices();
 

@@ -18,6 +18,7 @@ import com.rb34.route_planning.graph_entities.Heuristic;
 import com.rb34.route_planning.graph_entities.IEdge;
 import com.rb34.route_planning.graph_entities.IGraph;
 import com.rb34.route_planning.graph_entities.IVertex;
+import com.rb34.route_planning.graph_entities.Label;
 import com.rb34.route_planning.graph_entities.Result;
 
 import rp.robotics.mapping.GridMap;
@@ -51,7 +52,7 @@ public class Graph implements IGraph {
 				int xTarget = targetVertex.getLabel().getX();
 				int yTarget = targetVertex.getLabel().getY();
 				if (Math.sqrt(Math.pow(xTarget - xSource, 2) + Math.pow(yTarget - ySource, 2)) == 1)
-					addEdge(sourceVertex.getLabel().getName(), targetVertex.getLabel().getName(), 1f);
+					addEdge(sourceVertex.getLabel().getName(), targetVertex.getLabel().getName(), 1);
 
 			}
 		logger.debug("Generated graph from map");
@@ -66,7 +67,7 @@ public class Graph implements IGraph {
 		}
 		logger.debug("The generated path is: " + logMessage);
 		Execute execute = new Execute();
-		//execute.runRoute(path, robotId);
+		execute.runRoute(path, robotId);
 	}
 
 	// Add vertex to graph
@@ -78,7 +79,7 @@ public class Graph implements IGraph {
 
 	// Add edge to vertex
 	@Override
-	public void addEdge(String vertexSrcId, String vertexTgtId, Float cost) {
+	public void addEdge(String vertexSrcId, String vertexTgtId, Integer cost) {
 		getVertex(vertexSrcId).addEdge(new Edge(getVertex(vertexTgtId), cost));
 	}
 
@@ -121,15 +122,16 @@ public class Graph implements IGraph {
 		ArrayList<IVertex> closedList = new ArrayList<>();
 		PriorityQueue<IVertex> openList = new PriorityQueue<>(comparator);
 		for (IVertex vertex : getVertices()) {
-			vertex.getLabel().setCost(MAX_VALUE);
+			vertex.getLabel().setParentVertex(null);
+			vertex.getLabel().setCost(Integer.MAX_VALUE);
 		}
-		getVertex(startVertexId).getLabel().setCost(0f);
+		getVertex(startVertexId).getLabel().setCost(0);
 		openList.offer(getVertex(startVertexId));
 		boolean targetInClosedList = false;
 		while (!openList.isEmpty()) {
 			IVertex currentVertex = openList.poll();
 			if (targetInClosedList) {
-				Float pathCost = getVertex(endVertexId).getLabel().getCost();
+				Integer pathCost = getVertex(endVertexId).getLabel().getCost();
 				ArrayList<IVertex> path = new ArrayList<>();
 				Optional<IVertex> currentPathVertex = Optional.of(getVertex(endVertexId));
 				while (currentPathVertex.get().getLabel().getParentVertex().isPresent()) {
@@ -148,7 +150,7 @@ public class Graph implements IGraph {
 				IVertex successor = getVertex(successorName);
 				if (closedList.contains(successor))
 					continue;
-				float tentativeCost = currentVertex.getLabel().getCost() + edge.getCost();
+				int tentativeCost = currentVertex.getLabel().getCost() + edge.getCost();
 				if (!openList.contains(successor)) {
 					successor.getLabel().setCost(tentativeCost);
 					successor.getLabel().setParentVertex(currentVertex);

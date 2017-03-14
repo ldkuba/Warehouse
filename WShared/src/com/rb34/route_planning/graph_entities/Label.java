@@ -12,7 +12,7 @@ public class Label {
 
 	// Current cost to reach the vertex that has this label. May be
 	// used in search algorithms.
-	private Float cost;
+	private Integer cost;
 
 	// The name of the vertex with this label, in particular used for
 	// the dot file.
@@ -23,16 +23,16 @@ public class Label {
 	private int y;
 
 	public Label() {
-		this.cost = 0.0F;
+		this.cost = 0;
 		this.parentVertex = Optional.empty();
 		this.name = "UNAMED";
 	}
 
-	public Float getCost() {
+	public Integer getCost() {
 		return this.cost;
 	}
 
-	public void setCost(Float cost) {
+	public void setCost(Integer cost) {
 		this.cost = cost;
 	}
 

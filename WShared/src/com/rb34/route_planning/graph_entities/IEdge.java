@@ -5,5 +5,5 @@ package com.rb34.route_planning.graph_entities;
 public interface IEdge {
 	IVertex getTgt();
 
-	Float getCost();
+	Integer getCost();
 }
