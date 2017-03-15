@@ -2,10 +2,14 @@ package com.rb34.warehouse_interface;
 
 import java.util.Random;
 
+import com.rb34.route_execution.Headings;
+import com.rb34.route_execution.Robot1Heading;
+
 import lejos.robotics.RangeFinder;
 import rp.robotics.mapping.GridMap;
 import rp.robotics.navigation.GridPilot;
 import rp.robotics.navigation.GridPose;
+import rp.robotics.navigation.Heading;
 import rp.robotics.simulation.MovableRobot;
 import rp.systems.StoppableRunnable;
 
@@ -60,16 +64,23 @@ public class SimulationController implements StoppableRunnable {
 	public void run() {
 
 		Random rand = new Random();
-
+		Heading head = null;
 		while (m_running) {
 
 			int X = WarehouseWindow.getX();
 			int Y = WarehouseWindow.getY();
 			
+			
+			
+					
+			
+			//System.out.println(X);
 			GridPose pos = m_pilot.getGridPose();
+			GridPose p1 = new GridPose(X, Y, Heading.PLUS_X);
 			
 			int currentX = pos.getX();
 			int currentY = pos.getY();
+			
 			
 			/* Implement a way to update the simulation viewer based on 
 			 real life position of robot
