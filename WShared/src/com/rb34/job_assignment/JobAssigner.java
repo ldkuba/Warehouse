@@ -33,10 +33,6 @@ public class JobAssigner {
 	}
 
 	public void assignJobs() {
-		// the reason for using dropIndex is to send the robots to different
-		// drop locations if they are available
-		int dropIndex = 0;
-
 		// run while there are jobs in the PriorityQueue
 		while (!jobs.isEmpty()) {
 
@@ -47,23 +43,14 @@ public class JobAssigner {
 					// get the first job
 					Job job = jobs.poll();
 
-					// select the drop location
-					Drop drop = dropLocations.get(dropIndex);
-					dropIndex++;
-					if (dropIndex == dropLocations.size())
-						dropIndex = 0;
-
 					// sort the items from the job so the path has the shortest
 					// distance
-					ItemSorter itemSorter = new ItemSorter(job, robot.getXLoc(), robot.getYLoc(), drop.getX(),
-							drop.getY());
+					ItemSorter itemSorter = new ItemSorter(job, robot.getXLoc(), robot.getYLoc(), dropLocations);
 					ArrayList<Item> items = itemSorter.getSortedItems();
 
 					// update the robot data
 					robot.setCurrentJob(job);
 					robot.setRobotStatus(Status.RUNNING);
-					robot.setXDropLoc(drop.getX());
-					robot.setYDropLoc(drop.getY());
 					logger.debug("Gave job " + job.getJobId() + " to robot #" + robots.indexOf(robot));
 
 					// get the first item
