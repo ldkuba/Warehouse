@@ -7,22 +7,23 @@ import org.apache.log4j.Logger;
 
 import com.rb34.general.PathChoices;
 import com.rb34.message.NewPathMessage;
+import com.rb34.network.Master;
 import com.rb34.route_planning.graph_entities.IVertex;
 
 public class Execute {
 
 	private ArrayList<PathChoices> robotInstructions;
 	private ArrayList<IVertex> vertexPath;
-//	private Master master;
+	private Master master;
 
 	private static final Logger log4j = LogManager.getLogger(Execute.class.getName());
 	
-	/*
+	
 	public Execute(Master master) {
-	//	this.master = master;
+		this.master = master;
 	}
 	
-	*/
+	
 	
 	public void runRoute(ArrayList<IVertex> path, int robotId) {
 		 vertexPath = path;
@@ -45,12 +46,11 @@ public class Execute {
 		robotInstructions = converter.execute(vertexPath);
 
 		
-		//Replace with method that sends to bluetooth
 		log4j.info("Converted Instructions" + robotInstructions);
 		int robotID = robotId;
 		NewPathMessage msg = new NewPathMessage();
 		msg.setCommands(robotInstructions);
-	//	master.send(msg, robotID);
+		master.send(msg, robotID);
 	}
 
 }
