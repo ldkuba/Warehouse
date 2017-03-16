@@ -201,4 +201,29 @@ public class TurnBehavior implements Behavior {
 			}
 		}	
 	}
+	
+	public void forceFirstCommand(int i) {
+		switch (i) {
+		case 0:
+			pilot.arc(80.5, 90, true);
+			UpdateDirectionAndCo(0);
+			screen.printState("Left");
+			break;
+		case 1:
+			pilot.arc(-80.5, -90, true);
+			UpdateDirectionAndCo(1);
+			screen.printState("Right");
+			break;
+		case 2:
+			pilot.travel(75.0, true);
+			UpdateDirectionAndCo(2);
+			screen.printState("Forward");
+			break;
+		case 3:
+			pilot.rotate(180, true);
+			UpdateDirectionAndCo(3);
+			screen.printState("Rotate");
+			break;
+		}
+	}
 }
