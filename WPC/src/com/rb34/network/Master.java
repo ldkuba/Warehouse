@@ -83,7 +83,7 @@ public class Master extends Thread
 	{
 		while(areAllConnected())
 		{
-			
+			System.out.println("ASBASFASDAFASCAVDASC");
 		}
 		
 		while(connections == null)

@@ -17,7 +17,24 @@ public class NewPathMessage implements Message
 	
 	public void setCommands(ArrayList<PathChoices> commandsList)
 	{
-		commands = (PathChoices[]) commandsList.toArray();		
+		commands = new PathChoices[commandsList.size()];
+		for (int i = 0; i < commandsList.size(); i++)
+		{
+			if(commandsList.get(i).equals(PathChoices.FORWARD))
+			{
+				commands[i] = PathChoices.FORWARD;
+			}else if(commandsList.get(i).equals(PathChoices.LEFT))
+			{
+				commands[i] = PathChoices.LEFT;
+			}else if(commandsList.get(i).equals(PathChoices.RIGHT))
+			{
+				commands[i] = PathChoices.RIGHT;
+			}else if(commandsList.get(i).equals(PathChoices.ROTATE))
+			{
+				commands[i] = PathChoices.ROTATE;
+			}
+		}
+			
 	}
 	
 	public ArrayList<PathChoices> getCommands()

@@ -2,16 +2,20 @@ package com.rb34.behaviours;
 
 import java.util.ArrayList;
 
+import com.rb34.general.PathChoices;
+import com.rb34.message.MessageListener;
+import com.rb34.message.NewPathMessage;
+import com.rb34.message.RobotStatusMessage;
+import com.rb34.message.TestMessage;
+import com.rb34.robot_interface.RobotScreen;
+
 import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
-import com.rb34.general.PathChoices;
-import com.rb34.robot_interface.RobotScreen;
-
-public class TurnBehavior implements Behavior {
+public class TurnBehavior implements Behavior, MessageListener {
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
 	private DifferentialPilot pilot;
@@ -19,7 +23,7 @@ public class TurnBehavior implements Behavior {
 	private int turnDirection;
 	private boolean supressed;
 	private final int THRESHOLD = 40;
-	private String head = "north";
+	private String head = "east";
 	private int x = 0;
 	private int y = 0;
 	// final static Logger logger = Logger.getLogger(TurnBehavior.class);
@@ -36,6 +40,9 @@ public class TurnBehavior implements Behavior {
 		lightSensorL = left;
 		this.screen = _screen;
 
+		path = new ArrayList<>();
+		path.clear();
+		
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 
 		pilot.setTravelSpeed(150);
