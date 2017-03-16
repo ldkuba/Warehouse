@@ -32,8 +32,8 @@ public class LineFollowing implements Behavior
 		
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 		
-		pilot.setTravelSpeed(100);
-		pilot.setRotateSpeed(60);
+		pilot.setTravelSpeed(80);
+		pilot.setRotateSpeed(50);
 		
 	}
 	
