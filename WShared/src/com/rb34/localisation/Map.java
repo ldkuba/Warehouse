@@ -1,13 +1,11 @@
 package localisation;
-
 import java.util.ArrayList;
 import lejos.geom.Line;
 import lejos.geom.Rectangle;
 import rp.robotics.mapping.*;
+public class Map {
 
-public interface Map {
-	
-	public static GridMap createGridMap () {
+	public GridMap createGridMap () {
 		
 		// Height, width of a map
 		float xMap = 3.70f, yMap = 2.45f;
