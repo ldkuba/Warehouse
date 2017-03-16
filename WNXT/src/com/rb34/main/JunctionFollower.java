@@ -19,6 +19,7 @@ import com.rb34.message.TestMessage;
 import com.rb34.robot_interface.RobotScreen;
 
 public class JunctionFollower implements MessageListener {
+	private boolean newPath;
 
 	private Arbitrator arbitrator;
 
@@ -34,6 +35,7 @@ public class JunctionFollower implements MessageListener {
 	private static RobotScreen screen;
 
 	public JunctionFollower(RobotScreen _screen) {
+		newPath = false;
 		this.screen = _screen;
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
@@ -57,19 +59,28 @@ public class JunctionFollower implements MessageListener {
 		while (path == null) {
 
 		}
-		
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen);
-		turnBehavior.forceFirstCommand(path.get(0).ordinal());
-		path.remove(0);
-		turnBehavior.setPath(path);
-		// turnBehavior.setPath(path1);
+
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
+		followLine.setFirstAction(path.get(0).ordinal());
+		followLine.doFirstAction();
+		path.remove(0);
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen);
+		turnBehavior.setPath(path);
 		waitBehavior = new WaitBehavior(turnBehavior, screen);
 
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
 		arbitrator = new Arbitrator(behaviors);
 
 		arbitrator.start();
+
+		while (true) {
+			if (newPath) {
+				followLine.setFirstAction(path.get(0).ordinal());
+				followLine.doFirstAction();
+				path.remove(0);
+				turnBehavior.setPath(path);
+			}
+		}
 
 	}
 
@@ -86,6 +97,7 @@ public class JunctionFollower implements MessageListener {
 	@Override
 	public void recievedNewPathMessage(NewPathMessage msg) {
 		path = msg.getCommands();
+		newPath = true;
 
 	}
 
