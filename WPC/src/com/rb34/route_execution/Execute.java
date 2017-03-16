@@ -46,6 +46,7 @@ public class Execute {
 		
 		log4j.trace("Receieved Following Path for Conversion: " + choosenPath);
 		
+		
 		robotInstructions = converter.execute(vertexPath);
 
 		
