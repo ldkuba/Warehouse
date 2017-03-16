@@ -23,7 +23,7 @@ public class Start {
 		
 		Robot robot = new Robot();
 		robot.setXLoc(0);
-		robot.setYLoc(7);
+		robot.setYLoc(0);
 		robot.setRobotId(1);
 		
 	
