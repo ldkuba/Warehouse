@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.rb34.general.interfaces.IRobotManager;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
+import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 
 public class RobotManager implements IRobotManager, MessageListener{
@@ -38,6 +39,12 @@ public class RobotManager implements IRobotManager, MessageListener{
 
 	@Override
 	public void recievedNewPathMessage(NewPathMessage msg)
+	{
+		
+	}
+
+	@Override
+	public void recievedRobotStatusMessage(RobotStatusMessage msg)
 	{
 		
 	}

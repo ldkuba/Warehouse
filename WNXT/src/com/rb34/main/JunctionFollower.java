@@ -14,6 +14,7 @@ import lejos.robotics.subsumption.Behavior;
 
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
+import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.robot_interface.RobotScreen;
 
@@ -79,6 +80,12 @@ public class JunctionFollower implements MessageListener {
 	@Override
 	public void recievedNewPathMessage(NewPathMessage msg) {
 		//path = msg.getCommands();
+		
+	}
+
+	@Override
+	public void recievedRobotStatusMessage(RobotStatusMessage msg)
+	{
 		
 	}
 	

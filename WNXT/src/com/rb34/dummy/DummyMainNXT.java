@@ -2,6 +2,7 @@ package com.rb34.dummy;
 
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
+import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.network.Client;
 
@@ -23,6 +24,12 @@ public class DummyMainNXT
 			public void recievedNewPathMessage(NewPathMessage msg)
 			{
 				System.out.println(msg.getCommands().size());
+			}
+
+			@Override
+			public void recievedRobotStatusMessage(RobotStatusMessage msg)
+			{
+				
 			}
 		});
 		
