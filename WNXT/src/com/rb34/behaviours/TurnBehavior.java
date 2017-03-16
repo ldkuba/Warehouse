@@ -19,6 +19,9 @@ public class TurnBehavior implements Behavior {
 	private int turnDirection;
 	private boolean supressed;
 	private final int THRESHOLD = 40;
+	private String head = "north";
+	private int x = 0;
+	private int y = 0;
 	// final static Logger logger = Logger.getLogger(TurnBehavior.class);
 
 	private ArrayList<PathChoices> path;
@@ -69,6 +72,7 @@ public class TurnBehavior implements Behavior {
 
 	@Override
 	public void action() {
+		screen.printLocation(x, y);
 		supressed = false;
 		pilot.stop();
 
@@ -88,18 +92,22 @@ public class TurnBehavior implements Behavior {
 		switch (turnDirection) {
 		case 0:
 			pilot.arc(80.5, 90, true);
+			UpdateDirectionAndCo(0);
 			screen.printState("Left");
 			break;
 		case 1:
 			pilot.arc(-80.5, -90, true);
+			UpdateDirectionAndCo(1);
 			screen.printState("Right");
 			break;
 		case 2:
 			pilot.travel(75.0, true);
+			UpdateDirectionAndCo(2);
 			screen.printState("Forward");
 			break;
 		case 3:
 			pilot.rotate(180, true);
+			UpdateDirectionAndCo(3);
 			screen.printState("Rotate");
 			break;
 		}
@@ -127,5 +135,70 @@ public class TurnBehavior implements Behavior {
 			return false;
 		}
 	}
-
+	
+	public void setX(int i) {
+		x += i;
+	}
+	
+	public void setY(int i) {
+		y += i;
+	}
+	
+	public void UpdateDirectionAndCo(int move) {
+		int movement = move;
+		
+		switch (movement) {
+		case 0: //left
+			if (head.equals("north")) {
+				head = "west";
+				setX(-1);
+			} else if (head.equals("east")) {
+				head = "north";
+				setY(1);
+			} else if (head.equals("south")) {
+				head = "east";
+				setX(1);
+			} else {
+				head = "south";
+				setY(-1);
+			}
+			break;
+		case 1://right
+			if (head.equals("north")) {
+				head = "east";
+				setX(1);
+			} else if (head.equals("east")) {
+				head = "south";
+				setY(-1);
+			} else if (head.equals("south")) {
+				head = "west";
+				setX(1);
+			} else {
+				head = "north";
+				setY(1);
+			}
+			break;
+		case 2: //forward
+			if (head.equals("north")) {
+				setY(1);
+			} else if (head.equals("east")) {
+				setX(1);
+			} else if (head.equals("south")) {
+				setY(-1);
+			} else {
+				setX(-1);
+			}
+			break;
+		case 3: //rotate 180
+			if (head.equals("north")) {
+				head = "south";
+			} else if (head.equals("east")) {
+				head = "west";
+			} else if (head.equals("south")) {
+				head = "north";
+			} else {
+				head = "east";
+			}
+		}	
+	}
 }

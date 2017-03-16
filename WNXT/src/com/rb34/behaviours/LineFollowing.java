@@ -32,7 +32,8 @@ public class LineFollowing implements Behavior
 		
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 		
-		pilot.setTravelSpeed(150);
+		pilot.setTravelSpeed(80);
+		pilot.setRotateSpeed(50);
 		
 	}
 	
@@ -55,30 +56,32 @@ public class LineFollowing implements Behavior
 	protected void checkLeft() {
 		// If left sensor on line && right sensor is not => Go left
 		while (leftOnBlack() && !rightOnBlack()) {
-			pilot.rotate(5, true);
+			//pilot.rotate(2.5, true);
+			pilot.rotateLeft();
 
 			//System.out.println("Left rotation");
-			Delay.msDelay(10);
 			
 			if (Button.ESCAPE.isDown()) { //make sure that robot will stop program if escape button is pressed.
 				System.exit(0);
 				suppress();
 			}
+			Delay.msDelay(20);
 		}
 	}
 
 	protected void checkRight() {
 		// If right sensor on line && left sensor is not => Go right
 		while (!leftOnBlack() && rightOnBlack()) {
-			pilot.rotate(-5, true);
+			//pilot.rotate(-2.5, true);
+			pilot.rotateRight();
 
 			//System.out.println("Right rotation");
-			Delay.msDelay(20);
 			
 			if (Button.ESCAPE.isDown()) { //make sure that robot will stop program if escape button is pressed.
 				System.exit(0);
 				suppress();
 			}
+			Delay.msDelay(20);
 		}
 	}
 
