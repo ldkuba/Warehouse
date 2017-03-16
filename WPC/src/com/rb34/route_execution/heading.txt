@@ -1,0 +1,6 @@
+robot1
+E
+robot2
+E
+robot3
+E
