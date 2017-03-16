@@ -12,21 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
-
-import lejos.robotics.RangeFinder;
-import rp.robotics.MobileRobotWrapper;
-import rp.robotics.control.RandomGridWalk;
-import rp.robotics.mapping.GridMap;
-import rp.robotics.mapping.MapUtils;
-import rp.robotics.navigation.GridPose;
-import rp.robotics.navigation.Heading;
-import rp.robotics.simulation.MapBasedSimulation;
-import rp.robotics.simulation.MovableRobot;
-import rp.robotics.simulation.SimulatedRobots;
-import rp.robotics.visualisation.GridMapVisualisation;
 import rp.robotics.visualisation.KillMeNow;
-import rp.robotics.visualisation.MapVisualisationComponent;
-
 import java.awt.GridBagConstraints;
 import java.awt.Font;
 import java.awt.Insets;
@@ -35,7 +21,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.Color;
 import java.awt.Component;
-
+import java.awt.Container;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -45,6 +31,22 @@ public class WarehouseWindow {
 	private JFrame frame;
 	static RobotManager manager;
 	Robot rb1, rb2, rb3;
+	JLabel[] mapLabels;
+	Container cp;
+	JLabel x0y8,x0y7,x0y6,x0y5,x0y4,x0y3,x0y2,x0y1,x0y0;
+	JLabel x1y8,x1y7,x1y6,x1y5,x1y4,x1y3,x1y2,x1y1,x1y0;
+	JLabel x2y8,x2y7,x2y6,x2y5,x2y4,x2y3,x2y2,x2y1,x2y0;
+	JLabel x3y8,x3y7,x3y6,x3y5,x3y4,x3y3,x3y2,x3y1,x3y0;
+	JLabel x4y8,x4y7,x4y6,x4y5,x4y4,x4y3,x4y2,x4y1,x4y0;
+	JLabel x5y8,x5y7,x5y6,x5y5,x5y4,x5y3,x5y2,x5y1,x5y0;
+	JLabel x6y8,x6y7,x6y6,x6y5,x6y4,x6y3,x6y2,x6y1,x6y0;
+	JLabel x7y8,x7y7,x7y6,x7y5,x7y4,x7y3,x7y2,x7y1,x7y0;
+	JLabel x8y8,x8y7,x8y6,x8y5,x8y4,x8y3,x8y2,x8y1,x8y0;
+	JLabel x9y8,x9y7,x9y6,x9y5,x9y4,x9y3,x9y2,x9y1,x9y0;
+	JLabel x10y8,x10y7,x10y6,x10y5,x10y4,x10y3,x10y2,x10y1,x10y0;
+	JLabel x11y8,x11y7,x11y6,x11y5,x11y4,x11y3,x11y2,x11y1,x11y0;
+	JLabel x12y8,x12y7,x12y6,x12y5,x12y4,x12y3,x12y2,x12y1,x12y0;
+	JLabel[][] label;
 	private static final Logger log4j = LogManager.getLogger(WarehouseWindow.class.getName());
 
 	/**
@@ -72,7 +74,7 @@ public class WarehouseWindow {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialise the contents of the frame.
 	 */
 	private void initialize() {
 		manager = new RobotManager();
@@ -85,7 +87,7 @@ public class WarehouseWindow {
 		
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("Dialog", Font.PLAIN, 20));
-		frame.setBounds(100, 100, 700, 200);
+		frame.setBounds(100, 100, 700, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
@@ -254,40 +256,40 @@ public class WarehouseWindow {
 		frame.getContentPane().add(btnWarehouseMap, gbc_btnWarehouseMap);
 		
 			
-			JButton btnRewardSummary = new JButton("Reward Summary");
-			GridBagConstraints gbc_btnRewardSummary = new GridBagConstraints();
-			gbc_btnRewardSummary.insets = new Insets(0, 0, 0, 5);
-			gbc_btnRewardSummary.fill = GridBagConstraints.HORIZONTAL;
-			gbc_btnRewardSummary.gridx = 4;
-			gbc_btnRewardSummary.gridy = 8;
-			frame.getContentPane().add(btnRewardSummary, gbc_btnRewardSummary);
+		JButton btnRewardSummary = new JButton("Reward Summary");
+		GridBagConstraints gbc_btnRewardSummary = new GridBagConstraints();
+		gbc_btnRewardSummary.insets = new Insets(0, 0, 0, 5);
+		gbc_btnRewardSummary.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnRewardSummary.gridx = 4;
+		gbc_btnRewardSummary.gridy = 8;
+		frame.getContentPane().add(btnRewardSummary, gbc_btnRewardSummary);
 			
-			JButton btnLoadJobList = new JButton("Load Job List");
-			GridBagConstraints gbc_btnLoadJobList = new GridBagConstraints();
-			gbc_btnLoadJobList.fill = GridBagConstraints.HORIZONTAL;
-			gbc_btnLoadJobList.anchor = GridBagConstraints.NORTH;
-			gbc_btnLoadJobList.insets = new Insets(0, 0, 0, 5);
-			gbc_btnLoadJobList.gridx = 5;
-			gbc_btnLoadJobList.gridy = 8;
-			frame.getContentPane().add(btnLoadJobList, gbc_btnLoadJobList);
+		JButton btnLoadJobList = new JButton("Load Job List");
+		GridBagConstraints gbc_btnLoadJobList = new GridBagConstraints();
+		gbc_btnLoadJobList.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnLoadJobList.anchor = GridBagConstraints.NORTH;
+		gbc_btnLoadJobList.insets = new Insets(0, 0, 0, 5);
+		gbc_btnLoadJobList.gridx = 5;
+		gbc_btnLoadJobList.gridy = 8;
+		frame.getContentPane().add(btnLoadJobList, gbc_btnLoadJobList);
 			
 			
-			// Preparation for selecting job list file at runtime
-			btnLoadJobList.addActionListener(new ActionListener() {
+		// Preparation for selecting job list file at runtime
+		btnLoadJobList.addActionListener(new ActionListener() {
 				
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					JFileChooser fc = new JFileChooser();
-					int val = fc.showOpenDialog((Component)arg0.getSource());
-					if (val == JFileChooser.APPROVE_OPTION) {
-						File file = fc.getSelectedFile();
-						String pathName = file.getAbsolutePath();
-						//Should Pass 'pathName' string to the relevant class after integration
-						System.out.println(pathName);
-					}
-					
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fc = new JFileChooser();
+				int val = fc.showOpenDialog((Component)arg0.getSource());
+				if (val == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					String pathName = file.getAbsolutePath();
+					//Should Pass 'pathName' string to the relevant class after integration
+					System.out.println(pathName);
 				}
-			});
+					
+			}
+		});
 		
 		
 		//Preparation for Getting Job Reward History
@@ -299,23 +301,41 @@ public class WarehouseWindow {
 				
 			}
 		});
-		
-		GridMapVisualisation viz = createMapView();
-		
+	
 		btnWarehouseMap.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				JFrame frame2 = new JFrame("Warehouse Map");
+				JFrame frame2 = new JFrame("Warehouse Map");				
+				//WarehouseMap(frame2); 
+				//setRobotPos(1,label[1][3]);
+				WarehouseMap(frame2);
 				frame2.getContentPane();
-				frame2.getContentPane().add(viz);
+				//frame2.getContentPane().add(mp);
 				frame.addWindowListener(new KillMeNow());
 				frame2.pack();
-				frame2.setSize(450,300);
+				frame2.setSize(315,300);
 				frame2.setLocationRelativeTo(null);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame2.setVisible(true);
+
+				int delay = 2000;
+					ActionListener updatePos = new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							int X = manager.getRobot(0).getXLoc();
+							int Y = manager.getRobot(0).getYLoc();
+							int prevX = X;
+							int prevY = Y;
+							setRobotPos(1,label[Y][X]);
+							clearPos(label[prevY][prevX]);
+								
+							
+						}
+					};
+					new Timer(delay,updatePos).start();
+				
 				
 			}
 		});
@@ -335,7 +355,6 @@ public class WarehouseWindow {
 	              setCoords(lblCoords2,1);
 	              setCoords(lblCoords3,2);
 	              
-	              
 	              /*
 	              Commented out as it throws exception when no job is found
 	              setJob(lblJobid, 0);
@@ -346,17 +365,6 @@ public class WarehouseWindow {
 	      };
 	      new Timer(delay, taskPerformer).start();
 	}
-	
-	//Maybe used for map visualisation. Will remove if unnecessary
-	
-	public  static int getX() {
-		return manager.getRobot(0).getXLoc();
-	}
-	
-	public  static int getY() {
-		return manager.getRobot(0).getYLoc();
-	}
-	
 	
 	// Moved all UI updating functions to separate methods in an attempt to clean up
 	// code inside the gui properties class and event listeners
@@ -409,25 +417,342 @@ public class WarehouseWindow {
         log4j.trace("Updated Robot " + rb + "'s Current Job");
 	}
 	
+	public void WarehouseMap(JFrame val) {
+		
+		 cp = val.getContentPane();
+		 cp.setLayout(null);
+	     ImageIcon space = new ImageIcon("res/grid.png");
+	     ImageIcon obs = new ImageIcon("res/obs.png");
+
+				
+		x0y7 = new JLabel();
+		lblProp(x0y7,space,0, 35);
+		
+		x0y6 = new JLabel();
+		lblProp(x0y6,space,0, 60);
+		
+		x0y5 = new JLabel();
+		lblProp(x0y5,space,0,85);
+
+		x0y4 = new JLabel();
+		lblProp(x0y4,space,0,110);
+		
+		x0y3 = new JLabel();
+		lblProp(x0y3,space,0,135);
+		
+		x0y2 = new JLabel();
+		lblProp(x0y2,space,0,160);
+		
+		x0y1 = new JLabel();
+		lblProp(x0y1,space,0,185);
+		
+		x0y0 = new JLabel();
+		lblProp(x0y0,space,0,210);
+		
+		
+		x1y7 = new JLabel();
+		lblProp(x1y7,space,25,35);
+		
+		x1y6 = new JLabel();
+		lblProp(x1y6,space,25,60);
+		
+		x1y5 = new JLabel();
+		lblProp(x1y5,obs,25,85);
+		
+		x1y4 = new JLabel();
+		lblProp(x1y4,obs,25,110);
+		
+		x1y3 = new JLabel();
+		lblProp(x1y3,obs,25,135);
+		
+		x1y2 = new JLabel();
+		lblProp(x1y2,obs,25,160);
+		
+		x1y1 = new JLabel();
+		lblProp(x1y1,obs,25,185);
+		
+		x1y0 = new JLabel();
+		lblProp(x1y0,space,25,210);
+		
+		
+		x2y7 = new JLabel();
+		lblProp(x2y7,space,50,35);
+		
+		x2y6 = new JLabel();
+		lblProp(x2y6,space,50,60);
+		
+		x2y5 = new JLabel();
+		lblProp(x2y5,space,50,85);
+		
+		x2y4 = new JLabel();
+		lblProp(x2y4,space,50,110);
+		
+		x2y3 = new JLabel();
+		lblProp(x2y3,space,50,135);
+		
+		x2y2 = new JLabel();
+		lblProp(x2y2,space,50,160);
+		
+		x2y1 = new JLabel();
+		lblProp(x2y1,space,50,185);
+		
+		x2y0 = new JLabel();
+		lblProp(x2y0,space,50,210);
+		
+		
+		x3y7 = new JLabel();
+		lblProp(x3y7,space,75,35);
+		
+		x3y6 = new JLabel();
+		lblProp(x3y6,space,75,60);
+		
+		x3y5 = new JLabel();
+		lblProp(x3y5,space,75,85);
+		
+		x3y4 = new JLabel();
+		lblProp(x3y4,space,75,110);
+		
+		x3y3 = new JLabel();
+		lblProp(x3y3,space,75,135);
+		
+		x3y2 = new JLabel();
+		lblProp(x3y2,space,75,160);
+		
+		x3y1 = new JLabel();
+		lblProp(x3y1,space,75,185);
+		
+		x3y0 = new JLabel();
+		lblProp(x3y0,space,75,210);
+		
+		x4y7 = new JLabel();
+		lblProp(x4y7,space,100,35);
+		
+		x4y6 = new JLabel();
+		lblProp(x4y6,space,100,60);
+		
+		x4y5 = new JLabel();
+		lblProp(x4y5,obs,100,85);
+		
+		x4y4 = new JLabel();
+		lblProp(x4y4,obs,100,110);
+		
+		x4y3 = new JLabel();
+		lblProp(x4y3,obs,100,135);
+		
+		x4y2 = new JLabel();
+		lblProp(x4y2,obs,100,160);
+		
+		x4y1 = new JLabel();
+		lblProp(x4y1,obs,100,185);
+		
+		x4y0 = new JLabel();
+		lblProp(x4y0,space,100,210);
+		
+		x5y7 = new JLabel();
+		lblProp(x5y7,space,125,35);
+		
+		x5y6 = new JLabel();
+		lblProp(x5y6,space,125,60);
+		
+		x5y5 = new JLabel();
+		lblProp(x5y5,space,125,85);
+		
+		x5y4 = new JLabel();
+		lblProp(x5y4,space,125,110);
+		
+		x5y3 = new JLabel();
+		lblProp(x5y3,space,125,135);
+		
+		x5y2 = new JLabel();
+		lblProp(x5y2,space,125,160);
+		
+		x5y1 = new JLabel();
+		lblProp(x5y1,space,125,185);
+		
+		x5y0 = new JLabel();
+		lblProp(x5y0,space,125,210);
+		
+		x6y7 = new JLabel();
+		lblProp(x6y7,space,150,35);
+		
+		x6y6 = new JLabel();
+		lblProp(x6y6,space,150,60);
+		
+		x6y5 = new JLabel();
+		lblProp(x6y5,space,150,85);
+		
+		x6y4 = new JLabel();
+		lblProp(x6y4,space,150,110);
+		
+		x6y3 = new JLabel();
+		lblProp(x6y3,space,150,135);
+		
+		x6y2 = new JLabel();
+		lblProp(x6y2,space,150,160);
+		
+		x6y1 = new JLabel();
+		lblProp(x6y1,space,150,185);
+		
+		x6y0 = new JLabel();
+		lblProp(x6y0,space,150,210);
+		
+		x7y7 = new JLabel();
+		lblProp(x7y7,space,175,35);
+		
+		x7y6 = new JLabel();
+		lblProp(x7y6,space,175,60);
+		
+		x7y5 = new JLabel();
+		lblProp(x7y5,obs,175,85);
+		
+		x7y4 = new JLabel();
+		lblProp(x7y4,obs,175,110);
+		
+		x7y3 = new JLabel();
+		lblProp(x7y3,obs,175,135);
+		
+		x7y2 = new JLabel();
+		lblProp(x7y2,obs,175,160);
+		
+		x7y1 = new JLabel();
+		lblProp(x7y1,obs,175,185);
+		
+		x7y0 = new JLabel();
+		lblProp(x7y0,space,175,210);
+		
+		x8y7 = new JLabel();
+		lblProp(x8y7,space,200,35);
+		
+		x8y6 = new JLabel();
+		lblProp(x8y6,space,200,60);
+		
+		x8y5 = new JLabel();
+		lblProp(x8y5,space,200,85);
+		
+		x8y4 = new JLabel();
+		lblProp(x8y4,space,200,110);
+		
+		x8y3 = new JLabel();
+		lblProp(x8y3,space,200,135);
+		
+		x8y2 = new JLabel();
+		lblProp(x8y2,space,200,160);
+		
+		x8y1 = new JLabel();
+		lblProp(x8y1,space,200,185);
+		
+		x8y0 = new JLabel();
+		lblProp(x8y0,space,200,210);
+		
+		x9y7 = new JLabel();
+		lblProp(x9y7,space,225,35);
+		
+		x9y6 = new JLabel();
+		lblProp(x9y6,space,225,60);
+		
+		x9y5 = new JLabel();
+		lblProp(x9y5,space,225,85);
+		
+		x9y4 = new JLabel();
+		lblProp(x9y4,space,225,110);
+		
+		x9y3 = new JLabel();
+		lblProp(x9y3,space,225,135);
+		
+		x9y2 = new JLabel();
+		lblProp(x9y2,space,225,160);
+		
+		x9y1 = new JLabel();
+		lblProp(x9y1,space,225,185);
+		
+		x9y0 = new JLabel();
+		lblProp(x9y0,space,225,210);
+		
+		x10y7 = new JLabel();
+		lblProp(x10y7,space,250,35);
+		
+		x10y6 = new JLabel();
+		lblProp(x10y6,space,250,60);
+		
+		x10y5 = new JLabel();
+		lblProp(x10y5,obs,250,85);
+		
+		x10y4 = new JLabel();
+		lblProp(x10y4,obs,250,110);
+		
+		x10y3 = new JLabel();
+		lblProp(x10y3,obs,250,135);
+		
+		x10y2 = new JLabel();
+		lblProp(x10y2,obs,250,160);
+		
+		x10y1 = new JLabel();
+		lblProp(x10y1,obs,250,185);
+		
+		x10y0 = new JLabel();
+		lblProp(x10y0,space,250,210);
+		
+		x11y7 = new JLabel();
+		lblProp(x11y7,space,275,35);
+		
+		x11y6 = new JLabel();
+		lblProp(x11y6,space,275,60);
+		
+		x11y5 = new JLabel();
+		lblProp(x11y5,space,275,85);
+		
+		x11y4 = new JLabel();
+		lblProp(x11y4,space,275,110);
+		
+		x11y3 = new JLabel();
+		lblProp(x11y3,space,275,135);
+		
+		x11y2 = new JLabel();
+		lblProp(x11y2,space,275,160);
+		
+		x11y1 = new JLabel();
+		lblProp(x11y1,space,275,185);
+		
+		x11y0 = new JLabel();
+		lblProp(x11y0,space,275,210);
 	
-	public GridMapVisualisation createMapView() {
-		GridMap gridMap = MapUtils.createRealWarehouse();
-		MapBasedSimulation sim = new MapBasedSimulation(gridMap);
-		GridPose gridStart = new GridPose(manager.getRobot(0).getXLoc(), manager.getRobot(0).getYLoc(), Heading.PLUS_X);
-		MobileRobotWrapper<MovableRobot> wrapper = sim.addRobot(
-				SimulatedRobots.makeConfiguration(false, true),gridMap.toPose(gridStart));
+		label = new JLabel[][] {
+			{x0y0,x1y0,x2y0,x3y0,x4y0,x5y0,x6y0,x7y0,x8y0,x9y0,x10y0,x11y0},
+			{x0y1,x1y1,x2y1,x3y1,x4y1,x5y1,x6y1,x7y1,x8y1,x9y1,x10y1,x11y1},
+			{x0y2,x1y2,x2y2,x3y2,x4y2,x5y2,x6y2,x7y2,x8y2,x9y2,x10y2,x11y2},
+			{x0y3,x1y3,x2y3,x3y3,x4y3,x5y3,x6y3,x7y3,x8y3,x9y3,x10y3,x11y3},
+			{x0y4,x1y4,x2y4,x3y4,x4y4,x5y4,x6y4,x7y4,x8y4,x9y4,x10y4,x11y4},
+			{x0y5,x1y5,x2y5,x3y5,x4y5,x5y5,x6y5,x7y5,x8y5,x9y5,x10y5,x11y5},
+			{x0y6,x1y6,x2y6,x3y6,x4y6,x5y6,x6y6,x7y6,x8y6,x9y6,x10y6,x11y6},
+			{x0y7,x1y7,x2y7,x3y7,x4y7,x5y7,x6y7,x7y7,x8y7,x9y7,x10y7,x11y7},
+			{x0y8,x1y8,x2y8,x3y8,x4y8,x5y8,x6y8,x7y8,x8y8,x9y8,x10y8,x11y8},
+		};
 		
-		RangeFinder ranger = sim.getRanger(wrapper);
-
-		SimulationController controller = new SimulationController(wrapper.getRobot(),
-				gridMap, gridStart, ranger);
-		
-		new Thread(controller).start();
-		GridMapVisualisation viz = new GridMapVisualisation(gridMap,
-				sim.getMap());
-		
-		MapVisualisationComponent.populateVisualisation(viz, sim); 
-		return viz;
 	}
-
+	
+	public void lblProp(JLabel val, ImageIcon icon,int X, int Y) {
+		val.setSize(20,20);
+		val.setLocation(X,Y);
+		val.setIcon(icon);
+		cp.add(val);
+	}
+	
+	public void setRobotPos(int robotId, JLabel val) {
+		if(robotId == 1) {
+			ImageIcon rb1 = new ImageIcon("res/rb1.png");
+			val.setIcon(rb1);
+		} else if(robotId == 2) {
+			ImageIcon rb2 = new ImageIcon("res/rb2.png");
+			val.setIcon(rb2);
+		} else if(robotId == 3) {
+			ImageIcon rb3 = new ImageIcon("res/rb3.png");
+			val.setIcon(rb3);			
+		}
+		
+	}
+	
+	public void clearPos(JLabel val) {
+		ImageIcon grid = new ImageIcon("res/grid.png");
+		val.setIcon(grid);
+	}
 }
