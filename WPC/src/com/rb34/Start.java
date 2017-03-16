@@ -18,8 +18,8 @@ public class Start {
 		PriorityQueue<Job> orderedJobs = new PriorityQueue<>(jobs);
 		ArrayList<Drop> drops = Reader.createDropList();	// Runs Job_Selection
 
-	//	Master master = new Master();
-	//	master.start();
+		Master master = new Master();
+		master.start();
 		
 		Robot robot = new Robot();
 		robot.setXLoc(0);
@@ -30,16 +30,16 @@ public class Start {
 		RobotManager rm = new RobotManager();
 		rm.addRobot(robot);
 		
-		//master.addListener(rm);
+		master.addListener(rm);
 	
-		JobAssigner jobAssigner = new JobAssigner(orderedJobs, rm, drops);
+		JobAssigner jobAssigner = new JobAssigner(orderedJobs, rm, drops, master);
 		jobAssigner.assignJobs();	// Runs Job_Assignment
-		/*try {
+		try {
 			master.join();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		// Run Warehouse_Interface
 	}
 

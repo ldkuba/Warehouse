@@ -47,10 +47,10 @@ public class BluetoothConnection implements Connection
 		
 		try
 		{
-			inputStream.close();
-			outputStream.close();
 			receiver.join();
 			sender.join();
+			inputStream.close();
+			outputStream.close();
 		} catch (InterruptedException e)
 		{
 			e.printStackTrace();

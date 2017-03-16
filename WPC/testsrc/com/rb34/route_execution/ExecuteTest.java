@@ -1,5 +1,6 @@
 package com.rb34.route_execution;
 
+import com.rb34.general.PathChoices;
 import com.rb34.route_planning.graph_entities.IVertex;
 import java.util.ArrayList;
 
@@ -7,12 +8,12 @@ import org.apache.log4j.*;
 
 public class ExecuteTest {
 
-	private ArrayList<String> robotInstructions;
+	private ArrayList<PathChoices> robotInstructions;
 	private ArrayList<IVertex> vertexPath;
 	
 	private static final Logger log4j = LogManager.getLogger(Execute.class.getName());
 
-	public ArrayList<String> runRoute(ArrayList<IVertex> path) {
+	public ArrayList<PathChoices> runRoute(ArrayList<IVertex> path) {
 		 vertexPath = path;
 		 
 		 if(vertexPath == null) {

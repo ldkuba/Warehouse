@@ -1,7 +1,5 @@
 package com.rb34.route_planning;
 
-import static java.lang.Float.MAX_VALUE;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -13,12 +11,12 @@ import java.util.function.BiFunction;
 
 import org.apache.log4j.Logger;
 
+import com.rb34.network.Master;
 import com.rb34.route_execution.Execute;
 import com.rb34.route_planning.graph_entities.Heuristic;
 import com.rb34.route_planning.graph_entities.IEdge;
 import com.rb34.route_planning.graph_entities.IGraph;
 import com.rb34.route_planning.graph_entities.IVertex;
-import com.rb34.route_planning.graph_entities.Label;
 import com.rb34.route_planning.graph_entities.Result;
 
 import rp.robotics.mapping.GridMap;
@@ -26,7 +24,7 @@ import rp.robotics.mapping.MapUtils;
 
 public class Graph implements IGraph {
 	final static Logger logger = Logger.getLogger(Graph.class);
-	
+
 	Map<String, IVertex> vertices;
 	GridMap gridMap;
 
@@ -34,10 +32,10 @@ public class Graph implements IGraph {
 	public Graph() {
 		logger.debug("Started route planning");
 		vertices = new HashMap<>();
-		
+
 		// should get the real map here instead of this "real warehouse"
 		gridMap = MapUtils.createRealWarehouse();
-		
+
 		// Add the junctions from the map to the collection of vertices
 		for (int i = 0; i < gridMap.getXSize(); i++)
 			for (int j = 0; j < gridMap.getYSize(); j++)
@@ -57,16 +55,16 @@ public class Graph implements IGraph {
 			}
 		logger.debug("Generated graph from map");
 	}
-	
-	public void executeRoute(String startVertexId, String endVertexId, int robotId) {
+
+	public void executeRoute(String startVertexId, String endVertexId, int robotId, Master master) {
 		ArrayList<IVertex> path = aStar(startVertexId, endVertexId).getPath().get();
-		
+
 		String logMessage = "";
 		for (IVertex vertex : path) {
 			logMessage += vertex.getLabel().getName() + " ";
 		}
 		logger.debug("The generated path is: " + logMessage);
-		Execute execute = new Execute();
+		Execute execute = new Execute(master);
 		execute.runRoute(path, robotId);
 	}
 
@@ -101,11 +99,11 @@ public class Graph implements IGraph {
 		return vertices.get(vertexId);
 	}
 
-	// A* algorithm 
+	// A* algorithm
 	@Override
 	public Result aStar(String startVertexId, String endVertexId) {
 		Result result = new Result();
-		
+
 		if (getVertex(startVertexId) == null || getVertex(endVertexId) == null) {
 			logger.debug("Invalid coordinates");
 			return null;

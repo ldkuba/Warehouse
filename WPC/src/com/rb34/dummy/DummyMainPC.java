@@ -2,6 +2,7 @@ package com.rb34.dummy;
 
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
+import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.network.Master;
 
@@ -18,28 +19,28 @@ public class DummyMainPC
 		{
 			public void receivedTestMessage(TestMessage msg)
 			{
-				System.out.println(msg.getText());
+				System.out.println(msg.getText());				
 			}
 
 			@Override
 			public void recievedNewPathMessage(NewPathMessage msg)
 			{
+				System.out.println(msg.getCommands().size());
+			}
+
+			@Override
+			public void recievedRobotStatusMessage(RobotStatusMessage msg)
+			{
 				
 			}
 		});
-
-		try
-		{
-			Thread.sleep(10000);
-		} catch (InterruptedException e1)
-		{
-			e1.printStackTrace();
-		}
+		
 		
 		TestMessage msg = new TestMessage();
 		msg.setText("HELLO ROBOT");
 		master.send(msg, 0);
-
+		
+			
 		System.out.println("MASTER IS ACTUALLY WORKING");
 
 		try

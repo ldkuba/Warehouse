@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.rb34.message.Message;
-import com.rb34.message.TestMessage;
 
 public class Sender extends Thread
 {
@@ -30,23 +29,29 @@ public class Sender extends Thread
 		{						
 			if(!messageQueue.isEmpty())
 			{
-				System.out.println("SENDING MESSAGE");
 				
 				byte[] message = messageQueue.get(0).toByteArray();
-				
-				System.out.println(message.length);
 				
 				try
 				{
 					outputStream.write(message, 0, message.length);
-					System.out.println(outputStream.size());
 					outputStream.flush();
+					
 				} catch (IOException e)
 				{
 					e.printStackTrace();
 				}
 				
 				messageQueue.remove(0);
+				
+				try
+				{
+					Thread.sleep(100);
+				} catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				
 			}
 		}
 	}
