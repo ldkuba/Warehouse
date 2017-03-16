@@ -10,8 +10,16 @@ public class TrialMainNxt {
 	private RobotScreen screen;
 	
 	TrialMainNxt() {
+		Client client = new Client();
+		client.start();
 		screen = new RobotScreen(0, 0, "Starting");
 		robotMovement = new JunctionFollower(screen);
+		client.addListener(robotMovement);
+		try {
+			client.join();
+		} catch (InterruptedException e) {
+			System.out.println("Something went wrong.");
+		}
 		
 	}
 	

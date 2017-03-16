@@ -22,7 +22,7 @@ public class JunctionFollower implements MessageListener {
 
 	private Arbitrator arbitrator;
 	
-	private ArrayList<PathChoices> path; //Received via bluetooth;
+	private ArrayList<PathChoices> path = null; //Received via bluetooth;
 	private ArrayList<PathChoices> path1; //when we want to pre-define;
 	
 	private LightSensor lightSensorR;
@@ -57,12 +57,17 @@ public class JunctionFollower implements MessageListener {
 		
 		
 		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen);
-		turnBehavior.setPath(path1);
+		//turnBehavior.setPath(path1);
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
 		waitBehavior = new WaitBehavior(turnBehavior, screen);
 		
 		Behavior[] behaviors = {followLine, turnBehavior, waitBehavior};
 		arbitrator = new Arbitrator(behaviors);
+		
+		while(path == null) {
+			
+		}
+		turnBehavior.setPath(path);
 		
 		arbitrator.start();
 		
@@ -80,13 +85,12 @@ public class JunctionFollower implements MessageListener {
 
 	@Override
 	public void recievedNewPathMessage(NewPathMessage msg) {
-		//path = msg.getCommands();
+		path = msg.getCommands();
 		
 	}
 
 	@Override
-	public void recievedRobotStatusMessage(RobotStatusMessage msg)
-	{
+	public void recievedRobotStatusMessage(RobotStatusMessage msg) {
 		
 	}
 	
