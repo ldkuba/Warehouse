@@ -13,8 +13,13 @@ public class TrialMainNxt {
 		Client client = new Client();
 		client.start();
 		screen = new RobotScreen(0, 0, "Starting");
-		robotMovement = new JunctionFollower(screen);
-		client.addListener(robotMovement);
+		
+		//System.out.println("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+		
+		robotMovement = new JunctionFollower(screen, client);
+		
+		System.out.println("");
+	
 		try {
 			client.join();
 		} catch (InterruptedException e) {
