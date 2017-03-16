@@ -12,6 +12,7 @@
 /WPC/*
 !/WPC
 !/WPC/src/
+!/WPC/res/
 
 /WShared/*
 !/WShared
