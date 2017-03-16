@@ -1,4 +1,5 @@
 package com.rb34.behaviours;
+
 import java.util.ArrayList;
 import com.rb34.general.PathChoices;
 import com.rb34.message.MessageListener;
@@ -11,17 +12,22 @@ import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
+
 public class TurnBehavior implements Behavior, MessageListener {
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
 	private DifferentialPilot pilot;
 	private RobotScreen screen;
+	private LineFollowing followLine;
+	
 	private int turnDirection;
 	private boolean supressed;
 	private final int THRESHOLD = 40;
 	private String head = "east";
 	private int x = 0;
 	private int y = 0;
+	private int firstAction;
+	
 	// final static Logger logger = Logger.getLogger(TurnBehavior.class);
 	private ArrayList<PathChoices> path;
 	private boolean actionDone;
@@ -29,19 +35,23 @@ public class TurnBehavior implements Behavior, MessageListener {
 	int readingR;
 	int whiteInitR;
 	int whiteInitL;
-	public TurnBehavior(LightSensor left, LightSensor right, RobotScreen _screen) {
+
+	public TurnBehavior(LightSensor left, LightSensor right, RobotScreen _screen, LineFollowing followLine) {
 		lightSensorR = right;
 		lightSensorL = left;
 		this.screen = _screen;
+		this.followLine = followLine;
 		path = new ArrayList<>();
 		path.clear();
-		
+
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 		pilot.setTravelSpeed(150);
 	}
+
 	public void setPath(ArrayList<PathChoices> path) {
 		this.path = path;
 	}
+
 	public boolean rightOnBlack() {
 		if (lightSensorR.getLightValue() <= THRESHOLD) {
 			return true;
@@ -49,6 +59,7 @@ public class TurnBehavior implements Behavior, MessageListener {
 			return false;
 		}
 	}
+
 	public boolean leftOnBlack() {
 		if (lightSensorL.getLightValue() <= THRESHOLD) {
 			return true;
@@ -56,6 +67,7 @@ public class TurnBehavior implements Behavior, MessageListener {
 			return false;
 		}
 	}
+
 	@Override
 	public boolean takeControl() {
 		if (rightOnBlack() && leftOnBlack()) {
@@ -64,6 +76,7 @@ public class TurnBehavior implements Behavior, MessageListener {
 			return false;
 		}
 	}
+
 	@Override
 	public void action() {
 		screen.printLocation(x, y);
@@ -110,10 +123,12 @@ public class TurnBehavior implements Behavior, MessageListener {
 		actionDone = true;
 		suppress();
 	}
+
 	@Override
 	public void suppress() {
 		supressed = true;
 	}
+
 	public boolean checkIfNoRoute() {
 		if (actionDone && path.isEmpty()) {
 			return true;
@@ -121,20 +136,20 @@ public class TurnBehavior implements Behavior, MessageListener {
 			return false;
 		}
 	}
-	
+
 	public void setX(int i) {
 		x += i;
 	}
-	
+
 	public void setY(int i) {
 		y += i;
 	}
-	
+
 	public void UpdateDirectionAndCo(int move) {
 		int movement = move;
-		
+
 		switch (movement) {
-		case 0: //left
+		case 0: // left
 			if (head.equals("north")) {
 				head = "west";
 				setX(-1);
@@ -149,7 +164,7 @@ public class TurnBehavior implements Behavior, MessageListener {
 				setY(-1);
 			}
 			break;
-		case 1://right
+		case 1:// right
 			if (head.equals("north")) {
 				head = "east";
 				setX(1);
@@ -164,7 +179,7 @@ public class TurnBehavior implements Behavior, MessageListener {
 				setY(1);
 			}
 			break;
-		case 2: //forward
+		case 2: // forward
 			if (head.equals("north")) {
 				setY(1);
 			} else if (head.equals("east")) {
@@ -175,7 +190,7 @@ public class TurnBehavior implements Behavior, MessageListener {
 				setX(-1);
 			}
 			break;
-		case 3: //rotate 180
+		case 3: // rotate 180
 			if (head.equals("north")) {
 				head = "south";
 			} else if (head.equals("east")) {
@@ -185,46 +200,31 @@ public class TurnBehavior implements Behavior, MessageListener {
 			} else {
 				head = "east";
 			}
-		}	
-	}
-	
-	public void forceFirstCommand(int i) {
-		switch (i) {
-		case 0:
-			pilot.arc(80.5, 90, true);
-			UpdateDirectionAndCo(0);
-			screen.printState("Left");
-			break;
-		case 1:
-			pilot.arc(-80.5, -90, true);
-			UpdateDirectionAndCo(1);
-			screen.printState("Right");
-			break;
-		case 2:
-			pilot.travel(75.0, true);
-			UpdateDirectionAndCo(2);
-			screen.printState("Forward");
-			break;
-		case 3:
-			pilot.rotate(180, true);
-			UpdateDirectionAndCo(3);
-			screen.printState("Rotate");
-			break;
 		}
 	}
+	
+	public void setFirstAction(int i) {
+		firstAction = i;
+	}
+
 	@Override
 	public void receivedTestMessage(TestMessage msg) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public void recievedNewPathMessage(NewPathMessage msg) {
 		this.path = msg.getCommands();
-		
+		followLine.doAction(path.get(0).ordinal());
+		followLine.doFirstAction();
+		path.remove(0);
+
 	}
+
 	@Override
 	public void recievedRobotStatusMessage(RobotStatusMessage msg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -42,11 +42,12 @@ public class JunctionFollower
 		// path1.add(PathChoices.RIGHT);
 		// path1.add(PathChoices.FORWARD);
 		// path1.add(PathChoices.LEFT);
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen);
 		
+		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
+		
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen, followLine);
 		client.addListener(turnBehavior);
 		
-		// turnBehavior.setPath(path1);
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
 		waitBehavior = new WaitBehavior(turnBehavior, screen);
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };

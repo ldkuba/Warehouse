@@ -170,7 +170,7 @@ public class LineFollowing implements Behavior
 			break;
 		case 2:
 			pilot.travel(75.0, true);
-			//UpdateDirectionAndCo(2);
+			//UpdateDirectionAndCo(2); 
 			screen.printState("Forward");
 			break;
 		case 3:
@@ -180,6 +180,7 @@ public class LineFollowing implements Behavior
 			break;
 		}
 	}
+	//To add: a way to update the coorditaes so every time new path is given. 
 	
 	public void setFirstAction(int i) {
 		firstAction = i;
