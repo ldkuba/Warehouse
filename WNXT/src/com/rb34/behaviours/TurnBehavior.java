@@ -233,4 +233,22 @@ public class TurnBehavior implements Behavior, MessageListener {
 			break;
 		}
 	}
+
+	@Override
+	public void receivedTestMessage(TestMessage msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void recievedNewPathMessage(NewPathMessage msg) {
+		this.path = msg.getCommands();
+		
+	}
+
+	@Override
+	public void recievedRobotStatusMessage(RobotStatusMessage msg) {
+		// TODO Auto-generated method stub
+		
+	}
 }
