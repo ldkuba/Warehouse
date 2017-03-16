@@ -7,14 +7,12 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.*;
 
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
 import com.rb34.general.interfaces.IRobot.Status;
 import com.rb34.jobInput.Item;
-
 import rp.robotics.visualisation.KillMeNow;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
@@ -54,12 +52,16 @@ public class WarehouseWindow {
 	JLabel x11y8,x11y7,x11y6,x11y5,x11y4,x11y3,x11y2,x11y1,x11y0;
 	JLabel x12y8,x12y7,x12y6,x12y5,x12y4,x12y3,x12y2,x12y1,x12y0;
 	JLabel[][] label;
-	private static final Logger log4j = LogManager.getLogger(WarehouseWindow.class.getName());
+	final static Logger log4j = Logger.getLogger(WarehouseWindow.class);
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	
+	public WarehouseWindow(RobotManager rm) {
+		this.manager = rm;
+	}
+	public static void launch() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -84,13 +86,7 @@ public class WarehouseWindow {
 	 * Initialise the contents of the frame.
 	 */
 	private void initialize() {
-		manager = new RobotManager();
-		rb1 = new Robot();
-		rb2 = new Robot();
-		rb3 = new Robot();
-		manager.addRobot(rb1);
-		manager.addRobot(rb2);
-		manager.addRobot(rb3);
+
 		
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("Dialog", Font.PLAIN, 20));
@@ -192,10 +188,10 @@ public class WarehouseWindow {
 								}
 								
 								//Manually setting position to avoid overlap while testing
-								int X2 = 11;//manager.getRobot(1).getXLoc();
-								int Y2 = 0;//manager.getRobot(1).getYLoc();
-								int destX2 = 3;
-								int destY2 = 5;
+								int X2 = manager.getRobot(1).getXLoc();
+								int Y2 = manager.getRobot(1).getYLoc();
+								int destX2 = 11;//manager.getRobot(1).getDestXLoc();
+								int destY2 = 7;//manager.getRobot(1).getDestXLoc();
 								int prevX2 = X2;
 								int prevY2 = Y2;
 								setRobotPos(2,label[Y2][X2]);
@@ -214,10 +210,10 @@ public class WarehouseWindow {
 								}
 								
 								//Manually setting postion to avoid overlap while testing
-								int X3 = 1;//manager.getRobot(2).getXLoc();
-								int Y3 = 7;//manager.getRobot(2).getYLoc();
-								int destX3 = 9;
-								int destY3 = 4;
+								int X3 = manager.getRobot(2).getXLoc();
+								int Y3 = manager.getRobot(2).getYLoc();
+								int destX3 = 11;//manager.getRobot(2).getDestXLoc();
+								int destY3 = 7;//manager.getRobot(2).getDestXLoc();
 								int prevX3 = X3;
 								int prevY3 = Y3;
 								setRobotPos(3,label[Y3][X3]);
