@@ -536,7 +536,7 @@ public class WarehouseWindow {
 	}
 	
 	public void setCoords(JLabel val, int robotId) {
-        String location = "("+ manager.getRobot(robotId).getXLoc() + "," + manager.getRobot(0).getYLoc() + ")";
+        String location = "("+ manager.getRobot(robotId).getXLoc() + "," + manager.getRobot(robotId).getYLoc() + ")";
         val.setText(location);
         int rb = robotId +1;
         log4j.trace("Updated Robot " + rb +  " Position: " + location);
@@ -554,14 +554,6 @@ public class WarehouseWindow {
         int rb = robotId +1;
         
         log4j.trace("Updated Robot " + rb + "'s Current Job");
-	}
-	
-	public void setDrop(JLabel val, int robotId) {
-		String location = "("+ manager.getRobot(robotId).getXDropLoc() + "," + manager.getRobot(0).getYDropLoc() + ")";
-		val.setText(location);
-		int rb = robotId+1;
-		log4j.trace("Updated Robot " + rb +  " Drop Location: " + location);
-		
 	}
 	
 	public void setReward(JLabel val, int robotId) {
