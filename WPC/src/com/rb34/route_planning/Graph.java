@@ -40,7 +40,6 @@ public class Graph implements IGraph {
 
 		// should get the real map here instead of this "real warehouse"
 		gridMap = MapUtils.createRealWarehouse();
-
 		// Add the junctions from the map to the collection of vertices
 		for (int i = 0; i < gridMap.getXSize(); i++)
 			for (int j = 0; j < gridMap.getYSize(); j++)
@@ -147,6 +146,14 @@ public class Graph implements IGraph {
 			return null;
 		}
 
+		if (startVertexId.equals(endVertexId)) {
+			result.setPathCost(0);
+			ArrayList<IVertex> path = new ArrayList<>();
+			path.add(getVertex(startVertexId));
+			result.setPath(path);
+			result.setVisitedVertices(path);
+		}
+
 		BiFunction<IVertex, IVertex, Float> heuristic = new Heuristic();
 		Comparator<IVertex> comparator = new Comparator<IVertex>() {
 			@Override
@@ -215,7 +222,9 @@ public class Graph implements IGraph {
 			@Override
 			public int compare(IVertex o1, IVertex o2) {
 				return sampleGraph.aStar(o1.getLabel().getName(), endVertexId).getPathCost().get()
-						- sampleGraph.aStar(o2.getLabel().getName(), endVertexId).getPathCost().get();
+						+ o1.getLabel().getTimestep()
+						- sampleGraph.aStar(o2.getLabel().getName(), endVertexId).getPathCost().get()
+						- o2.getLabel().getTimestep();
 			}
 		};
 		ArrayList<IVertex> closedList = new ArrayList<>();
@@ -224,21 +233,24 @@ public class Graph implements IGraph {
 			vertex.getLabel().setParentVertex(null);
 			vertex.getLabel().setCost(Integer.MAX_VALUE);
 		}
+
+		int time = robotTimeTracker[robotId];
 		getVertex(startVertexId).getLabel().setCost(0);
+		getVertex(startVertexId).getLabel().setTimestep(time);
 
 		openList.offer(getVertex(startVertexId));
 		boolean targetInClosedList = false;
 
-		int time = robotTimeTracker[robotId];
-		getVertex(startVertexId).getLabel().setTimestep(time);
-
 		while (!openList.isEmpty()) {
 			IVertex currentVertex = openList.poll();
+
 			boolean occupiedNode = false;
 			if (reservationTable.containsKey(currentVertex.getLabel().getName())) {
 				for (ReservationInfo resInfo : reservationTable.get(currentVertex.getLabel().getName())) {
 					if (robotId != resInfo.getRobotId()) {
-						if (Math.abs(resInfo.getReservationTime() - (robotTimeTracker[robotId] + time)) < 2) {
+						if (Math.abs(resInfo.getReservationTime() - (currentVertex.getLabel().getTimestep())) < 2) {
+							logger.debug("Reserved: " + currentVertex.getLabel().getName() + " at time "
+									+ currentVertex.getLabel().getTimestep() + " by " + resInfo.getRobotId());
 							closedList.add(currentVertex);
 							occupiedNode = true;
 							time = openList.peek().getLabel().getTimestep();
@@ -246,6 +258,7 @@ public class Graph implements IGraph {
 					}
 				}
 			}
+
 			if (occupiedNode)
 				continue;
 
@@ -264,6 +277,7 @@ public class Graph implements IGraph {
 				logger.debug("Found path");
 				break;
 			}
+
 			for (IEdge edge : currentVertex.getSuccessors()) {
 				String successorName = edge.getTgt().getLabel().getName();
 				IVertex successor = getVertex(successorName);
@@ -278,30 +292,53 @@ public class Graph implements IGraph {
 				} else if (tentativeCost >= successor.getLabel().getCost())
 					continue;
 			}
+
 			closedList.add(currentVertex);
 			if (currentVertex.getLabel().getName().equals(endVertexId))
 				targetInClosedList = true;
+
 			time++;
+
 		}
+
 		return result;
+
 	}
 
 	public Result hCooperativeAStar(String startVertexId, String endVertexId, int robotId) {
 		Result result = this.aStar(startVertexId, endVertexId, robotId);
-		ArrayList<IVertex> path = result.getPath().get();
-		
+		ArrayList<IVertex> path = new ArrayList<>();
 		String logMessage = "Path for robot #" + robotId;
-		for (IVertex vertex : path) {
-			logMessage += "\n" + vertex.getLabel().getName() + " at time " + vertex.getLabel().getTimestep();
+		int stationaryFor = 0;
+
+		while (!result.getPath().isPresent()) {
+			robotTimeTracker[robotId]++;
+			result = this.aStar(startVertexId, endVertexId, robotId);
+			path.add(getVertex(startVertexId));
+			logMessage += "\n" + startVertexId + " at time " + stationaryFor;
+			stationaryFor++;
+		}
+
+		for (IVertex pathV : result.getPath().get()) {
+			path.add(pathV);
+		}
+
+		for (int i = 0; i < path.size(); i++) {
+			IVertex vertex = path.get(i);
+
+			int time = vertex.getLabel().getTimestep();
+
+			if (i >= stationaryFor)
+				logMessage += "\n" + vertex.getLabel().getName() + " at time " + time;
+
 			if (!reservationTable.containsKey(vertex.getLabel().getName())) {
-				ReservationInfo reservation = new ReservationInfo(robotId,
-						robotTimeTracker[robotId] + path.indexOf(vertex));
+				ReservationInfo reservation = new ReservationInfo(robotId, vertex.getLabel().getTimestep());
 				ArrayList<ReservationInfo> reservations = new ArrayList<>();
 				reservations.add(reservation);
 				reservationTable.put(vertex.getLabel().getName(), reservations);
 			} else {
 				reservationTable.get(vertex.getLabel().getName())
-						.add(new ReservationInfo(robotId, robotTimeTracker[robotId] + path.indexOf(vertex)));
+						.add(new ReservationInfo(robotId, vertex.getLabel().getTimestep()));
 			}
 		}
 		logger.debug(logMessage);
