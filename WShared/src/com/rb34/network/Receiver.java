@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.rb34.message.MessageListener;
+import com.rb34.message.NewPathMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.util.ArrayUtils;
 
@@ -32,10 +33,9 @@ public class Receiver extends Thread
 		{
 			try
 			{
-				int type = inputStream.read();		
-
-				if(type != -1)
-					System.out.println("RECEIVED MESSAGE OF TYPE: " + type);
+				int type = inputStream.read();	
+				
+				System.out.println("Received message type: " + type);
 				
 				if (type == 0)
 				{
@@ -49,16 +49,32 @@ public class Receiver extends Thread
 					byte[] bytes = new byte[length];
 
 					inputStream.read(bytes);
-
+					
 					TestMessage msg = TestMessage.fromByteArray(bytes);
 
 					for (int i = 0; i < listeners.size(); i++)
 					{
 						listeners.get(i).receivedTestMessage(msg);
 					}
-				} else
+				} else if(type == 1)
 				{
+					byte[] lengthBytes = new byte[4];
+					inputStream.read(lengthBytes, 0, 4);
 
+					int length = ArrayUtils.bytesToInt(lengthBytes, 0);
+
+					byte[] bytes = new byte[length];
+
+					inputStream.read(bytes);
+					
+					NewPathMessage msg = NewPathMessage.fromByteArray(bytes);
+
+					for (int i = 0; i < listeners.size(); i++)
+					{
+						listeners.get(i).recievedNewPathMessage(msg);
+					}
+					
+					System.out.println("listeners: " + listeners.size());	
 				}
 
 			} catch (IOException e)

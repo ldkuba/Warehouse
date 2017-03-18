@@ -48,6 +48,7 @@ public class WaitBehavior implements Behavior {
 			counter += 1;
 		}
 
+		screen.printState("PickUps: "+counter);
 		screen.printState("Waiting");
 		
 		if (Button.ESCAPE.isDown()) { // make sure that robot will stop program
