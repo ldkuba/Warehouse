@@ -3,7 +3,11 @@ package com.rb34.route_planning;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
+
+import com.rb34.route_planning.graph_entities.IVertex;
 
 public class GraphTest {
 	@Test
@@ -34,6 +38,17 @@ public class GraphTest {
 	public void testCostToInvalidLocation() {
 		Graph graph = new Graph();
 		assertNull(graph.aStar("0|0", "-1|-5"));
+	}
+	
+	@Test
+	public void testHCA() {
+		Graph graph = new Graph();	
+		graph.hCooperativeAStar("0|1", "0|3", 0).getPath().get();
+		graph.hCooperativeAStar("0|4", "1|0", 1).getPath().get();
+		graph.hCooperativeAStar("2|6", "0|5", 2).getPath().get();
+		graph.hCooperativeAStar("0|3", "0|4", 0).getPath().get();
+
+		
 	}
 
 }
