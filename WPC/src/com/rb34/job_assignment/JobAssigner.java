@@ -14,15 +14,18 @@ import com.rb34.jobInput.Job;
 import com.rb34.network.Master;
 import com.rb34.route_planning.Graph;
 
-public class JobAssigner {
+public class JobAssigner
+{
 	final static Logger logger = Logger.getLogger(JobAssigner.class);
 
 	private PriorityQueue<Job> jobs;
 	private RobotManager robotManager;
 	private ArrayList<Drop> dropLocations;
 	private Graph graph;
-	
-	public JobAssigner(PriorityQueue<Job> jobs, RobotManager rm, ArrayList<Drop> dropLocations) {
+
+	public JobAssigner(PriorityQueue<Job> jobs, RobotManager rm, ArrayList<Drop> dropLocations)
+	{
+
 		logger.debug("Started JobAssigner");
 		this.jobs = jobs;
 		logger.debug("Received jobs");
@@ -34,71 +37,79 @@ public class JobAssigner {
 	}
 
 	public void assignJobs() {
-		// the reason for using dropIndex is to send the robots to different
-		// drop locations if they are available
-		int dropIndex = 0;
-
+		ArrayList<Robot> robots = robotManager.getRobots();
+		
 		// run while there are jobs in the PriorityQueue
 		while (!jobs.isEmpty()) {
 
 			// iterate through every robot and check the status
-			ArrayList<Robot> robots = robotManager.getRobots();
 			for (Robot robot : robots) {
 				if (robot.getRobotStatus() == Status.IDLE) {
 					// get the first job
 					Job job = jobs.poll();
 
-					// select the drop location
-					Drop drop = dropLocations.get(dropIndex);
-					dropIndex++;
-					if (dropIndex == dropLocations.size())
-						dropIndex = 0;
-
 					// sort the items from the job so the path has the shortest
 					// distance
-					ItemSorter itemSorter = new ItemSorter(job, robot.getXLoc(), robot.getYLoc(), drop.getX(),
-							drop.getY());
+					ItemSorter itemSorter = new ItemSorter(job, robot.getXLoc(), robot.getYLoc(), dropLocations);
+					itemSorter.sortItems();
+
 					ArrayList<Item> items = itemSorter.getSortedItems();
+					ArrayList<String> destinations = itemSorter.getDestinations();
 
 					// update the robot data
 					robot.setCurrentJob(job);
 					robot.setRobotStatus(Status.RUNNING);
-					robot.setXDropLoc(drop.getX());
-					robot.setYDropLoc(drop.getY());
 					logger.debug("Gave job " + job.getJobId() + " to robot #" + robots.indexOf(robot));
+
+					// Get coordinates for the first destination
+					String destination = destinations.get(0);
+					destinations.remove(0);
+					robot.setDestinations(destinations);
 
 					// get the first item
 					Item item = items.get(0);
-					items.remove(0);
-					robot.setItemsToPick(items);
+					if (destination.matches(item.getX() + "|" + item.getY())) {
+						items.remove(0);
+						robot.setItemsToPick(items);
+					}
 
 					// start route planning
-					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY(), robot.getRobotId());
+
+					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot.getRobotId());
+
 					logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
-							+ robot.getYLoc() + " to" + item.getX() + "|" + item.getY());
+							+ robot.getYLoc() + " to" + destination);
 
 				}
 
 				if (robot.getRobotStatus() == Status.AT_ITEM) {
-					robot.setRobotStatus(Status.RUNNING);
-
+					
 					ArrayList<Item> items = robot.getItemsToPick();
 
-					// if there are items remaining, send the robot to the next
-					// item, else send it to the drop location
-					if (items.size() > 0) {
-						logger.debug("Robot #" + robots.indexOf(robot) + " is doing job "
-								+ robot.getCurrentJob().getJobId() + " picked an item");
-						Item item = items.get(0);
-						items.remove(0);
-						robot.setItemsToPick(items);
+					ArrayList<String> destinations = robot.getDestinations();
 
-						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY(), robot.getRobotId());
+					// if there are destinations remaining, send the robot to the next one
+					if (destinations.size() > 0) {
+						robot.setRobotStatus(Status.RUNNING);
+						
+						String destination = destinations.get(0);
+						destinations.remove(0);
+						robot.setDestinations(destinations);
+
+						if (items.size() > 0) {
+							Item item = items.get(0);
+							if (destination.matches(item.getX() + "|" + item.getY())) {
+								items.remove(0);
+								robot.setItemsToPick(items);
+							}
+						}
+						
+						logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
+								+ robot.getYLoc() + " to" + destination);
+						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot.getRobotId());
 					} else {
 						logger.debug(
-								"Robot doing job " + robot.getCurrentJob().getJobId() + " is heading to the drop off");
-						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(),
-								robot.getXDropLoc() + "|" + robot.getYDropLoc(), robot.getRobotId());
+								"Robot #" + robot.getRobotId() + " has finished job " + robot.getCurrentJob().getJobId());
 					}
 				}
 			}

@@ -21,6 +21,7 @@ public class Label {
 	// x and y coordinates
 	private int x;
 	private int y;
+	private int timestep;
 
 	public Label() {
 		this.cost = 0;
@@ -70,5 +71,13 @@ public class Label {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+	
+	public void setTimestep(int time) {
+		this.timestep = time;
+	}
+	
+	public int getTimestep() {
+		return this.timestep;
 	}
 }
