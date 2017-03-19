@@ -23,7 +23,7 @@ public class JobAssigner {
 	private Graph graph;
 
 	private Master master;
-	
+
 	public JobAssigner(PriorityQueue<Job> jobs, RobotManager rm, ArrayList<Drop> dropLocations, Master master) {
 		logger.debug("Started JobAssigner");
 		this.jobs = jobs;
@@ -33,16 +33,17 @@ public class JobAssigner {
 		this.dropLocations = dropLocations;
 		logger.debug("Received drop locations");
 		graph = new Graph();
-		
+
 		this.master = master;
 	}
 
 	public void assignJobs() {
+		ArrayList<Robot> robots = robotManager.getRobots();
+		
 		// run while there are jobs in the PriorityQueue
 		while (!jobs.isEmpty()) {
 
 			// iterate through every robot and check the status
-			ArrayList<Robot> robots = robotManager.getRobots();
 			for (Robot robot : robots) {
 				if (robot.getRobotStatus() == Status.IDLE) {
 					// get the first job
@@ -51,45 +52,64 @@ public class JobAssigner {
 					// sort the items from the job so the path has the shortest
 					// distance
 					ItemSorter itemSorter = new ItemSorter(job, robot.getXLoc(), robot.getYLoc(), dropLocations);
+					itemSorter.sortItems();
+
 					ArrayList<Item> items = itemSorter.getSortedItems();
+					ArrayList<String> destinations = itemSorter.getDestinations();
 
 					// update the robot data
 					robot.setCurrentJob(job);
 					robot.setRobotStatus(Status.RUNNING);
 					logger.debug("Gave job " + job.getJobId() + " to robot #" + robots.indexOf(robot));
 
+					// Get coordinates for the first destination
+					String destination = destinations.get(0);
+					destinations.remove(0);
+					robot.setDestinations(destinations);
+
 					// get the first item
 					Item item = items.get(0);
-					items.remove(0);
-					robot.setItemsToPick(items);
+					if (destination.matches(item.getX() + "|" + item.getY())) {
+						items.remove(0);
+						robot.setItemsToPick(items);
+					}
 
 					// start route planning
-					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY(), robot.getRobotId(), master);
+					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot.getRobotId(),
+							master);
 					logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
-							+ robot.getYLoc() + " to" + item.getX() + "|" + item.getY());
+							+ robot.getYLoc() + " to" + destination);
 
 				}
 
 				if (robot.getRobotStatus() == Status.AT_ITEM) {
-					robot.setRobotStatus(Status.RUNNING);
-
+					
 					ArrayList<Item> items = robot.getItemsToPick();
+					ArrayList<String> destinations = robot.getDestinations();
 
-					// if there are items remaining, send the robot to the next
-					// item, else send it to the drop location
-					if (items.size() > 0) {
-						logger.debug("Robot #" + robots.indexOf(robot) + " is doing job "
-								+ robot.getCurrentJob().getJobId() + " picked an item");
-						Item item = items.get(0);
-						items.remove(0);
-						robot.setItemsToPick(items);
+					// if there are destinations remaining, send the robot to the next one
+					if (destinations.size() > 0) {
+						robot.setRobotStatus(Status.RUNNING);
+						
+						String destination = destinations.get(0);
+						destinations.remove(0);
+						robot.setDestinations(destinations);
 
-						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY(), robot.getRobotId(), master);
+						if (items.size() > 0) {
+							Item item = items.get(0);
+							if (destination.matches(item.getX() + "|" + item.getY())) {
+								items.remove(0);
+								robot.setItemsToPick(items);
+							}
+						}
+						
+						logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
+								+ robot.getYLoc() + " to" + destination);
+						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot.getRobotId(),
+								master);
 					} else {
 						logger.debug(
-								"Robot doing job " + robot.getCurrentJob().getJobId() + " is heading to the drop off");
-						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(),
-								robot.getXDropLoc() + "|" + robot.getYDropLoc(), robot.getRobotId(), master);
+								"Robot #" + robot.getRobotId() + " has finished job " + robot.getCurrentJob().getJobId());
 					}
 				}
 			}

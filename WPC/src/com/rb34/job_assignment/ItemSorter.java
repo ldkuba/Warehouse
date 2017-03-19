@@ -2,7 +2,6 @@ package com.rb34.job_assignment;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.*;
@@ -15,25 +14,38 @@ import com.rb34.route_planning.Graph;
 
 public class ItemSorter {
 	final static Logger logger = Logger.getLogger(ItemSorter.class);
-
-	ArrayList<Item> items;
-	ArrayList<Drop> drops;
+	private ArrayList<Item> items;
+	private ArrayList<Integer> orderCount;
+	private ArrayList<Drop> drops;
+	private ArrayList<Item> sortedItems;
+	private ArrayList<String> bestPathCoordinates;
 	private int robotX;
 	private int robotY;
+	
 
 	public ItemSorter(Job job, int rX, int rY, ArrayList<Drop> drops) {
 		logger.debug("Started ItemSorter");
 		items = new ArrayList<>();
+		orderCount = new ArrayList<>();
 		for (IOrder order : job.getOrderList().values()) {
 			items.add((Item) order.getItem());
+			orderCount.add(order.getCount());
 		}
 		this.drops = new ArrayList<>(drops);
 		robotX = rX;
 		robotY = rY;
 	}
-
+	
 	public ArrayList<Item> getSortedItems() {
-		ArrayList<Item> sortedItems = new ArrayList<>();
+		return sortedItems;
+	}
+	
+	public ArrayList<String> getDestinations() {
+		return bestPathCoordinates;
+	}
+
+	public void sortItems() {
+		sortedItems = new ArrayList<>();
 		ArrayList<Integer> indexes = new ArrayList<>();
 		Graph graph = new Graph();
 		int numberOfDropLocations = drops.size();
@@ -62,14 +74,15 @@ public class ItemSorter {
 		logger.debug("Generated all possible permutations of items");
 
 		ArrayList<Integer> bestPermutation = null;
-		ArrayList<String> bestPathCoordinates = null;
+		bestPathCoordinates = null;
+	
 
 		ArrayList<String> pathCoordinates = new ArrayList<>();
 		int shortestDistance = Integer.MAX_VALUE;
 
 		for (ArrayList<Integer> permutation : permutations) {
 			int distance = 0;
-			float weight = 0;
+			float weight = 0f;
 
 			pathCoordinates.clear();
 			pathCoordinates.add(robotX + "|" + robotY);
@@ -77,13 +90,14 @@ public class ItemSorter {
 
 				if (i == 0) {
 					distance += distances[numberOfItems][permutation.get(i)];
-					weight += items.get(permutation.get(i)).getWeight();
+					weight += orderCount.get(permutation.get(i)) * items.get(permutation.get(i)).getWeight();
 					pathCoordinates
 							.add(items.get(permutation.get(i)).getX() + "|" + items.get(permutation.get(i)).getY());
 
 				} else if (weight + items.get(permutation.get(i)).getWeight() < 50f) {
 					distance += distances[permutation.get(i - 1)][permutation.get(i)];
-					weight += items.get(permutation.get(i)).getWeight();
+					weight += orderCount.get(permutation.get(i)) * items.get(permutation.get(i)).getWeight();
+					
 					pathCoordinates
 							.add(items.get(permutation.get(i)).getX() + "|" + items.get(permutation.get(i)).getY());
 
@@ -104,6 +118,7 @@ public class ItemSorter {
 					pathCoordinates.add(items.get(permutation.get(i)).getX() + "|" + items.get(permutation.get(i)).getY());
 
 				}
+				
 			}
 
 			int shortestPitStopDistance = Integer.MAX_VALUE;
@@ -135,13 +150,13 @@ public class ItemSorter {
 		}
 		logger.debug(logMessage);
 
+		bestPathCoordinates.remove(0);
 		logMessage = "The coordinates are: ";
 		for (String coordinates : bestPathCoordinates) {
 			logMessage += coordinates + " ";
 		}
 		logger.debug(logMessage);
 
-		return sortedItems;
 	}
 
 	// create every permutation for the order of items (Yay brute force)
