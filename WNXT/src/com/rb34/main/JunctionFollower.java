@@ -5,8 +5,13 @@ import java.util.ArrayList;
 import com.rb34.behaviours.LineFollowing;
 import com.rb34.behaviours.TurnBehavior;
 import com.rb34.behaviours.WaitBehavior;
+import com.rb34.dummy.TrialMainNxt;
 import com.rb34.general.PathChoices;
 import com.rb34.message.MessageListener;
+import com.rb34.message.NewPathMessage;
+import com.rb34.message.RobotInitMessage;
+import com.rb34.message.RobotStatusMessage;
+import com.rb34.message.TestMessage;
 import com.rb34.network.Client;
 import com.rb34.robot_interface.RobotScreen;
 
@@ -15,9 +20,10 @@ import lejos.nxt.SensorPort;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
-public class JunctionFollower
+public class JunctionFollower implements MessageListener
 {
-
+	public static int RobotId;
+	
 	private Arbitrator arbitrator;
 
 	private ArrayList<PathChoices> path; // Received via bluetooth;
@@ -31,7 +37,7 @@ public class JunctionFollower
 	private WaitBehavior waitBehavior;
 	private static RobotScreen screen;
 
-	public JunctionFollower(RobotScreen _screen, Client client)
+	public JunctionFollower(RobotScreen _screen)
 	{
 		this.screen = _screen;
 		lightSensorR = new LightSensor(SensorPort.S1);
@@ -56,7 +62,7 @@ public class JunctionFollower
 
 		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen);
 		
-		client.addListener(turnBehavior);
+		TrialMainNxt.client.addListener(this);
 		
 		// turnBehavior.setPath(path1);
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
@@ -67,4 +73,27 @@ public class JunctionFollower
 		arbitrator.start();
 	}
 
+	@Override
+	public void recievedTestMessage(TestMessage msg)
+	{
+		
+	}
+
+	@Override
+	public void recievedNewPathMessage(NewPathMessage msg)
+	{
+		turnBehavior.setPath(msg.getCommands());
+	}
+
+	@Override
+	public void recievedRobotStatusMessage(RobotStatusMessage msg)
+	{
+		
+	}
+
+	@Override
+	public void recievedRobotInitMessage(RobotInitMessage msg)
+	{
+		RobotId = msg.getRobotId();
+	}
 }

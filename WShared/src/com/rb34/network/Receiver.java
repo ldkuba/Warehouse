@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
+import com.rb34.message.RobotInitMessage;
 import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.util.ArrayUtils;
@@ -55,7 +56,7 @@ public class Receiver extends Thread
 
 					for (int i = 0; i < listeners.size(); i++)
 					{
-						listeners.get(i).receivedTestMessage(msg);
+						listeners.get(i).recievedTestMessage(msg);
 					}
 				} else if(type == 1)
 				{
@@ -92,6 +93,23 @@ public class Receiver extends Thread
 					for (int i = 0; i < listeners.size(); i++)
 					{
 						listeners.get(i).recievedRobotStatusMessage(msg);
+					}
+				} else if(type == 3)
+				{
+					byte[] lengthBytes = new byte[4];
+					inputStream.read(lengthBytes, 0, 4);
+
+					int length = ArrayUtils.bytesToInt(lengthBytes, 0);
+
+					byte[] bytes = new byte[length];
+
+					inputStream.read(bytes);
+					
+					RobotInitMessage msg = RobotInitMessage.fromByteArray(bytes);
+					
+					for (int i = 0; i < listeners.size(); i++)
+					{
+						listeners.get(i).recievedRobotInitMessage(msg);
 					}
 				}
 

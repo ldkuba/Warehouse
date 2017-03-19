@@ -1,13 +1,26 @@
 package com.rb34.connection;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
 import com.rb34.message.Message;
 import com.rb34.message.MessageListener;
+import com.rb34.network.Receiver;
+import com.rb34.network.Sender;
 
 import lejos.pc.comm.NXTComm;
 import lejos.pc.comm.NXTCommException;
 
 public class VirtualConnection implements Connection
 {
+	private DataInputStream inputStream;
+	private DataOutputStream outputStream;
+	
+	private Sender sender;
+	private Receiver receiver;
+	
+	private boolean running = true;
+	
 	public VirtualConnection()
 	{
 		
@@ -34,15 +47,13 @@ public class VirtualConnection implements Connection
 	@Override
 	public void addListener(MessageListener listener)
 	{
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void send(Message msg)
 	{
-		// TODO Auto-generated method stub
-		
+			
 	}
 	
 }

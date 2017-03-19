@@ -2,11 +2,10 @@ package com.rb34.behaviours;
 
 import java.util.ArrayList;
 
+import com.rb34.dummy.TrialMainNxt;
 import com.rb34.general.PathChoices;
-import com.rb34.message.MessageListener;
-import com.rb34.message.NewPathMessage;
+import com.rb34.main.JunctionFollower;
 import com.rb34.message.RobotStatusMessage;
-import com.rb34.message.TestMessage;
 import com.rb34.robot_interface.RobotScreen;
 
 import lejos.nxt.Button;
@@ -15,7 +14,7 @@ import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
-public class TurnBehavior implements Behavior, MessageListener {
+public class TurnBehavior implements Behavior {
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
 	private DifferentialPilot pilot;
@@ -39,7 +38,7 @@ public class TurnBehavior implements Behavior, MessageListener {
 		lightSensorR = right;
 		lightSensorL = left;
 		this.screen = _screen;
-
+		
 		path = new ArrayList<>();
 		path.clear();
 		
@@ -82,7 +81,7 @@ public class TurnBehavior implements Behavior, MessageListener {
 		screen.printLocation(x, y);
 		supressed = false;
 		pilot.stop();
-
+		
 		readingL = lightSensorL.getLightValue();
 		readingR = lightSensorR.getLightValue();
 
@@ -95,6 +94,14 @@ public class TurnBehavior implements Behavior, MessageListener {
 				actionDone = false;
 			}
 		}
+		
+		RobotStatusMessage msg = new RobotStatusMessage();
+		msg.setRobotId(JunctionFollower.RobotId);
+		msg.setX(x);
+		msg.setY(y);
+		msg.setOnJob(true);
+		msg.setOnRoute(!actionDone);
+		TrialMainNxt.client.send(msg);
 
 		switch (turnDirection) {
 		case 0:
@@ -232,23 +239,5 @@ public class TurnBehavior implements Behavior, MessageListener {
 			screen.printState("Rotate");
 			break;
 		}
-	}
-
-	@Override
-	public void receivedTestMessage(TestMessage msg) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void recievedNewPathMessage(NewPathMessage msg) {
-		this.path = msg.getCommands();
-		
-	}
-
-	@Override
-	public void recievedRobotStatusMessage(RobotStatusMessage msg) {
-		// TODO Auto-generated method stub
-		
 	}
 }

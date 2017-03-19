@@ -15,6 +15,8 @@ import java.util.PriorityQueue;
 
 public class Start {
 
+	public static Master master;
+	
 	public static void main(String[] args) {
 		ArrayList<Job> jobs = new ArrayList<>();
 		Job job1 = new Job("1000");
@@ -33,21 +35,21 @@ public class Start {
 		drops.add(drop);
 		
 		
-		Master master = new Master();
+		master = new Master();
 		master.start();
 		
 		Robot robot = new Robot();
 		robot.setXLoc(0);
 		robot.setYLoc(0);
 		robot.setRobotId(0);
-		
+			
 	
 		RobotManager rm = new RobotManager();
 		rm.addRobot(robot);
 		
 		master.addListener(rm);
 	
-		JobAssigner jobAssigner = new JobAssigner(orderedJobs, rm, drops, master);
+		JobAssigner jobAssigner = new JobAssigner(orderedJobs, rm, drops);
 		jobAssigner.assignJobs();	// Runs Job_Assignment
 		try {
 			master.join();

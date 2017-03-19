@@ -21,10 +21,8 @@ public class JobAssigner {
 	private RobotManager robotManager;
 	private ArrayList<Drop> dropLocations;
 	private Graph graph;
-
-	private Master master;
 	
-	public JobAssigner(PriorityQueue<Job> jobs, RobotManager rm, ArrayList<Drop> dropLocations, Master master) {
+	public JobAssigner(PriorityQueue<Job> jobs, RobotManager rm, ArrayList<Drop> dropLocations) {
 		logger.debug("Started JobAssigner");
 		this.jobs = jobs;
 		logger.debug("Received jobs");
@@ -33,8 +31,6 @@ public class JobAssigner {
 		this.dropLocations = dropLocations;
 		logger.debug("Received drop locations");
 		graph = new Graph();
-		
-		this.master = master;
 	}
 
 	public void assignJobs() {
@@ -77,7 +73,7 @@ public class JobAssigner {
 					robot.setItemsToPick(items);
 
 					// start route planning
-					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY(), robot.getRobotId(), master);
+					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY(), robot.getRobotId());
 					logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
 							+ robot.getYLoc() + " to" + item.getX() + "|" + item.getY());
 
@@ -97,12 +93,12 @@ public class JobAssigner {
 						items.remove(0);
 						robot.setItemsToPick(items);
 
-						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY(), robot.getRobotId(), master);
+						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), item.getX() + "|" + item.getY(), robot.getRobotId());
 					} else {
 						logger.debug(
 								"Robot doing job " + robot.getCurrentJob().getJobId() + " is heading to the drop off");
 						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(),
-								robot.getXDropLoc() + "|" + robot.getYDropLoc(), robot.getRobotId(), master);
+								robot.getXDropLoc() + "|" + robot.getYDropLoc(), robot.getRobotId());
 					}
 				}
 			}

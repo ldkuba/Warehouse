@@ -5,6 +5,7 @@ import com.rb34.util.ArrayUtils;
 public class RobotStatusMessage implements Message
 {
 	private final byte type = 2;
+	private int robotId;
 	
 	private int x, y;
 	private boolean isOnRoute, isOnJob;
@@ -14,6 +15,16 @@ public class RobotStatusMessage implements Message
 
 	}
 
+	public int getRobotId()
+	{
+		return robotId;
+	}
+
+	public void setRobotId(int robotId)
+	{
+		this.robotId = robotId;
+	}
+	
 	public int getX()
 	{
 		return x;
@@ -57,14 +68,19 @@ public class RobotStatusMessage implements Message
 	@Override
 	public byte[] toByteArray()
 	{
-		int lengthInBytes = 4 + 4 + 1;
+		int lengthInBytes = 4 + 4 + 4 + 1;
 		
 		byte[] output = { type };
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(lengthInBytes));
 		
+		//ROBOT ID
+		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(robotId));
+		
+		//POSITION
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(x));
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(y));
 		
+		//FLAGS
 		byte flags = (byte) (((isOnRoute?1:0) << 1) + (isOnJob?1:0));
 		
 		output = ArrayUtils.concat(output, new byte[]{ flags });
@@ -76,6 +92,11 @@ public class RobotStatusMessage implements Message
 	{
 		RobotStatusMessage msg = new RobotStatusMessage();
 		int index = 0;
+		
+		// ROBOT ID
+		int robotId = ArrayUtils.bytesToInt(bytes, index);
+		index += 4;
+		msg.setRobotId(robotId);
 		
 		// X
 		int xPos = ArrayUtils.bytesToInt(bytes, index);

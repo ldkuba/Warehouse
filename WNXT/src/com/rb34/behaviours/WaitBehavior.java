@@ -1,18 +1,12 @@
 package com.rb34.behaviours;
 
-import java.util.ArrayList;
-import java.util.Random;
+import com.rb34.message.RobotStatusMessage;
+import com.rb34.robot_interface.RobotScreen;
 
 import lejos.nxt.Button;
-import lejos.nxt.LCD;
-import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
-
-import com.rb34.behaviours.TurnBehavior;
-import com.rb34.general.PathChoices;
-import com.rb34.robot_interface.RobotScreen;
 
 public class WaitBehavior implements Behavior {
 	private DifferentialPilot pilot;

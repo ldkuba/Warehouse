@@ -56,7 +56,7 @@ public class Graph implements IGraph {
 		logger.debug("Generated graph from map");
 	}
 
-	public void executeRoute(String startVertexId, String endVertexId, int robotId, Master master) {
+	public void executeRoute(String startVertexId, String endVertexId, int robotId) {
 		ArrayList<IVertex> path = aStar(startVertexId, endVertexId).getPath().get();
 
 		String logMessage = "";
@@ -64,7 +64,7 @@ public class Graph implements IGraph {
 			logMessage += vertex.getLabel().getName() + " ";
 		}
 		logger.debug("The generated path is: " + logMessage);
-		Execute execute = new Execute(master);
+		Execute execute = new Execute();
 		execute.runRoute(path, robotId);
 	}
 

@@ -18,12 +18,24 @@ public class Robot implements IRobot{
 	private Status state;
 	private Job job;
 	private ArrayList<Item> itemList;
+	private ArrayList<String> destinations;
 
 	public Robot(){
 		this.xLoc = 0;
 		this.yLoc = 0;
 		this.state = Status.IDLE;
 		this.job = null;
+		this.destinations = new ArrayList<>();
+	}
+	
+	public ArrayList<String> getDestinations()
+	{
+		return destinations;
+	}
+
+	public void setDestinations(ArrayList<String> destinations)
+	{
+		this.destinations = destinations;
 	}
 
 	public void recievedMessge(){

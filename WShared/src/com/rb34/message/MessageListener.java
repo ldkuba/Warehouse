@@ -2,9 +2,11 @@ package com.rb34.message;
 
 public interface MessageListener
 {
-	void receivedTestMessage(TestMessage msg);
+	void recievedTestMessage(TestMessage msg);
 	
 	void recievedNewPathMessage(NewPathMessage msg);
 	
 	void recievedRobotStatusMessage(RobotStatusMessage msg);
+	
+	void recievedRobotInitMessage(RobotInitMessage msg);
 }
