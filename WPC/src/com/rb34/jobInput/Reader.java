@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 public class Reader {
 
 	static Logger logger = Logger.getLogger(Reader.class);
-	private String FILE_PATH = "myDocs/";
+	private static String FILE_PATH = "myDocs/";
 
-	public ArrayList<Drop> createDropList() {
+	public static ArrayList<Drop> createDropList() {
 		BufferedReader reader = null;
 		ArrayList<Drop> dropList = new ArrayList<Drop>();
 
@@ -42,7 +42,7 @@ public class Reader {
 		return null;
 	}
 
-	public ArrayList<Item> readItemList() {
+	public static ArrayList<Item> readItemList() {
 		BufferedReader reader = null;
 		ArrayList<Item> itemList = new ArrayList<Item>();
 		try {
@@ -69,7 +69,7 @@ public class Reader {
 		return itemList;
 	}
 
-	public void readLocations(ArrayList<Item> itemList) {
+	public static void readLocations(ArrayList<Item> itemList) {
 		try {
 			BufferedReader reader = null;
 			File fileLoc = new File(FILE_PATH + "locations.csv");
@@ -95,7 +95,7 @@ public class Reader {
 		}
 	}
 
-	public ArrayList<Job> readJobs(ArrayList<Item> itemList, String fileName) {
+	public static ArrayList<Job> readJobs(ArrayList<Item> itemList, String fileName) {
 		try {
 			BufferedReader reader = null;
 			ArrayList<Job> jobList = new ArrayList<Job>();
@@ -140,7 +140,7 @@ public class Reader {
 		return null;
 	}
 
-	public void readCancellations(ArrayList<Job> jobList) {
+	public static void readCancellations(ArrayList<Job> jobList) {
 		try {
 			BufferedReader reader = null;
 			File fileCancellations = new File(FILE_PATH + "cancellations.csv");
@@ -171,23 +171,21 @@ public class Reader {
 		}
 	}
 
-	public ArrayList<Job> createJobList() {
-		Reader reader = new Reader();
-		ArrayList <Item> itemList = reader.readItemList();
-		reader.readLocations(itemList);
+	public static ArrayList<Job> createJobList() {
+		ArrayList <Item> itemList = readItemList();
+		readLocations(itemList);
 		
-		ArrayList <Job> jobList = reader.readJobs(itemList, "jobs.csv");
-		reader.readCancellations(jobList);
+		ArrayList <Job> jobList = readJobs(itemList, "jobs.csv");
+		readCancellations(jobList);
 		logger.debug("Job list complete");
 		return jobList;
 	}
 	
-	public ArrayList<Job> createSampleJobList(){
-		Reader reader = new Reader();
-		ArrayList <Item> itemList = reader.readItemList();
-		reader.readLocations(itemList);
+	public static ArrayList<Job> createSampleJobList(){
+		ArrayList <Item> itemList = readItemList();
+		readLocations(itemList);
 		
-		ArrayList <Job> jobList = reader.readJobs(itemList, "customJobs.csv");
+		ArrayList <Job> jobList = readJobs(itemList, "customJobs.csv");
 		for(Job job: jobList){
 			job.setCancelled(false);
 		}
