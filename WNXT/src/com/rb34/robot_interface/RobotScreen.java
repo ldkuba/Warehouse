@@ -26,7 +26,7 @@ public class RobotScreen {
 	
 	// Main info when moving
 	public void printEverything () {
-		LCD.clear();
+		/*LCD.clear();
 		LCD.drawString("Current state:", 0, 0);
 		LCD.drawString(state, 0, 1);
 		if (x == -1 && y == -1) {
@@ -36,7 +36,7 @@ public class RobotScreen {
 			LCD.drawString("X:Y", 0, 2);
 			LCD.drawString("X:Y -> " + x + ":" + y, 0, 3);
 		}
-		LCD.drawString("Weight: " + weight + "/" + maxWeight, 0, 4);
+		LCD.drawString("Weight: " + weight + "/" + maxWeight, 0, 4);*/
 	}
 	
 	public void updateLocation (int x, int y) {

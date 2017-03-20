@@ -29,11 +29,17 @@ public class Master extends Thread
 			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "NiXTy", "001653157A48"));
 			connections.add(connection1);
 			connection1.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
-/*
+
 			BluetoothConnection connection2 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "NXT", "0016531817C1"));
 			connections.add(connection2);
 			connection2.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
-*/		
+			/*
+			BluetoothConnection connection3 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "WALL-E", "001653115A7E"));
+			connections.add(connection3);
+			connection3.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
+			*/
+			System.out.println("ALL CONNECTED !!!!!!!");
+			
 			ArrayList<Thread> threads = new ArrayList<>(connections.size());
 
 			for (Connection connection : connections)
@@ -59,7 +65,7 @@ public class Master extends Thread
 
 		} catch (NXTCommException e)
 		{
-			e.printStackTrace();
+			System.out.println("FAILED TO CONNECT TO ROBOT");
 		}
 	}
 

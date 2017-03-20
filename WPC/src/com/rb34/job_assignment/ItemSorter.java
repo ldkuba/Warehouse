@@ -35,6 +35,7 @@ public class ItemSorter {
 		this.drops = new ArrayList<>(drops);
 		robotX = rX;
 		robotY = rY;
+		logger.debug("Job id: " + job.getJobId());
 	}
 	
 	public ArrayList<Item> getSortedItems() {

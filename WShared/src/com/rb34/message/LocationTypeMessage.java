@@ -8,7 +8,7 @@ public class LocationTypeMessage implements Message
 	
 	private int robotId;
 	
-	private byte locationType; // DROPOFF = 1,   ITEM = 0
+	private int locationType; // DROPOFF = 1,   ITEM = 0
 	
 	private String itemId = "";
 	private int itemCount;
@@ -17,12 +17,12 @@ public class LocationTypeMessage implements Message
 	{
 	}
 	
-	public byte getLocationType()
+	public int getLocationType()
 	{
 		return locationType;
 	}
 
-	public void setLocationType(byte locationType)
+	public void setLocationType(int locationType)
 	{
 		this.locationType = locationType;
 	}
@@ -60,7 +60,7 @@ public class LocationTypeMessage implements Message
 	@Override
 	public byte[] toByteArray()
 	{
-		int lengthInBytes = 4 + 1 + itemId.length()*2 + 4;
+		int lengthInBytes = 4 + 4 + 4 + itemId.length()*2 + 4;
 
 		// GENERAL MESSAGE PARAMS
 		byte[] output = { type };
@@ -70,7 +70,7 @@ public class LocationTypeMessage implements Message
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(robotId));
 		
 		// LOCATION TYPE
-		output = ArrayUtils.concat(output, new byte[]{locationType});
+		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(locationType));
 		
 		// ITEM ID
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(2 * itemId.length()));
@@ -93,8 +93,8 @@ public class LocationTypeMessage implements Message
 		msg.setRobotId(robotId);
 		
 		//LOCATION TYPE
-		byte locationType = bytes[index];
-		index += 1;
+		int locationType = ArrayUtils.bytesToInt(bytes, index);
+		index += 4;
 		msg.setLocationType(locationType);
 		
 		// ITEM ID
@@ -104,6 +104,8 @@ public class LocationTypeMessage implements Message
 		index += idLength;
 		String itemId = ArrayUtils.bytesToString(idBytes);	
 		msg.setItemId(itemId);
+		
+		
 		
 		//ITEM COUNT
 		int itemCount = ArrayUtils.bytesToInt(bytes, index);

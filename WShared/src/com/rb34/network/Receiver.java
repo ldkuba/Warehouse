@@ -114,6 +114,8 @@ public class Receiver extends Thread
 					}
 				} else if(type == 4)
 				{
+					//System
+					
 					byte[] lengthBytes = new byte[4];
 					inputStream.read(lengthBytes, 0, 4);
 
@@ -122,6 +124,8 @@ public class Receiver extends Thread
 					byte[] bytes = new byte[length];
 
 					inputStream.read(bytes);
+					
+					
 					
 					LocationTypeMessage msg = LocationTypeMessage.fromByteArray(bytes);
 					

@@ -14,6 +14,7 @@ import lejos.nxt.Motor;
 import lejos.nxt.Sound;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
+import lejos.util.Delay;
 
 public class TurnBehavior implements Behavior
 {
@@ -61,6 +62,11 @@ public class TurnBehavior implements Behavior
 		this.path = path;
 	}
 
+	public ArrayList<PathChoices> getPath()
+	{
+		return this.path;
+	}
+	
 	public boolean rightOnBlack()
 	{
 		if (lightSensorR.getLightValue() <= THRESHOLD)
@@ -98,6 +104,12 @@ public class TurnBehavior implements Behavior
 	@Override
 	public void action()
 	{
+		
+		//turnDirection = 4;
+		
+		screen.updateState("Path size: "+path.size());
+		screen.updateState("Path size: "+path.size());
+		screen.updateState("Path size: "+path.size());
 		supressed = false;
 		pilot.stop();
 
@@ -112,15 +124,15 @@ public class TurnBehavior implements Behavior
 			{
 				// Sound.beep();
 				actionDone = true;
+				
 			} else
 			{
-				screen.updateLocation(x, y);
-				
+				//screen.updateLocation(x, y);
 				turnDirection = path.get(0).ordinal();
 				path.remove(0);	
 			}
 		}
-
+		
 		switch (turnDirection)
 		{
 		case 0:
@@ -153,6 +165,8 @@ public class TurnBehavior implements Behavior
 			}
 		}
 
+		
+		
 		RobotStatusMessage msg = new RobotStatusMessage();
 		msg.setRobotId(JunctionFollower.RobotId);
 		msg.setX(x);
@@ -161,6 +175,11 @@ public class TurnBehavior implements Behavior
 		msg.setOnRoute(!actionDone);
 		msg.setWaitingForNewPath(false);
 		TrialMainNxt.client.send(msg);
+		
+		if (actionDone) {
+			//Sound.beep();
+			System.out.println("TOLD YOU!!!");		
+		}
 
 		while (!supressed && pilot.isMoving())
 		{

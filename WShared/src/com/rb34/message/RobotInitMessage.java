@@ -47,7 +47,7 @@ public class RobotInitMessage implements Message
 	@Override
 	public byte[] toByteArray()
 	{
-		int lengthInBytes = 4;
+		int lengthInBytes = 4 + 4 + 4;
 
 		byte[] output = { type };
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(lengthInBytes));

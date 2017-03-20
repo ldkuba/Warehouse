@@ -69,16 +69,7 @@ public class RobotManager implements IRobotManager, MessageListener
 		{
 			getRobot(msg.getRobotId()).setRobotStatus(Status.RUNNING);
 		}else
-		{
-			System.out.println(msg.isWaitingForNewPath());
-			System.out.println(msg.isWaitingForNewPath());
-			System.out.println(msg.isWaitingForNewPath());
-			System.out.println(msg.isWaitingForNewPath());
-			System.out.println(msg.isWaitingForNewPath());
-			System.out.println(msg.isWaitingForNewPath());
-			System.out.println(msg.isWaitingForNewPath());
-			System.out.println(msg.isWaitingForNewPath());
-			
+		{			
 			if(msg.isWaitingForNewPath())
 			{
 				getRobot(msg.getRobotId()).setRobotStatus(Status.AT_ITEM);

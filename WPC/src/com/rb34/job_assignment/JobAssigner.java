@@ -70,7 +70,11 @@ public class JobAssigner
 
 					// get the first item
 					Item item = items.get(0);
-					if (destination.matches(item.getX() + "|" + item.getY())) {
+					System.out.println(destination);
+					System.out.println(item.getX() + "|" + item.getY());
+					System.out.println(destination.equals(item.getX() + "|" + item.getY()));
+					if (destination.equals(item.getX() + "|" + item.getY())) {
+						System.out.println("got here");
 						robot.setCurrentItem(item);
 						items.remove(0);
 						robot.setItemsToPick(items);
@@ -80,7 +84,7 @@ public class JobAssigner
 
 					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot.getRobotId());
 
-					logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
+					logger.debug("Sent robot #" + robot.getRobotId() + " from " + robot.getXLoc() + "|"
 							+ robot.getYLoc() + " to" + destination);
 
 				}
@@ -101,7 +105,7 @@ public class JobAssigner
 
 						if (items.size() > 0) {
 							Item item = items.get(0);
-							if (destination.matches(item.getX() + "|" + item.getY())) {
+							if (destination.equals(item.getX() + "|" + item.getY())) {
 								robot.setCurrentItem(item);
 								items.remove(0);
 								robot.setItemsToPick(items);

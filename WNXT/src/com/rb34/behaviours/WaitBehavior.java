@@ -1,11 +1,14 @@
 package com.rb34.behaviours;
 
+import java.io.PrintStream;
+
 import com.rb34.message.RobotStatusMessage;
 import com.rb34.robot_interface.RobotScreen;
 
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.Sound;
+import lejos.nxt.comm.RConsole;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
@@ -16,7 +19,7 @@ public class WaitBehavior implements Behavior
 	private RobotScreen screen;
 	private boolean supressed;
 	private int counter;
-
+	
 	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen)
 	{
 		this.behavior = _behavior;
@@ -31,6 +34,22 @@ public class WaitBehavior implements Behavior
 	@Override
 	public boolean takeControl()
 	{
+		//System.out.println("Path len: " + behavior.getPath().size());
+		
+		if(behavior.checkIfNoRoute())
+		{
+			//Sound.beep();
+			
+			try
+			{
+				Thread.sleep(1000);
+			} catch (InterruptedException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		return behavior.checkIfNoRoute();
 	}
 
@@ -39,21 +58,22 @@ public class WaitBehavior implements Behavior
 	{
 		supressed = false;
 		pilot.stop();
+		
 		if (Button.ENTER.isDown())
 		{
 			counter += 1;
 		}
+		
+		System.out.println("test");
 
-		screen.itemPickUp(5, 1.4f);
-		screen.updateState("Waiting");
+		//screen.itemPickUp(5, 1.4f);
+		//screen.updateState("Waiting");
 
-		while (!Button.ESCAPE.isDown())
-		{ // make sure that robot will stop program
-			// if escape button is pressed.
-			Sound.beep();
+		if (!Button.ESCAPE.isDown())
+		{ 
+			
 		}
 		
-		System.exit(0);
 		suppress();
 
 	}
