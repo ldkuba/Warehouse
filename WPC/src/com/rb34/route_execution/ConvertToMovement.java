@@ -38,7 +38,7 @@ public class ConvertToMovement {
 						} else if(Y < prevY) {
 							movement.add(PathChoices.ROTATE);
 							RobotHeadings.setHeading1(Headings.MINUS_Y);
-						}	
+						} 
 					} else if (Y == prevY) {
 						if(X > prevX) {
 							movement.add(PathChoices.RIGHT);
@@ -47,7 +47,9 @@ public class ConvertToMovement {
 							movement.add(PathChoices.LEFT);
 							RobotHeadings.setHeading1(Headings.MINUS_X);
 						}
-					}		
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
+					}
 				} else if(RobotHeadings.getHeading1() == Headings.PLUS_X) {
 					if(X == prevX){
 						if(Y > prevY) {
@@ -65,6 +67,8 @@ public class ConvertToMovement {
 							movement.add(PathChoices.ROTATE);					
 							RobotHeadings.setHeading1(Headings.MINUS_X);
 						}
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
 					}		
 				} else if(RobotHeadings.getHeading1() == Headings.MINUS_Y) {
 					if(X == prevX) {
@@ -83,6 +87,8 @@ public class ConvertToMovement {
 							movement.add(PathChoices.RIGHT);
 							RobotHeadings.setHeading1(Headings.MINUS_X);
 						}
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
 					}	
 				} else if(RobotHeadings.getHeading1() == Headings.MINUS_X) {
 					if(X == prevX) {	
@@ -94,16 +100,18 @@ public class ConvertToMovement {
 							RobotHeadings.setHeading1(Headings.MINUS_Y);
 						}
 					} else if(Y == prevY) {
-							if(X > prevX) {
-								movement.add(PathChoices.ROTATE);
-								RobotHeadings.setHeading1(Headings.PLUS_X);
-							} else if(X < prevX) {
-								movement.add(PathChoices.FORWARD);
-								RobotHeadings.setHeading1(Headings.MINUS_X);
-							}
+						if(X > prevX) {
+							movement.add(PathChoices.ROTATE);
+							RobotHeadings.setHeading1(Headings.PLUS_X);
+						} else if(X < prevX) {
+							movement.add(PathChoices.FORWARD);
+							RobotHeadings.setHeading1(Headings.MINUS_X);
+						}
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
 					}
 					
-				}
+				} 
 			} else if(ID==1) {
 				if(RobotHeadings.getHeading2() == Headings.PLUS_Y) {
 					if(X == prevX) {
@@ -122,6 +130,8 @@ public class ConvertToMovement {
 							movement.add(PathChoices.LEFT);
 							RobotHeadings.setHeading2(Headings.MINUS_X);
 						}
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
 					}		
 				} else if(RobotHeadings.getHeading2() == Headings.PLUS_X) {
 					if(X == prevX){
@@ -140,6 +150,8 @@ public class ConvertToMovement {
 							movement.add(PathChoices.ROTATE);					
 							RobotHeadings.setHeading2(Headings.MINUS_X);
 						}
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
 					}		
 				} else if(RobotHeadings.getHeading2() == Headings.MINUS_Y) {
 					if(X == prevX) {
@@ -158,6 +170,8 @@ public class ConvertToMovement {
 							movement.add(PathChoices.RIGHT);
 							RobotHeadings.setHeading2(Headings.MINUS_X);
 						}
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
 					}	
 				} else if(RobotHeadings.getHeading2() == Headings.MINUS_X) {
 					if(X == prevX) {	
@@ -176,9 +190,11 @@ public class ConvertToMovement {
 								movement.add(PathChoices.FORWARD);
 								RobotHeadings.setHeading2(Headings.MINUS_X);
 							}
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
 					}
 					
-				}
+				} 
 			} else if(ID==2) {
 				if(RobotHeadings.getHeading3() == Headings.PLUS_Y) {
 					if(X == prevX) {
@@ -197,6 +213,8 @@ public class ConvertToMovement {
 							movement.add(PathChoices.LEFT);
 							RobotHeadings.setHeading3(Headings.MINUS_X);
 						}
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
 					}		
 				} else if(RobotHeadings.getHeading3() == Headings.PLUS_X) {
 					if(X == prevX){
@@ -215,6 +233,8 @@ public class ConvertToMovement {
 							movement.add(PathChoices.ROTATE);					
 							RobotHeadings.setHeading3(Headings.MINUS_X);
 						}
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
 					}		
 				} else if(RobotHeadings.getHeading3() == Headings.MINUS_Y) {
 					if(X == prevX) {
@@ -233,6 +253,8 @@ public class ConvertToMovement {
 							movement.add(PathChoices.RIGHT);
 							RobotHeadings.setHeading3(Headings.MINUS_X);
 						}
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
 					}	
 				} else if(RobotHeadings.getHeading3() == Headings.MINUS_X) {
 					if(X == prevX) {	
@@ -251,9 +273,11 @@ public class ConvertToMovement {
 								movement.add(PathChoices.FORWARD);
 								RobotHeadings.setHeading3(Headings.MINUS_X);
 							}
+					} else if(X == prevX && Y == prevY)	{
+						movement.add(PathChoices.STAY);
 					}
 					
-				}
+				} 
 			}		
 			prevX = X;
 			prevY = Y;
