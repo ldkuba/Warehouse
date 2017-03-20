@@ -33,6 +33,7 @@ public class Reader {
 				Drop newDropLoc = new Drop(xLoc, yLoc);
 				dropList.add(newDropLoc);
 			}
+			logger.debug("Reading drops files complete - Drop List created");
 			reader.close();
 			return dropList;
 		} catch (IOException e) {
@@ -58,6 +59,7 @@ public class Reader {
 				itemList.add(newItem);
 				
 			}
+			logger.debug("Reading item file complete - Item  List created");
 			reader.close();
 			return itemList;
 			
@@ -86,6 +88,7 @@ public class Reader {
 				i++;
 
 			}
+			logger.debug("Reading locations file complete - Locations set");
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -126,6 +129,7 @@ public class Reader {
 				jobList.add(newJob);
 			}
 
+			logger.debug("Reading Jobs files complete - Job List created");
 			reader.close();
 			logger.debug("closes jobs.csv");
 			return jobList;
@@ -160,7 +164,7 @@ public class Reader {
 			}
 
 			reader.close();
-			logger.debug("closes cancellation.csv");
+			logger.debug("Reading cancellation file complete - Job List updated");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -174,6 +178,7 @@ public class Reader {
 		
 		ArrayList <Job> jobList = reader.readJobs(itemList, "jobs.csv");
 		reader.readCancellations(jobList);
+		logger.debug("Job list complete");
 		return jobList;
 	}
 	
@@ -186,6 +191,7 @@ public class Reader {
 		for(Job job: jobList){
 			job.setCancelled(false);
 		}
+		logger.debug("sample Job list complete");
 		return jobList;
 	}
 }
