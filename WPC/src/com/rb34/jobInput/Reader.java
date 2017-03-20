@@ -11,8 +11,12 @@ import org.apache.log4j.Logger;
 public class Reader {
 
 	static Logger logger = Logger.getLogger(Reader.class);
-	private static String FILE_PATH = "myDocs/";
+	private static String FILE_PATH = "NO_PATH_SET";
 
+	public static void setFilePath(String filePath){
+		FILE_PATH = filePath;
+	}
+	
 	public static ArrayList<Drop> createDropList() {
 		BufferedReader reader = null;
 		ArrayList<Drop> dropList = new ArrayList<Drop>();
