@@ -1,34 +1,39 @@
 package com.rb34.behaviours;
 
 import java.util.ArrayList;
+
+import com.rb34.dummy.TrialMainNxt;
 import com.rb34.general.PathChoices;
-import com.rb34.message.MessageListener;
+import com.rb34.main.JunctionFollower;
 import com.rb34.message.NewPathMessage;
 import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.robot_interface.RobotScreen;
+
 import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.Motor;
+import lejos.nxt.Sound;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
-public class TurnBehavior implements Behavior, MessageListener {
+public class TurnBehavior implements Behavior {
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
 	private DifferentialPilot pilot;
 	private RobotScreen screen;
 	private LineFollowing followLine;
-	
+
 	private int turnDirection;
 	private boolean supressed;
 	private final int THRESHOLD = 40;
 	private String head = "east";
 	private int x = 0;
 	private int y = 0;
-	private int firstAction;
-	
+	private long wait = 0;
+
 	// final static Logger logger = Logger.getLogger(TurnBehavior.class);
+	private int firstAction;
 	private ArrayList<PathChoices> path;
 	private boolean actionDone;
 	int readingL;
@@ -36,7 +41,9 @@ public class TurnBehavior implements Behavior, MessageListener {
 	int whiteInitR;
 	int whiteInitL;
 
-	public TurnBehavior(LightSensor left, LightSensor right, RobotScreen _screen, LineFollowing followLine) {
+	public TurnBehavior(LightSensor left, LightSensor right,
+			RobotScreen _screen, LineFollowing followLine) {
+
 		lightSensorR = right;
 		lightSensorL = left;
 		this.screen = _screen;
@@ -79,18 +86,29 @@ public class TurnBehavior implements Behavior, MessageListener {
 
 	@Override
 	public void action() {
-		screen.printLocation(x, y);
 		supressed = false;
 		pilot.stop();
 		readingL = lightSensorL.getLightValue();
 		readingR = lightSensorR.getLightValue();
+
 		if (path != null) {
+			actionDone = false;
+
 			if (path.isEmpty()) {
+				/*
+				 * TestMessage msg = new TestMessage();
+				 * msg.setText("IT SHOULD BEEEEEP!!!!!");
+				 * 
+				 * TrialMainNxt.client.send(msg);
+				 */
+
+				Sound.beep();
 				actionDone = true;
-			} else if (!path.isEmpty()) {
+			} else {
+				screen.printLocation(x, y);
+
 				turnDirection = path.get(0).ordinal();
 				path.remove(0);
-				actionDone = false;
 			}
 		}
 		switch (turnDirection) {
@@ -115,14 +133,29 @@ public class TurnBehavior implements Behavior, MessageListener {
 			screen.printState("Rotate");
 			break;
 		case 4:
-			pilot.wait(timeout); //measure how long it takes to get from one junction to another and this will be the time.
+			try {
+				pilot.wait(wait);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+
+		RobotStatusMessage msg = new RobotStatusMessage();
+		msg.setRobotId(JunctionFollower.RobotId);
+		msg.setX(x);
+		msg.setY(y);
+		msg.setOnJob(true);
+		msg.setOnRoute(!actionDone);
+		msg.setWaitingForNewPath(false);
+		TrialMainNxt.client.send(msg);
+
 		while (!supressed && pilot.isMoving()) {
+
 			if (Button.ESCAPE.isDown()) {
 				System.exit(0);
 			}
 		}
-		actionDone = true;
 		suppress();
 	}
 
@@ -145,6 +178,27 @@ public class TurnBehavior implements Behavior, MessageListener {
 
 	public void setY(int i) {
 		y += i;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setPathFromMessage(ArrayList<PathChoices> path) {
+		this.path = path;
+
+		followLine.doAction(path.get(0).ordinal());
+		UpdateDirectionAndCo(path.get(0).ordinal());
+		followLine.doFirstAction();
+		path.remove(0);
+	}
+
+	public void setFirstAction(int i) {
+		firstAction = i;
 	}
 
 	public void UpdateDirectionAndCo(int move) {
@@ -203,30 +257,5 @@ public class TurnBehavior implements Behavior, MessageListener {
 				head = "east";
 			}
 		}
-	}
-	
-	public void setFirstAction(int i) {
-		firstAction = i;
-	}
-
-	@Override
-	public void receivedTestMessage(TestMessage msg) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void recievedNewPathMessage(NewPathMessage msg) {
-		this.path = msg.getCommands();
-		followLine.doAction(path.get(0).ordinal());
-		followLine.doFirstAction();
-		path.remove(0);
-
-	}
-
-	@Override
-	public void recievedRobotStatusMessage(RobotStatusMessage msg) {
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -1,7 +1,9 @@
 package com.rb34.dummy;
 
+import com.rb34.message.LocationTypeMessage;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
+import com.rb34.message.RobotInitMessage;
 import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.network.Master;
@@ -31,6 +33,27 @@ public class DummyMainPC
 			@Override
 			public void recievedRobotStatusMessage(RobotStatusMessage msg)
 			{
+				
+			}
+
+			@Override
+			public void recievedTestMessage(TestMessage msg)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void recievedRobotInitMessage(RobotInitMessage msg)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void recievedLocationTypeMessage(LocationTypeMessage msg)
+			{
+				// TODO Auto-generated method stub
 				
 			}
 		});

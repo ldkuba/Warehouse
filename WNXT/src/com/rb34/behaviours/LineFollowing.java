@@ -147,11 +147,6 @@ public class LineFollowing implements Behavior
 		}
 	}
 
-	@Override
-	public void suppress() {
-		supressed = true;
-	}
-	
 	public void doFirstAction() {
 		doFirstAction = true;
 	}
@@ -180,10 +175,14 @@ public class LineFollowing implements Behavior
 			break;
 		}
 	}
-	//To add: a way to update the coorditaes so every time new path is given. 
 	
 	public void setFirstAction(int i) {
 		firstAction = i;
+	}
+	
+	@Override
+	public void suppress() {
+		supressed = true;
 	}
 
 }
