@@ -9,4 +9,6 @@ public interface MessageListener
 	void recievedRobotStatusMessage(RobotStatusMessage msg);
 	
 	void recievedRobotInitMessage(RobotInitMessage msg);
+	
+	void recievedLocationTypeMessage(LocationTypeMessage msg);
 }

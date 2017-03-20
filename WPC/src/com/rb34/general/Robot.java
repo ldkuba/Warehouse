@@ -1,16 +1,16 @@
 package com.rb34.general;
 
-import com.rb34.general.interfaces.IRobot;
-import com.rb34.jobInput.Item;
-
-import com.rb34.jobInput.Job;
-
-
 import java.util.ArrayList;
 
-public class Robot implements IRobot{
+import com.rb34.Start;
+import com.rb34.general.interfaces.IRobot;
+import com.rb34.jobInput.Item;
+import com.rb34.jobInput.Job;
+import com.rb34.message.LocationTypeMessage;
 
-	private int  robotId;
+public class Robot implements IRobot
+{	
+	private int robotId;
 	private int xLoc;
 	private int yLoc;
 	private int xDrop;
@@ -19,18 +19,30 @@ public class Robot implements IRobot{
 	private Job job;
 	private ArrayList<Item> itemList;
 	private ArrayList<String> destinations;
+	private boolean currentlyAtItem;
+	private Item currentItem;
 
-	public Robot(){
+	public Robot()
+	{
 		this.xLoc = 0;
 		this.yLoc = 0;
 		this.state = Status.IDLE;
 		this.job = null;
 		this.destinations = new ArrayList<>();
 	}
-	
+
 	public ArrayList<String> getDestinations()
 	{
+		if (!destinations.isEmpty() && !itemList.isEmpty() && destinations.get(0).matches(itemList.get(0).getItemID())) {
+			currentlyAtItem = true;
+		}
+		else currentlyAtItem = false;
 		return destinations;
+	}
+	
+	public void setCurrentItem(Item item)
+	{
+		this.currentItem = item;
 	}
 
 	public void setDestinations(ArrayList<String> destinations)
@@ -38,85 +50,120 @@ public class Robot implements IRobot{
 		this.destinations = destinations;
 	}
 
-	public void recievedMessge(){
-		//TODO
+	public void recievedMessge()
+	{
+		// TODO
 	}
 
 	@Override
-	public Status getRobotStatus(){
+	public Status getRobotStatus()
+	{
 		return state;
 	}
 
 	@Override
-	public void setRobotStatus(Status state){
+	public void setRobotStatus(Status state)
+	{
 		this.state = state;
 	}
 
 	@Override
-	public void setXLoc(int xLoc){
+	public void setXLoc(int xLoc)
+	{
 		this.xLoc = xLoc;
 	}
 
 	@Override
-	public void setYLoc(int yLoc){
+	public void setYLoc(int yLoc)
+	{
 		this.yLoc = yLoc;
 	}
 
 	@Override
-	public int getXLoc(){
+	public int getXLoc()
+	{
 		return xLoc;
 	}
 
 	@Override
-	public int getYLoc(){
+	public int getYLoc()
+	{
 		return yLoc;
 	}
 
 	@Override
-	public void setCurrentJob(Job job){
+	public void setCurrentJob(Job job)
+	{
 		this.job = job;
 	}
 
 	@Override
-	public Job getCurrentJob(){
+	public Job getCurrentJob()
+	{
 		return job;
 	}
 
 	@Override
-	public void setXDropLoc(int xDropLoc){
+	public void setXDropLoc(int xDropLoc)
+	{
 		this.xDrop = xDropLoc;
 	}
 
 	@Override
-	public void setYDropLoc(int yDropLoc){
+	public void setYDropLoc(int yDropLoc)
+	{
 		this.yDrop = yDropLoc;
 	}
 
 	@Override
-	public int getXDropLoc(){
+	public int getXDropLoc()
+	{
 		return xDrop;
 	}
 
 	@Override
-	public int getYDropLoc(){
+	public int getYDropLoc()
+	{
 		return yDrop;
 	}
 
 	@Override
-	public ArrayList<Item> getItemsToPick(){
+	public ArrayList<Item> getItemsToPick()
+	{
 		return itemList;
 	}
 
 	@Override
-	public void setItemsToPick(ArrayList<Item> itemsToPick){
+	public void setItemsToPick(ArrayList<Item> itemsToPick)
+	{
 		this.itemList = itemsToPick;
 	}
 
-	public int getRobotId() {
+	public int getRobotId()
+	{
 		return robotId;
 	}
 
-	public void setRobotId(int robotId) {
+	public void setRobotId(int robotId)
+	{
 		this.robotId = robotId;
+	}
+	
+	public void notifyOfLocation()
+	{
+		LocationTypeMessage msg = new LocationTypeMessage();
+		
+		if(this.currentlyAtItem)
+		{
+			msg.setLocationType((byte) 0);
+			
+			msg.setItemId(currentItem.getItemID());
+			msg.setItemCount(job.getOrderList().get(currentItem.getItemID()).getCount());
+		}else
+		{
+			msg.setLocationType((byte) 1);
+		}
+		
+		Start.master.send(msg, robotId);
 	}
 }

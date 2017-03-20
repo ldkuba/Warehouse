@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.*;
+import org.jfree.util.Log;
 
 import com.rb34.jobInput.Drop;
 import com.rb34.jobInput.Item;
@@ -146,9 +147,9 @@ public class ItemSorter {
 		String logMessage = "The item order is: ";
 		for (int index : bestPermutation) {
 			sortedItems.add(items.get(index));
+			logger.debug("index: " + index);
 			logMessage += items.get(index).getItemID() + " ";
 		}
-		logger.debug(logMessage);
 
 		bestPathCoordinates.remove(0);
 		logMessage = "The coordinates are: ";

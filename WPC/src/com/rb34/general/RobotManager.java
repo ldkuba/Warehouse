@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.rb34.Start;
 import com.rb34.general.interfaces.IRobot.Status;
 import com.rb34.general.interfaces.IRobotManager;
+import com.rb34.message.LocationTypeMessage;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
 import com.rb34.message.RobotInitMessage;
@@ -45,7 +46,11 @@ public class RobotManager implements IRobotManager, MessageListener
 	@Override
 	public void recievedTestMessage(TestMessage msg)
 	{
-
+		System.out.println(msg.getText());
+		System.out.println(msg.getText());
+		System.out.println(msg.getText());
+		System.out.println(msg.getText());
+		System.out.println(msg.getText());
 	}
 
 	@Override
@@ -65,16 +70,24 @@ public class RobotManager implements IRobotManager, MessageListener
 			getRobot(msg.getRobotId()).setRobotStatus(Status.RUNNING);
 		}else
 		{
-			getRobot(msg.getRobotId()).setRobotStatus(Status.IDLE);
-				
+			if(msg.isWaitingForNewPath())
+			{
+				getRobot(msg.getRobotId()).setRobotStatus(Status.AT_ITEM);
+			}else
+			{
+				getRobot(msg.getRobotId()).notifyOfLocation();
+			}
 		}
-		
-		
-		//getRobot(msg.getRobotId()).checkPickup();
 	}
 
 	@Override
 	public void recievedRobotInitMessage(RobotInitMessage msg)
+	{
+		
+	}
+
+	@Override
+	public void recievedLocationTypeMessage(LocationTypeMessage msg)
 	{
 		
 	}

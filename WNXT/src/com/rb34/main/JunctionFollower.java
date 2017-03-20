@@ -7,6 +7,7 @@ import com.rb34.behaviours.TurnBehavior;
 import com.rb34.behaviours.WaitBehavior;
 import com.rb34.dummy.TrialMainNxt;
 import com.rb34.general.PathChoices;
+import com.rb34.message.LocationTypeMessage;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
 import com.rb34.message.RobotInitMessage;
@@ -15,6 +16,7 @@ import com.rb34.message.TestMessage;
 import com.rb34.network.Client;
 import com.rb34.robot_interface.RobotScreen;
 
+import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
 import lejos.robotics.subsumption.Arbitrator;
@@ -23,7 +25,7 @@ import lejos.robotics.subsumption.Behavior;
 public class JunctionFollower implements MessageListener
 {
 	public static int RobotId;
-	
+
 	private Arbitrator arbitrator;
 
 	private ArrayList<PathChoices> path; // Received via bluetooth;
@@ -60,12 +62,11 @@ public class JunctionFollower implements MessageListener
 		// path1.add(PathChoices.FORWARD);
 		// path1.add(PathChoices.LEFT);
 
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen);
-		
 		TrialMainNxt.client.addListener(this);
 		
-		// turnBehavior.setPath(path1);
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
+		
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen, followLine);
 		waitBehavior = new WaitBehavior(turnBehavior, screen);
 
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
@@ -76,24 +77,52 @@ public class JunctionFollower implements MessageListener
 	@Override
 	public void recievedTestMessage(TestMessage msg)
 	{
-		
+
 	}
 
 	@Override
 	public void recievedNewPathMessage(NewPathMessage msg)
 	{
-		turnBehavior.setPath(msg.getCommands());
+		turnBehavior.setPathFromMessage(msg.getCommands());
 	}
 
 	@Override
 	public void recievedRobotStatusMessage(RobotStatusMessage msg)
 	{
-		
+
 	}
 
 	@Override
 	public void recievedRobotInitMessage(RobotInitMessage msg)
 	{
 		RobotId = msg.getRobotId();
+		turnBehavior.setX(msg.getX());
+		turnBehavior.setY(msg.getY());
+	}
+
+	@Override
+	public void recievedLocationTypeMessage(LocationTypeMessage msg)
+	{
+		if (msg.getLocationType() == 0)
+		{
+			this.screen.printState("AT ITEM " + msg.getItemId());
+		} else
+		{
+			this.screen.printState("AT DROPOFF LOCATION");
+		}
+
+		while (!Button.ENTER.isDown())
+		{
+
+		}
+
+		RobotStatusMessage msg2 = new RobotStatusMessage();
+		msg2.setX(turnBehavior.getX());
+		msg2.setY(turnBehavior.getY());
+		msg2.setOnJob(true);
+		msg2.setOnRoute(false);
+		msg2.setWaitingForNewPath(true);
+		msg2.setRobotId(RobotId);
+		TrialMainNxt.client.send(msg2);
 	}
 }

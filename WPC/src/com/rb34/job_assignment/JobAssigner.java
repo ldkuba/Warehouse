@@ -11,7 +11,6 @@ import com.rb34.general.interfaces.IRobot.Status;
 import com.rb34.jobInput.Drop;
 import com.rb34.jobInput.Item;
 import com.rb34.jobInput.Job;
-import com.rb34.network.Master;
 import com.rb34.route_planning.Graph;
 
 public class JobAssigner
@@ -25,7 +24,7 @@ public class JobAssigner
 
 	public JobAssigner(PriorityQueue<Job> jobs, RobotManager rm, ArrayList<Drop> dropLocations)
 	{
-
+		//System.out.println("HELOOO");
 		logger.debug("Started JobAssigner");
 		this.jobs = jobs;
 		logger.debug("Received jobs");
@@ -63,12 +62,14 @@ public class JobAssigner
 
 					// Get coordinates for the first destination
 					String destination = destinations.get(0);
+					logger.debug("destination 0 " + destination);
 					destinations.remove(0);
 					robot.setDestinations(destinations);
 
 					// get the first item
 					Item item = items.get(0);
 					if (destination.matches(item.getX() + "|" + item.getY())) {
+						robot.setCurrentItem(item);
 						items.remove(0);
 						robot.setItemsToPick(items);
 					}
@@ -99,6 +100,7 @@ public class JobAssigner
 						if (items.size() > 0) {
 							Item item = items.get(0);
 							if (destination.matches(item.getX() + "|" + item.getY())) {
+								robot.setCurrentItem(item);
 								items.remove(0);
 								robot.setItemsToPick(items);
 							}
@@ -108,6 +110,7 @@ public class JobAssigner
 								+ robot.getYLoc() + " to" + destination);
 						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot.getRobotId());
 					} else {
+						robot.setRobotStatus(Status.IDLE);
 						logger.debug(
 								"Robot #" + robot.getRobotId() + " has finished job " + robot.getCurrentJob().getJobId());
 					}

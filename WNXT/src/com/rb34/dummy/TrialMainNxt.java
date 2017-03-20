@@ -17,8 +17,6 @@ public class TrialMainNxt {
 		screen = new RobotScreen(0, 0, "Starting");
 	
 		robotMovement = new JunctionFollower(screen);
-		
-		System.out.println("");
 	
 		try {
 			client.join();

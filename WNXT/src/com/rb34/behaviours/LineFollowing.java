@@ -12,6 +12,7 @@ import com.rb34.robot_interface.RobotScreen;
 public class LineFollowing implements Behavior 
 {	
 	private boolean supressed = true;
+	private boolean doFirstAction = false;
 	
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
@@ -21,6 +22,7 @@ public class LineFollowing implements Behavior
 	int readingL;
 	int whiteInitL;
 	int whiteInitR;
+	int firstAction;
 	
 	public LineFollowing(LightSensor left, LightSensor right, RobotScreen _screen) {
 		this.screen = _screen;
@@ -145,6 +147,39 @@ public class LineFollowing implements Behavior
 		}
 	}
 
+	public void doFirstAction() {
+		doFirstAction = true;
+	}
+	
+	public void doAction(int i) {
+		switch (i) {
+		case 0:
+			pilot.arc(80.5, 90, true);
+			//UpdateDirectionAndCo(0);
+			screen.printState("Left");
+			break;
+		case 1:
+			pilot.arc(-80.5, -90, true);
+			//UpdateDirectionAndCo(1);
+			screen.printState("Right");
+			break;
+		case 2:
+			pilot.travel(75.0, true);
+			//UpdateDirectionAndCo(2); 
+			screen.printState("Forward");
+			break;
+		case 3:
+			pilot.rotate(180, true);
+			//UpdateDirectionAndCo(3);
+			screen.printState("Rotate");
+			break;
+		}
+	}
+	
+	public void setFirstAction(int i) {
+		firstAction = i;
+	}
+	
 	@Override
 	public void suppress() {
 		supressed = true;

@@ -8,14 +8,16 @@ import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
-public class WaitBehavior implements Behavior {
+public class WaitBehavior implements Behavior
+{
 	private DifferentialPilot pilot;
 	private TurnBehavior behavior;
 	private RobotScreen screen;
 	private boolean supressed;
 	private int counter;
 
-	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen) {
+	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen)
+	{
 		this.behavior = _behavior;
 		this.screen = _screen;
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
@@ -26,27 +28,27 @@ public class WaitBehavior implements Behavior {
 	}
 
 	@Override
-	public boolean takeControl() {
-		if (behavior.checkIfNoRoute() == true) {
-			return true;
-		} else {
-			return false;
-		}
+	public boolean takeControl()
+	{
+		return behavior.checkIfNoRoute();
 	}
 
 	@Override
-	public void action() {
+	public void action()
+	{
 		supressed = false;
 		pilot.stop();
-		if (Button.ENTER.isDown()) {
+		if (Button.ENTER.isDown())
+		{
 			counter += 1;
 		}
 
-		screen.printState("PickUps: "+counter);
+		screen.printState("PickUps: " + counter);
 		screen.printState("Waiting");
-		
-		if (Button.ESCAPE.isDown()) { // make sure that robot will stop program
-										// if escape button is pressed.
+
+		if (Button.ESCAPE.isDown())
+		{ // make sure that robot will stop program
+			// if escape button is pressed.
 			System.exit(0);
 			suppress();
 		}
@@ -56,7 +58,8 @@ public class WaitBehavior implements Behavior {
 	}
 
 	@Override
-	public void suppress() {
+	public void suppress()
+	{
 		supressed = true;
 
 	}

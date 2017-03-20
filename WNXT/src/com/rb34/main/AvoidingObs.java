@@ -46,7 +46,7 @@ public class AvoidingObs {
 		int whiteInitL = lightSensorL.getLightValue();
 		int whiteInitR = lightSensorR.getLightValue();
 
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen);
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen, followLine);
 		turnBehavior.setPath(path1);
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
 		keepDistance = new DistanceKeeping(MAX_DISTANCE, irSensor);

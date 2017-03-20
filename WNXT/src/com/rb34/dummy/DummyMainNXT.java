@@ -1,5 +1,6 @@
 package com.rb34.dummy;
 
+import com.rb34.message.LocationTypeMessage;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
 import com.rb34.message.RobotInitMessage;
@@ -42,6 +43,13 @@ public class DummyMainNXT
 
 			@Override
 			public void recievedRobotInitMessage(RobotInitMessage msg)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void recievedLocationTypeMessage(LocationTypeMessage msg)
 			{
 				// TODO Auto-generated method stub
 				

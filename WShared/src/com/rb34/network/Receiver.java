@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.rb34.message.LocationTypeMessage;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
 import com.rb34.message.RobotInitMessage;
@@ -37,7 +38,7 @@ public class Receiver extends Thread
 			{
 				int type = inputStream.read();	
 				
-				System.out.println("Received message type: " + type);
+				//System.out.println("Received message type: " + type);
 				
 				if (type == 0)
 				{
@@ -110,6 +111,23 @@ public class Receiver extends Thread
 					for (int i = 0; i < listeners.size(); i++)
 					{
 						listeners.get(i).recievedRobotInitMessage(msg);
+					}
+				} else if(type == 4)
+				{
+					byte[] lengthBytes = new byte[4];
+					inputStream.read(lengthBytes, 0, 4);
+
+					int length = ArrayUtils.bytesToInt(lengthBytes, 0);
+
+					byte[] bytes = new byte[length];
+
+					inputStream.read(bytes);
+					
+					LocationTypeMessage msg = LocationTypeMessage.fromByteArray(bytes);
+					
+					for (int i = 0; i < listeners.size(); i++)
+					{
+						listeners.get(i).recievedLocationTypeMessage(msg);
 					}
 				}
 

@@ -8,7 +8,17 @@ public class RobotStatusMessage implements Message
 	private int robotId;
 	
 	private int x, y;
-	private boolean isOnRoute, isOnJob;
+	private boolean isOnRoute, isOnJob, isWaitingForNewPath;
+
+	public boolean isWaitingForNewPath()
+	{
+		return isWaitingForNewPath;
+	}
+
+	public void setWaitingForNewPath(boolean isWaitingForNewPath)
+	{
+		this.isWaitingForNewPath = isWaitingForNewPath;
+	}
 
 	public RobotStatusMessage()
 	{
@@ -81,7 +91,7 @@ public class RobotStatusMessage implements Message
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(y));
 		
 		//FLAGS
-		byte flags = (byte) (((isOnRoute?1:0) << 1) + (isOnJob?1:0));
+		byte flags = (byte) (((isWaitingForNewPath?1:0) << 2) + (((isOnRoute?1:0) << 1) + (isOnJob?1:0)));
 		
 		output = ArrayUtils.concat(output, new byte[]{ flags });
 	
@@ -125,6 +135,14 @@ public class RobotStatusMessage implements Message
 		}else
 		{
 			msg.setOnRoute(false);
+		}
+		
+		if(((flags >> 2) & 1) == 1)
+		{
+			msg.setWaitingForNewPath(true);
+		}else
+		{
+			msg.setWaitingForNewPath(false);
 		}
 		
 		return msg;
