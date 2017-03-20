@@ -5,6 +5,7 @@ import com.rb34.robot_interface.RobotScreen;
 
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
+import lejos.nxt.Sound;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
@@ -43,16 +44,16 @@ public class WaitBehavior implements Behavior
 			counter += 1;
 		}
 
-		screen.printState("PickUps: " + counter);
-		screen.printState("Waiting");
+		screen.itemPickUp(5, 1.4f);
+		screen.updateState("Waiting");
 
-		if (Button.ESCAPE.isDown())
+		while (!Button.ESCAPE.isDown())
 		{ // make sure that robot will stop program
 			// if escape button is pressed.
-			System.exit(0);
-			suppress();
+			Sound.beep();
 		}
-
+		
+		System.exit(0);
 		suppress();
 
 	}

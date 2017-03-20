@@ -30,6 +30,8 @@ public class Sender extends Thread
 			if(!messageQueue.isEmpty())
 			{
 				
+				System.out.println("messageQueue size: " + messageQueue.size());
+				
 				byte[] message = messageQueue.get(0).toByteArray();
 				
 				try

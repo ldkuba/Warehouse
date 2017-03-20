@@ -46,6 +46,8 @@ public class JobAssigner
 				if (robot.getRobotStatus() == Status.IDLE) {
 					// get the first job
 					Job job = jobs.poll();
+					
+					logger.debug(robot.getRobotId() + " is not idle!!!!!!!!!!!!!!!!!");
 
 					// sort the items from the job so the path has the shortest
 					// distance
@@ -110,7 +112,7 @@ public class JobAssigner
 								+ robot.getYLoc() + " to" + destination);
 						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot.getRobotId());
 					} else {
-						robot.setRobotStatus(Status.IDLE);
+						//robot.setRobotStatus(Status.IDLE);
 						logger.debug(
 								"Robot #" + robot.getRobotId() + " has finished job " + robot.getCurrentJob().getJobId());
 					}

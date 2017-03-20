@@ -20,7 +20,7 @@ public class FollowingLine {
 	public FollowingLine() {
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
-		screen = new RobotScreen(0, 0, "Start");
+		screen = new RobotScreen();
 
 		lineFollowing = new LineFollowing(lightSensorL, lightSensorR, screen);
 

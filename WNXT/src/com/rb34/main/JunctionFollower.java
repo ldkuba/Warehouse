@@ -46,29 +46,13 @@ public class JunctionFollower implements MessageListener
 		lightSensorL = new LightSensor(SensorPort.S4);
 
 		path = new ArrayList<>();
-		path1 = new ArrayList<PathChoices>();
 
-		path1.add(PathChoices.FORWARD);
-		path1.add(PathChoices.FORWARD);
-		path1.add(PathChoices.FORWARD);
-		path1.add(PathChoices.LEFT);
-		// path1.add(PathChoices.FORWARD);
-		path1.add(PathChoices.FORWARD);
-		// path1.add(PathChoices.FORWARD);
-		// path1.add(PathChoices.RIGHT);
-		// path1.add(PathChoices.FORWARD);
-		// path1.add(PathChoices.FORWARD);
-		// path1.add(PathChoices.RIGHT);
-		// path1.add(PathChoices.FORWARD);
-		// path1.add(PathChoices.LEFT);
-
-		TrialMainNxt.client.addListener(this);
+		//TrialMainNxt.client.addListener(this);
 		
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
-		
 		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen, followLine);
 		waitBehavior = new WaitBehavior(turnBehavior, screen);
-
+		
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
 		arbitrator = new Arbitrator(behaviors);
 		arbitrator.start();
@@ -105,15 +89,10 @@ public class JunctionFollower implements MessageListener
 	{
 		if (msg.getLocationType() == 0)
 		{
-			this.screen.printState("AT ITEM " + msg.getItemId());
+			this.screen.updateState("AT ITEM " + msg.getItemId());
 		} else
 		{
-			this.screen.printState("AT DROPOFF LOCATION");
-		}
-
-		while (!Button.ENTER.isDown())
-		{
-
+			this.screen.updateState("AT DROPOFF LOCATION");
 		}
 
 		RobotStatusMessage msg2 = new RobotStatusMessage();

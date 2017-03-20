@@ -101,7 +101,7 @@ public class LineFollowing implements Behavior
 		while (!supressed) {
 			
 			pilot.forward();
-			screen.printState("Moving foward");
+			screen.updateState("Moving foward");
 
 			checkLeft();
 			//System.out.println("Left Initial: " +whiteInitL);
@@ -156,22 +156,22 @@ public class LineFollowing implements Behavior
 		case 0:
 			pilot.arc(80.5, 90, true);
 			//UpdateDirectionAndCo(0);
-			screen.printState("Left");
+			screen.updateState("Left");
 			break;
 		case 1:
 			pilot.arc(-80.5, -90, true);
 			//UpdateDirectionAndCo(1);
-			screen.printState("Right");
+			screen.updateState("Right");
 			break;
 		case 2:
 			pilot.travel(75.0, true);
 			//UpdateDirectionAndCo(2); 
-			screen.printState("Forward");
+			screen.updateState("Forward");
 			break;
 		case 3:
 			pilot.rotate(180, true);
 			//UpdateDirectionAndCo(3);
-			screen.printState("Rotate");
+			screen.updateState("Rotate");
 			break;
 		}
 	}

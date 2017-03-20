@@ -2,6 +2,7 @@ package com.rb34;
 
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
+import com.rb34.general.interfaces.IRobot.Status;
 import com.rb34.jobInput.Drop;
 import com.rb34.jobInput.Item;
 import com.rb34.jobInput.Job;
@@ -38,6 +39,10 @@ public class Start
 		p2.setY(0);
 
 		job2.addItem("p2", new Order(p2, 1));
+		
+		Job job3 = new Job("3");
+		job3.addItem("p2",  new Order(p2, 1));
+		
 
 		ArrayList<Drop> drops = new ArrayList<>();
 		drops.add(new Drop(3, 3));
@@ -46,6 +51,7 @@ public class Start
 
 		orderedJobs.add(job);
 		orderedJobs.add(job2);
+		//orderedJobs.add(job3);
 
 		System.out.println("2");
 
@@ -61,12 +67,17 @@ public class Start
 		robot2.setXLoc(5);
 		robot2.setYLoc(0);
 		robot2.setRobotId(1);
-
+		
 		System.out.println("3");
 
+		while(!master.areAllConnected())
+		{
+			
+		}
+		
 		RobotManager rm = new RobotManager();
 		rm.addRobot(robot);
-		rm.addRobot(robot2);
+		//rm.addRobot(robot2);
 
 		System.out.println("4");
 

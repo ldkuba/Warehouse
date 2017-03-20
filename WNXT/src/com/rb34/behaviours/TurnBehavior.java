@@ -6,7 +6,6 @@ import com.rb34.dummy.TrialMainNxt;
 import com.rb34.general.PathChoices;
 import com.rb34.main.JunctionFollower;
 import com.rb34.message.RobotStatusMessage;
-import com.rb34.message.TestMessage;
 import com.rb34.robot_interface.RobotScreen;
 
 import lejos.nxt.Button;
@@ -28,6 +27,8 @@ public class TurnBehavior implements Behavior
 	private String head = "east";
 	private int x = 0;
 	private int y = 0;
+	
+	private long timeout;
 	// final static Logger logger = Logger.getLogger(TurnBehavior.class);
 
 	private LineFollowing followLine;
@@ -109,16 +110,11 @@ public class TurnBehavior implements Behavior
 			
 			if (path.isEmpty())
 			{
-				/*TestMessage msg = new TestMessage();
-				msg.setText("IT SHOULD BEEEEEP!!!!!");
-				
-				TrialMainNxt.client.send(msg);*/				
-				
-				Sound.beep();
+				// Sound.beep();
 				actionDone = true;
 			} else
 			{
-				screen.printLocation(x, y);
+				screen.updateLocation(x, y);
 				
 				turnDirection = path.get(0).ordinal();
 				path.remove(0);	
@@ -130,25 +126,31 @@ public class TurnBehavior implements Behavior
 		case 0:
 			pilot.arc(80.5, 90, true);
 			UpdateDirectionAndCo(0);
-			screen.printState("Left");
+			screen.updateState("Left");
 			break;
 		case 1:
 			pilot.arc(-80.5, -90, true);
 			UpdateDirectionAndCo(1);
-			screen.printState("Right");
+			screen.updateState("Right");
 			break;
 		case 2:
 			pilot.travel(75.0, true);
 			UpdateDirectionAndCo(2);
-			screen.printState("Forward");
+			screen.updateState("Forward");
 			break;
 		case 3:
 			pilot.rotate(180, true);
 			UpdateDirectionAndCo(3);
-			screen.printState("Rotate");
+			screen.updateState("Rotate");
 			break;
 		case 4:
-			pilot.wait(timeout);
+			try
+			{
+				pilot.wait(timeout);
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		RobotStatusMessage msg = new RobotStatusMessage();
@@ -179,7 +181,7 @@ public class TurnBehavior implements Behavior
 	}
 
 	public boolean checkIfNoRoute()
-	{
+	{		
 		if (actionDone && path.isEmpty())
 		{
 			return true;
@@ -212,11 +214,12 @@ public class TurnBehavior implements Behavior
 	public void setPathFromMessage(ArrayList<PathChoices> path)
 	{
 		this.path = path;
-
+		
 		followLine.doAction(path.get(0).ordinal());
 		UpdateDirectionAndCo(path.get(0).ordinal());
 		followLine.doFirstAction();
 		path.remove(0);
+		
 	}
 
 	public void setFirstAction(int i)
