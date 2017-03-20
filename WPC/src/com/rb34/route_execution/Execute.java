@@ -46,7 +46,7 @@ public class Execute {
 		robotInstructions = converter.execute(vertexPath,robotId);
 
 		
-		log4j.info("Converted Instructions" + robotInstructions);
+		log4j.info("Converted Instructions for Robot " + robotId + " " + robotInstructions);
 		int robotID = robotId;
 		NewPathMessage msg = new NewPathMessage();
 		msg.setCommands(robotInstructions);
