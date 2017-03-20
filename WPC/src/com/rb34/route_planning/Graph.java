@@ -11,7 +11,6 @@ import java.util.function.BiFunction;
 
 import org.apache.log4j.Logger;
 
-import com.rb34.network.Master;
 import com.rb34.route_execution.Execute;
 import com.rb34.route_planning.graph_entities.Heuristic;
 import com.rb34.route_planning.graph_entities.IEdge;
@@ -93,7 +92,7 @@ public class Graph implements IGraph {
 
 	}
 
-	public void executeRoute(String startVertexId, String endVertexId, int robotId, Master master) {
+	public void executeRoute(String startVertexId, String endVertexId, int robotId) {
 		ArrayList<IVertex> path = hCooperativeAStar(startVertexId, endVertexId, robotId).getPath().get();
 
 		String logMessage = "";
@@ -101,7 +100,7 @@ public class Graph implements IGraph {
 			logMessage += vertex.getLabel().getName() + " ";
 		}
 		logger.debug("The generated path is: " + logMessage);
-		Execute execute = new Execute(master);
+		Execute execute = new Execute();
 		execute.runRoute(path, robotId);
 	}
 

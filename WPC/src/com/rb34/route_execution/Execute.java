@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.rb34.Start;
 import com.rb34.general.PathChoices;
 import com.rb34.message.NewPathMessage;
 import com.rb34.network.Master;
@@ -15,14 +16,8 @@ public class Execute {
 
 	private ArrayList<PathChoices> robotInstructions;
 	private ArrayList<IVertex> vertexPath;
-	private Master master;
 
 	private static final Logger log4j = LogManager.getLogger(Execute.class.getName());
-	
-	
-	public Execute(Master master) {
-		this.master = master;
-	}
 	
 	public Execute(){
 		
@@ -55,7 +50,7 @@ public class Execute {
 		int robotID = robotId;
 		NewPathMessage msg = new NewPathMessage();
 		msg.setCommands(robotInstructions);
-		master.send(msg, robotID);
+		Start.master.send(msg, robotID);
 	}
 
 }

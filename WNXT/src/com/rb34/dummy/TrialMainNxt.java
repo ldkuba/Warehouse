@@ -9,16 +9,14 @@ public class TrialMainNxt {
 	private JunctionFollower robotMovement;
 	private RobotScreen screen;
 	
+	public static Client client;
+	
 	TrialMainNxt() {
-		Client client = new Client();
+		client = new Client();
 		client.start();
 		screen = new RobotScreen(0, 0, "Starting");
-		
-		//System.out.println("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-		
-		robotMovement = new JunctionFollower(screen, client);
-		
-		System.out.println("");
+	
+		robotMovement = new JunctionFollower(screen);
 	
 		try {
 			client.join();

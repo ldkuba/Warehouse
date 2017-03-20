@@ -1,12 +1,13 @@
-package localisation;
+package com.rb34.localisation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import lejos.nxt.LightSensor;
 import lejos.nxt.UltrasonicSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
 import rp.robotics.mapping.GridMap;
-import rp.util.HashMap;
 
 public class FindMyLocation {
 	
