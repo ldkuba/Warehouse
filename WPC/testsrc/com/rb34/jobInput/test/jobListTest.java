@@ -13,10 +13,10 @@ import com.rb34.jobInput.Job;
 
 public class jobListTest {
 
-	
+	public Reader reader = new Reader();
 	@Test
 	public void JobIDChecks() {
-		ArrayList<Job> jobList = Reader.createJobList();
+		ArrayList<Job> jobList = reader.createJobList();
 		// assert statements
 		assertEquals("10001", jobList.get(1)
 				.getJobId());
@@ -32,7 +32,7 @@ public class jobListTest {
 
 	@Test
 	public void numOrder() {
-		ArrayList<Job> jobList = Reader.createJobList();
+		ArrayList<Job> jobList = reader.createJobList();
 		// assert statements
 		assertEquals(2, jobList.get(0)
 				.getOrderList().size());
@@ -47,7 +47,7 @@ public class jobListTest {
 
 	@Test
 	public void sizeOfJobList() {
-		ArrayList<Job> jobList = Reader.createJobList();
+		ArrayList<Job> jobList = reader.createJobList();
 		// assert statements
 		assertEquals("Number of jobs in list should be 20000", 20000,
 				jobList.size());
@@ -55,14 +55,14 @@ public class jobListTest {
 
 	@Test
 	public void sizeOfSampleJobList() {
-		ArrayList<Job> jobList = Reader.createSampleJobList();
+		ArrayList<Job> jobList = reader.createSampleJobList();
 		// assert statements
 		assertEquals(4,jobList.size());
 	}
 	
 	@Test
 	public void printSampleJobList() {
-		ArrayList<Job> jobList = Reader.createSampleJobList();
+		ArrayList<Job> jobList = reader.createSampleJobList();
 		for (int i = 0; i <= jobList.size() - 1; i++) {
 			System.out.println("Job ID: " + jobList.get(i).getJobId());
 			System.out.println("Cancellation: " + jobList.get(i).getCancelled());
