@@ -22,10 +22,8 @@ public class Reader {
 			reader = new BufferedReader(new FileReader(fileDrop));
 
 			String dropLoc;
-			int logCount = 0;
 			while ((dropLoc = reader.readLine()) != null
 					&& dropLoc.length() > 0) {
-				logger.debug("reads a new line" + logCount++);
 				String[] dropInfo = dropLoc.split(",");
 				int xLoc = Integer.parseInt(dropInfo[0]);
 				int yLoc = Integer.parseInt(dropInfo[1]);
@@ -33,12 +31,13 @@ public class Reader {
 				Drop newDropLoc = new Drop(xLoc, yLoc);
 				dropList.add(newDropLoc);
 			}
-			logger.debug("Reading drops files complete - Drop List created");
 			reader.close();
+			logger.debug("Drop List Complete");
 			return dropList;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		logger.debug("Drop List failed");
 		return null;
 	}
 
@@ -59,7 +58,6 @@ public class Reader {
 				itemList.add(newItem);
 				
 			}
-			logger.debug("Reading item file complete - Item  List created");
 			reader.close();
 			return itemList;
 			
@@ -101,7 +99,6 @@ public class Reader {
 			ArrayList<Job> jobList = new ArrayList<Job>();
 			File fileJobs = new File(FILE_PATH + fileName);
 			reader = new BufferedReader(new FileReader(fileJobs));
-			logger.debug("opens jobs.csv");
 
 			int count = 9999;
 			String itemID;
@@ -128,10 +125,7 @@ public class Reader {
 				}
 				jobList.add(newJob);
 			}
-
-			logger.debug("Reading Jobs files complete - Job List created");
 			reader.close();
-			logger.debug("closes jobs.csv");
 			return jobList;
 		}
 		catch (IOException e) {
@@ -145,7 +139,6 @@ public class Reader {
 			BufferedReader reader = null;
 			File fileCancellations = new File(FILE_PATH + "cancellations.csv");
 			reader = new BufferedReader(new FileReader(fileCancellations));
-			logger.debug("opens cancellations.csv");
 
 			String line;
 			boolean wasCancelled = false;
@@ -164,7 +157,6 @@ public class Reader {
 			}
 
 			reader.close();
-			logger.debug("Reading cancellation file complete - Job List updated");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -173,22 +165,34 @@ public class Reader {
 
 	public static ArrayList<Job> createJobList() {
 		ArrayList <Item> itemList = readItemList();
+		logger.debug("Read item.csv - created item List");
+		
 		readLocations(itemList);
+		logger.debug("Read locations.csv - set locations");
 		
 		ArrayList <Job> jobList = readJobs(itemList, "jobs.csv");
+		logger.debug("Read job.csv - created job List");
+		
 		readCancellations(jobList);
-		logger.debug("Job list complete");
+		logger.debug("Read cancelations.csv - set cancelations boolean");
+		logger.debug("job list complete");
 		return jobList;
 	}
 	
 	public static ArrayList<Job> createSampleJobList(){
 		ArrayList <Item> itemList = readItemList();
+		logger.debug("Read item.csv - created item List");
+		
 		readLocations(itemList);
+		logger.debug("Read locations.csv - set locations");
 		
 		ArrayList <Job> jobList = readJobs(itemList, "customJobs.csv");
+		logger.debug("Read customJobs.csv - created job List");
+		
 		for(Job job: jobList){
 			job.setCancelled(false);
 		}
+		logger.debug("set cancelations boolean");
 		logger.debug("sample Job list complete");
 		return jobList;
 	}
