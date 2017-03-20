@@ -2,13 +2,9 @@ package com.rb34.behaviours;
 
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
-import lejos.nxt.SensorPort;
-import lejos.nxt.SensorPortListener;
-import lejos.nxt.UltrasonicSensor;
+import lejos.nxt.addon.OpticalDistanceSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
-import lejos.util.Delay;
-import lejos.nxt.addon.OpticalDistanceSensor;
 
 public class DistanceKeeping implements Behavior {
 	private Float maxDistance;

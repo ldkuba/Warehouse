@@ -147,6 +147,8 @@ public class TurnBehavior implements Behavior
 			UpdateDirectionAndCo(3);
 			screen.printState("Rotate");
 			break;
+		case 4:
+			pilot.wait(timeout);
 		}
 
 		RobotStatusMessage msg = new RobotStatusMessage();
