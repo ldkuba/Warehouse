@@ -114,6 +114,8 @@ public class TurnBehavior implements Behavior, MessageListener {
 			UpdateDirectionAndCo(3);
 			screen.printState("Rotate");
 			break;
+		case 4:
+			pilot.wait(timeout); //measure how long it takes to get from one junction to another and this will be the time.
 		}
 		while (!supressed && pilot.isMoving()) {
 			if (Button.ESCAPE.isDown()) {
