@@ -4,11 +4,8 @@ public class RobotScreen {
 	
 	private String state = "DEFAULT_STATE";
 	private int x = -1, y = -1;
-	private float weight = 0;
-	private float maxWeight = 50;
 	private int itemsPickedUp = 0;
 	private int itemsToPickUp = 0;
-	private float weightOfOneItem = 0;
 	// Location, state, message
 	
 	// Print starting screen in initialization
@@ -37,7 +34,6 @@ public class RobotScreen {
 			LCD.drawString("X:Y", 0, 2);
 			LCD.drawString("X:Y -> " + x + ":" + y, 0, 3);
 		}
-		LCD.drawString("Weight: " + weight + "/" + maxWeight, 0, 4);
 	}
 	
 	public void updateLocation (int x, int y) {
@@ -49,22 +45,12 @@ public class RobotScreen {
 		this.state = state;
 	}
 	
-	public void setMaxWeight (float weight) {
-		maxWeight = weight;
-	}
-	
-	public void updateWeight (float weight) {
-		this.weight = weight;
-	}
-	
 	public void updateItemPickUpIncrease() {
 		itemsPickedUp++;
-		weight += weightOfOneItem;
 	}
 	
 	public void updateItemPickUpDecrease() {
 		itemsPickedUp--;
-		weight -= weightOfOneItem;
 	}
 	
 	public void setItemPickUpInfo(int itemsToPickUp) {

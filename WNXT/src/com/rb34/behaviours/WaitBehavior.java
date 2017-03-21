@@ -46,91 +46,98 @@ public class WaitBehavior implements Behavior {
 
 	@Override
 	public boolean takeControl() {
-			return behavior.checkIfNoRoute();
+		return behavior.checkIfNoRoute();
 	}
 
 	@Override
 	public void action() {
 		supressed = false;
-		pilot.stop();
 
-		if (Button.ENTER.isDown()) {
-			if (atPickup) {
-				itemCounter += 1;
-				screen.updateItemPickUpIncrease();
+		while (!supressed) {
+			pilot.stop();
+
+			if (Button.ENTER.isDown()) { // multiple times for pick up, just
+											// once for drop off
+				if (atPickup) {
+					itemCounter += 1;
+					screen.updateItemPickUpIncrease();
+					screen.printPickingState();
+				} else if (atDropoff) {
+					dropDone = true;
+					RobotStatusMessage msg2 = new RobotStatusMessage();
+					msg2.setX(behavior.getX());
+					msg2.setY(behavior.getY());
+					msg2.setOnJob(true);
+					msg2.setOnRoute(false);
+					msg2.setWaitingForNewPath(true);
+					msg2.setRobotId(robotId);
+					TrialMainNxt.client.send(msg2);
+				}
+			}
+
+			if (Button.RIGHT.isDown() && atPickup) { // right button should be
+														// pressed when
+														// picking/dropping is
+														// done
 				screen.printPickingState();
-			} else if (atDropoff) {
-				dropDone = true;
-				RobotStatusMessage msg2 = new RobotStatusMessage();
-				msg2.setX(behavior.getX());
-				msg2.setY(behavior.getY());
-				msg2.setOnJob(true);
-				msg2.setOnRoute(false);
-				msg2.setWaitingForNewPath(true);
-				msg2.setRobotId(robotId);
-				TrialMainNxt.client.send(msg2);
-			}
-		}
 
-		if (Button.RIGHT.isDown() && atPickup) {
-			screen.printPickingState();
-
-			switch (pickingState) {
-			case "picking":
-				if (itemCount == itemCounter && atPickup) {
-					RobotStatusMessage msg2 = new RobotStatusMessage();
-					msg2.setX(behavior.getX());
-					msg2.setY(behavior.getY());
-					msg2.setOnJob(true);
-					msg2.setOnRoute(false);
-					msg2.setWaitingForNewPath(true);
-					msg2.setRobotId(robotId);
-					TrialMainNxt.client.send(msg2);
-					setAtPickup(false);
-					setPickingState("done");
-				} else if (itemCounter > itemCount) {
-					toRelease = Math.abs(itemCount - itemCounter);
-					setPickingState("dropping");
-				} else {
-					this.itemCount = itemCount - itemCounter;
-					itemCounter = 0;
-					setPickingState("picking");
+				switch (pickingState) {
+				case "picking":
+					if (itemCount == itemCounter && atPickup) {
+						RobotStatusMessage msg2 = new RobotStatusMessage();
+						msg2.setX(behavior.getX());
+						msg2.setY(behavior.getY());
+						msg2.setOnJob(true);
+						msg2.setOnRoute(false);
+						msg2.setWaitingForNewPath(true);
+						msg2.setRobotId(robotId);
+						TrialMainNxt.client.send(msg2);
+						setAtPickup(false);
+						setPickingState("done");
+					} else if (itemCounter > itemCount) {
+						toRelease = Math.abs(itemCount - itemCounter);
+						setPickingState("dropping");
+					} else {
+						this.itemCount = itemCount - itemCounter;
+						itemCounter = 0;
+						setPickingState("picking");
+					}
+					break;
+				case "dropping":
+					if (toRelease == releaseCounter) {
+						RobotStatusMessage msg2 = new RobotStatusMessage();
+						msg2.setX(behavior.getX());
+						msg2.setY(behavior.getY());
+						msg2.setOnJob(true);
+						msg2.setOnRoute(false);
+						msg2.setWaitingForNewPath(true);
+						msg2.setRobotId(robotId);
+						TrialMainNxt.client.send(msg2);
+						setAtPickup(false);
+						setPickingState("done");
+					} else if (toRelease > releaseCounter) {
+						toRelease = toRelease - releaseCounter;
+						setPickingState("dropping");
+					} else {
+						itemCount = Math.abs(releaseCounter - toRelease);
+						setPickingState("picking");
+					}
+					break;
+				case "done":
+					break;
 				}
-				break;
-			case "dropping":
-				if (toRelease == releaseCounter) {
-					RobotStatusMessage msg2 = new RobotStatusMessage();
-					msg2.setX(behavior.getX());
-					msg2.setY(behavior.getY());
-					msg2.setOnJob(true);
-					msg2.setOnRoute(false);
-					msg2.setWaitingForNewPath(true);
-					msg2.setRobotId(robotId);
-					TrialMainNxt.client.send(msg2);
-					setAtPickup(false);
-					setPickingState("done");
-				} else if (toRelease > releaseCounter) {
-					toRelease = toRelease - releaseCounter;
-					setPickingState("dropping");
-				} else {
-					itemCount = Math.abs(releaseCounter - toRelease);
-					setPickingState("picking");
-				}
-				break;
-			case "done":
-				break;
 			}
-		}
 
-		if (Button.LEFT.isDown()) {
-			screen.printPickingState();
-			releaseCounter += 1;
-			screen.updateItemPickUpDecrease();
-		}
+			if (Button.LEFT.isDown()) { // to decrease items picked up
+				releaseCounter += 1;
+				screen.updateItemPickUpDecrease();
+				screen.printPickingState();
+			}
 
-		if (!Button.ESCAPE.isDown()) {
-			System.exit(0);
-			suppress();
+			if (!Button.ESCAPE.isDown()) {
+				System.exit(0);
+				suppress();
+			}
 		}
 
 	}
