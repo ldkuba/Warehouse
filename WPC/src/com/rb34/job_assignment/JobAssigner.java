@@ -67,18 +67,15 @@ public class JobAssigner
 					logger.debug("destination 0 " + destination);
 					destinations.remove(0);
 					robot.setDestinations(destinations);
-
+					
 					// get the first item
 					Item item = items.get(0);
-					System.out.println(destination);
-					System.out.println(item.getX() + "|" + item.getY());
-					System.out.println(destination.equals(item.getX() + "|" + item.getY()));
 					if (destination.equals(item.getX() + "|" + item.getY())) {
-						System.out.println("got here");
+						robot.setCurrentlyGoingToItem(true);
 						robot.setCurrentItem(item);
 						items.remove(0);
 						robot.setItemsToPick(items);
-					}
+					} else robot.setCurrentlyGoingToItem(false);
 
 					// start route planning
 
@@ -106,11 +103,12 @@ public class JobAssigner
 						if (items.size() > 0) {
 							Item item = items.get(0);
 							if (destination.equals(item.getX() + "|" + item.getY())) {
+								robot.setCurrentlyGoingToItem(true);
 								robot.setCurrentItem(item);
 								items.remove(0);
 								robot.setItemsToPick(items);
-							}
-						}
+							} else robot.setCurrentlyGoingToItem(false);
+						}  else robot.setCurrentlyGoingToItem(false);
 						
 						logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
 								+ robot.getYLoc() + " to" + destination);

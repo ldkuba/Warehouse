@@ -20,7 +20,6 @@ public class LineFollowing implements Behavior {
 	int readingL;
 	int whiteInitL;
 	int whiteInitR;
-	int firstAction;
 	
 	public LineFollowing(LightSensor left, LightSensor right, RobotScreen _screen) {
 		this.screen = _screen;
@@ -33,7 +32,6 @@ public class LineFollowing implements Behavior {
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 		pilot.setTravelSpeed(80);
 		pilot.setRotateSpeed(50);
-		firstAction = 2;
 		
 	}
 	
@@ -89,12 +87,9 @@ public class LineFollowing implements Behavior {
 		supressed = false;
 		pilot.stop();
 		
-		
+		pilot.stop();
 		while (!supressed) {
 			
-			if (doFirstAction) {
-				doAction(firstAction);
-			}
 			
 			pilot.forward();
 			screen.updateState("Moving foward");
@@ -165,11 +160,7 @@ public class LineFollowing implements Behavior {
 			break;
 		}
 	}
-	
-	public void setFirstAction(int i) {
-		firstAction = i;
-	}
-	
+
 	@Override
 	public void suppress() {
 		supressed = true;

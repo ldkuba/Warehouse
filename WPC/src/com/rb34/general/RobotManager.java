@@ -80,6 +80,9 @@ public class RobotManager implements IRobotManager, MessageListener
 				System.out.println("NOOOOOOOOOOT WAITING FOR NEW PATH");
 				getRobot(msg.getRobotId()).notifyOfLocation();
 			}
+		} 
+		if (!msg.isOnJob()) {
+			getRobot(msg.getRobotId()).setRobotStatus(Status.IDLE);
 		}
 	}
 

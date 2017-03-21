@@ -32,12 +32,12 @@ public class Robot implements IRobot
 		this.itemList = new ArrayList<>();
 	}
 
+	public void setCurrentlyGoingToItem(boolean b) {
+		currentlyAtItem = b;
+	}
+	
 	public ArrayList<String> getDestinations()
 	{
-		if (!destinations.isEmpty() && !itemList.isEmpty() && destinations.get(0).matches(itemList.get(0).getItemID())) {
-			currentlyAtItem = true;
-		}
-		else currentlyAtItem = false;
 		return destinations;
 	}
 	
@@ -171,7 +171,7 @@ public class Robot implements IRobot
 			msg.setItemCount(0);
 		}
 		
-		System.out.println("TRAINSSSSSSSSSSSSSSSS!!!!!!!!!!!!!!!");
+		System.out.println("ITEM: " + currentlyAtItem);
 		
 		Start.master.send(msg, robotId);
 	}

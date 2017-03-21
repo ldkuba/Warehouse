@@ -47,7 +47,7 @@ public class Start
 		p3.setY(4);
 		
 		job3.addItem("p3", new Order(p3, 1));
-		job3.addItem("p2", new Order(p2, 1));
+		//job3.addItem("p2", new Order(p2, 1));
 		
 		ArrayList<Drop> drops = new ArrayList<>();
 		drops.add(new Drop(3, 3));
@@ -67,12 +67,12 @@ public class Start
 		robot.setXLoc(0);
 		robot.setYLoc(0);
 		robot.setRobotId(0);
-/*
+
 		Robot robot2 = new Robot();
 		robot2.setXLoc(5);
 		robot2.setYLoc(0);
 		robot2.setRobotId(1);
-		/*
+/*
 		Robot robot3 = new Robot();
 		robot3.setXLoc(1);
 		robot3.setYLoc(0);
