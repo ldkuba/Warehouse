@@ -30,11 +30,13 @@ public class JunctionFollower implements MessageListener
 	private TurnBehavior turnBehavior;
 	private WaitBehavior waitBehavior;
 	private static RobotScreen screen;
-	public JunctionFollower(RobotScreen _screen)
-	{
+	
+	public JunctionFollower(RobotScreen _screen) {
 		this.screen = _screen;
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
+		TrialMainNxt.client.addListener(this);
+		
 		path = new ArrayList<>();
 		path1 = new ArrayList<PathChoices>();
 		path1.add(PathChoices.FORWARD);
@@ -50,49 +52,50 @@ public class JunctionFollower implements MessageListener
 		// path1.add(PathChoices.RIGHT);
 		// path1.add(PathChoices.FORWARD);
 		// path1.add(PathChoices.LEFT);
+		
 		TrialMainNxt.client.addListener(this);
-		
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
-		
 		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen, followLine);
 		waitBehavior = new WaitBehavior(turnBehavior, screen);
+		
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
 		arbitrator = new Arbitrator(behaviors);
 		arbitrator.start();
 	}
+	
 	@Override
-	public void recievedTestMessage(TestMessage msg)
-	{
+	public void recievedTestMessage(TestMessage msg) {
 	}
+	
 	@Override
-	public void recievedNewPathMessage(NewPathMessage msg)
-	{
+	public void recievedNewPathMessage(NewPathMessage msg) {
 		turnBehavior.setPathFromMessage(msg.getCommands());
 	}
+	
 	@Override
-	public void recievedRobotStatusMessage(RobotStatusMessage msg)
-	{
+	public void recievedRobotStatusMessage(RobotStatusMessage msg) {
 	}
+	
 	@Override
-	public void recievedRobotInitMessage(RobotInitMessage msg)
-	{
+	public void recievedRobotInitMessage(RobotInitMessage msg) {
 		RobotId = msg.getRobotId();
 		turnBehavior.setX(msg.getX());
 		turnBehavior.setY(msg.getY());
 	}
+	
 	@Override
-	public void recievedLocationTypeMessage(LocationTypeMessage msg)
-	{
-		if (msg.getLocationType() == 0)
-		{
+	public void recievedLocationTypeMessage(LocationTypeMessage msg) {
+		if (msg.getLocationType() == 0) {
 			this.screen.printState("AT ITEM " + msg.getItemId());
-		} else
-		{
+		} else {
 			this.screen.printState("AT DROPOFF LOCATION");
 		}
-		while (!Button.ENTER.isDown())
-		{
+		
+		while (!Button.ENTER.isDown()) {
+			
 		}
+		
+		
 		RobotStatusMessage msg2 = new RobotStatusMessage();
 		msg2.setX(turnBehavior.getX());
 		msg2.setY(turnBehavior.getY());
