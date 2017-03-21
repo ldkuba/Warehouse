@@ -29,7 +29,11 @@ import rp.util.HashMap;
 	
   	Usage: 
   	
+  	int x;
+  	int y;
   	Result result = findMyLocation.myLocation(gridMap, pilot, rightSensor, leftSensor, ranger);
+  	x = result.getX();
+  	y = result.getY();
   	
  */
 
