@@ -1,4 +1,6 @@
 package com.rb34.main;
+
+import java.io.PrintStream;
 import java.util.ArrayList;
 import com.rb34.behaviours.LineFollowing;
 import com.rb34.behaviours.TurnBehavior;
@@ -16,10 +18,12 @@ import com.rb34.robot_interface.RobotScreen;
 import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
+import lejos.nxt.Sound;
+import lejos.nxt.comm.RConsole;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
-public class JunctionFollower implements MessageListener
-{
+
+public class JunctionFollower implements MessageListener {
 	public static int RobotId;
 	private Arbitrator arbitrator;
 	private ArrayList<PathChoices> path; // Received via bluetooth;
@@ -30,71 +34,67 @@ public class JunctionFollower implements MessageListener
 	private TurnBehavior turnBehavior;
 	private WaitBehavior waitBehavior;
 	private static RobotScreen screen;
-	
+
 	public JunctionFollower(RobotScreen _screen) {
+
+		System.out.println("test");
 		this.screen = _screen;
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
-		TrialMainNxt.client.addListener(this);
-		
 		path = new ArrayList<>();
-		path1 = new ArrayList<PathChoices>();
-		path1.add(PathChoices.FORWARD);
-		path1.add(PathChoices.FORWARD);
-		path1.add(PathChoices.FORWARD);
-		path1.add(PathChoices.LEFT);
-		// path1.add(PathChoices.FORWARD);
-		path1.add(PathChoices.FORWARD);
-		// path1.add(PathChoices.FORWARD);
-		// path1.add(PathChoices.RIGHT);
-		// path1.add(PathChoices.FORWARD);
-		// path1.add(PathChoices.FORWARD);
-		// path1.add(PathChoices.RIGHT);
-		// path1.add(PathChoices.FORWARD);
-		// path1.add(PathChoices.LEFT);
-		
 		TrialMainNxt.client.addListener(this);
+
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen, followLine);
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen,
+				followLine);
 		waitBehavior = new WaitBehavior(turnBehavior, screen);
-		
+
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
 		arbitrator = new Arbitrator(behaviors);
 		arbitrator.start();
 	}
-	
+
 	@Override
 	public void recievedTestMessage(TestMessage msg) {
+
 	}
-	
+
 	@Override
 	public void recievedNewPathMessage(NewPathMessage msg) {
+		// System.exit(-1);
 		turnBehavior.setPathFromMessage(msg.getCommands());
+
+		// screen.updateState("Path size2: "+msg.getCommands().size());
 	}
-	
+
 	@Override
 	public void recievedRobotStatusMessage(RobotStatusMessage msg) {
+
 	}
-	
+
 	@Override
 	public void recievedRobotInitMessage(RobotInitMessage msg) {
 		RobotId = msg.getRobotId();
 		turnBehavior.setX(msg.getX());
 		turnBehavior.setY(msg.getY());
 	}
-	
+
 	@Override
 	public void recievedLocationTypeMessage(LocationTypeMessage msg) {
+		System.out.println("RECEIVED LOCATION MESSAGE");
+
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		if (msg.getLocationType() == 0) {
-			this.screen.printState("AT ITEM " + msg.getItemId());
+			this.screen.updateState("AT ITEM " + msg.getItemId());
 		} else {
-			this.screen.printState("AT DROPOFF LOCATION");
+			this.screen.updateState("AT DROPOFF LOCATION");
 		}
-		
-		while (!Button.ENTER.isDown()) {
-			
-		}
-		
 		
 		RobotStatusMessage msg2 = new RobotStatusMessage();
 		msg2.setX(turnBehavior.getX());

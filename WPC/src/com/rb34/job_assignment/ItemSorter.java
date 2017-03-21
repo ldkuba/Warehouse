@@ -35,6 +35,7 @@ public class ItemSorter {
 		this.drops = new ArrayList<>(drops);
 		robotX = rX;
 		robotY = rY;
+		logger.debug("Job id: " + job.getJobId());
 	}
 	
 	public ArrayList<Item> getSortedItems() {
@@ -147,7 +148,7 @@ public class ItemSorter {
 		String logMessage = "The item order is: ";
 		for (int index : bestPermutation) {
 			sortedItems.add(items.get(index));
-			logger.debug("index: " + index);
+			//logger.debug("index: " + index);
 			logMessage += items.get(index).getItemID() + " ";
 		}
 

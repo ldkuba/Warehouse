@@ -43,7 +43,7 @@ public class Receiver extends Thread
 				if (type == 0)
 				{
 					//System.out.println("RECEIVED MESSAGE OF TYPE: " + type);
-					
+					/*
 					byte[] lengthBytes = new byte[4];
 					inputStream.read(lengthBytes, 0, 4);
 
@@ -58,7 +58,7 @@ public class Receiver extends Thread
 					for (int i = 0; i < listeners.size(); i++)
 					{
 						listeners.get(i).recievedTestMessage(msg);
-					}
+					}*/
 				} else if(type == 1)
 				{
 					byte[] lengthBytes = new byte[4];
@@ -90,7 +90,7 @@ public class Receiver extends Thread
 					inputStream.read(bytes);
 					
 					RobotStatusMessage msg = RobotStatusMessage.fromByteArray(bytes);
-
+					
 					for (int i = 0; i < listeners.size(); i++)
 					{
 						listeners.get(i).recievedRobotStatusMessage(msg);
@@ -114,6 +114,8 @@ public class Receiver extends Thread
 					}
 				} else if(type == 4)
 				{
+					//System
+					
 					byte[] lengthBytes = new byte[4];
 					inputStream.read(lengthBytes, 0, 4);
 
@@ -122,6 +124,8 @@ public class Receiver extends Thread
 					byte[] bytes = new byte[length];
 
 					inputStream.read(bytes);
+					
+					
 					
 					LocationTypeMessage msg = LocationTypeMessage.fromByteArray(bytes);
 					

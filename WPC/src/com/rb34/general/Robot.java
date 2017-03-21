@@ -29,6 +29,7 @@ public class Robot implements IRobot
 		this.state = Status.IDLE;
 		this.job = null;
 		this.destinations = new ArrayList<>();
+		this.itemList = new ArrayList<>();
 	}
 
 	public ArrayList<String> getDestinations()
@@ -47,7 +48,9 @@ public class Robot implements IRobot
 
 	public void setDestinations(ArrayList<String> destinations)
 	{
-		this.destinations = destinations;
+		System.out.println("destinations set");
+		this.destinations.clear();
+		this.destinations = new ArrayList<>(destinations);
 	}
 
 	public void recievedMessge()
@@ -136,7 +139,10 @@ public class Robot implements IRobot
 	@Override
 	public void setItemsToPick(ArrayList<Item> itemsToPick)
 	{
-		this.itemList = itemsToPick;
+		System.out.println("items set");
+		this.itemList.clear();
+		this.itemList = new ArrayList<>(itemsToPick);
+		
 	}
 
 	public int getRobotId()
@@ -155,14 +161,17 @@ public class Robot implements IRobot
 		
 		if(this.currentlyAtItem)
 		{
-			msg.setLocationType((byte) 0);
-			
+			msg.setLocationType(0);
 			msg.setItemId(currentItem.getItemID());
 			msg.setItemCount(job.getOrderList().get(currentItem.getItemID()).getCount());
 		}else
 		{
-			msg.setLocationType((byte) 1);
+			msg.setLocationType(1);
+			msg.setItemId("");
+			msg.setItemCount(0);
 		}
+		
+		System.out.println("TRAINSSSSSSSSSSSSSSSS!!!!!!!!!!!!!!!");
 		
 		Start.master.send(msg, robotId);
 	}
