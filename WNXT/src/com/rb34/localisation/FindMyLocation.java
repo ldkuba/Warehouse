@@ -449,6 +449,8 @@ public class FindMyLocation {
 							}
 						}
 					}
+					distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
+					turnToDistance (pilot, 2f, distanceFromJunction);
 					break;
 				case 10:
 					break;
