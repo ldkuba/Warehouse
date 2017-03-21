@@ -34,11 +34,13 @@ public class JunctionFollower implements MessageListener {
 	private TurnBehavior turnBehavior;
 	private WaitBehavior waitBehavior;
 	private static RobotScreen screen;
+	private String head;
 
-	public JunctionFollower(RobotScreen _screen) {
+	public JunctionFollower(RobotScreen _screen, String head) {
 
 		System.out.println("test");
 		this.screen = _screen;
+		this.head = head;
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
 		path = new ArrayList<>();
@@ -46,8 +48,8 @@ public class JunctionFollower implements MessageListener {
 
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
 		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen,
-				followLine);
-		waitBehavior = new WaitBehavior(turnBehavior, screen);
+				followLine, head);
+		waitBehavior = new WaitBehavior(turnBehavior, screen, RobotId);
 
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
 		arbitrator = new Arbitrator(behaviors);
@@ -92,17 +94,14 @@ public class JunctionFollower implements MessageListener {
 
 		if (msg.getLocationType() == 0) {
 			this.screen.updateState("AT ITEM " + msg.getItemId());
+			screen.setItemPickUpInfo(msg.getItemCount());
+			waitBehavior.setAtPickup(true);
+			waitBehavior.setItemCount(msg.getItemCount());
+			waitBehavior.setPickingState("picking");
+			this.screen.printPickingState();
 		} else {
-			this.screen.updateState("AT DROPOFF LOCATION");
+			waitBehavior.setatDropoff(true);
+			this.screen.printDropOffState();
 		}
-		
-		RobotStatusMessage msg2 = new RobotStatusMessage();
-		msg2.setX(turnBehavior.getX());
-		msg2.setY(turnBehavior.getY());
-		msg2.setOnJob(true);
-		msg2.setOnRoute(false);
-		msg2.setWaitingForNewPath(true);
-		msg2.setRobotId(RobotId);
-		TrialMainNxt.client.send(msg2);
 	}
 }

@@ -38,19 +38,25 @@ public class TurnBehavior implements Behavior {
 	
 	private boolean supressed;
 	private boolean actionDone;
+	private static boolean forceFirstAction;
 	
-	private String head = "east";
+	private String head ;
 	private ArrayList<PathChoices> path;
 
 	public TurnBehavior(LightSensor left, LightSensor right,
-			RobotScreen _screen, LineFollowing followLine) {
+			RobotScreen _screen, LineFollowing followLine, String head) {
 
 		lightSensorR = right;
 		lightSensorL = left;
+		
 		this.screen = _screen;
 		this.followLine = followLine;
+		this.head = head;
+		
 		path = new ArrayList<>();
 		path.clear();
+		
+		forceFirstAction = false;
 
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 		pilot.setTravelSpeed(150);
@@ -82,7 +88,8 @@ public class TurnBehavior implements Behavior {
 
 	@Override
 	public boolean takeControl() {
-		if (rightOnBlack() && leftOnBlack()) {
+		if (rightOnBlack() && leftOnBlack() || forceFirstAction) {
+			setForceFirstAction(false);
 			return true;
 		} else {
 			return false;
@@ -198,14 +205,19 @@ public class TurnBehavior implements Behavior {
 	public int getY() {
 		return y;
 	}
+	
+	public void setForceFirstAction(boolean b) {
+		forceFirstAction = b;
+	}
 
 	public void setPathFromMessage(ArrayList<PathChoices> path) {
 		this.path = path;
+		setForceFirstAction(true);
 		
-		followLine.doAction(path.get(0).ordinal());
+		/*followLine.doAction(path.get(0).ordinal());
 		UpdateDirectionAndCo(path.get(0).ordinal());
 		followLine.doFirstAction();
-		path.remove(0);
+		path.remove(0);*/
 		
 	}
 

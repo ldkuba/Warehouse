@@ -10,17 +10,19 @@ import lejos.nxt.comm.RConsole;
 public class TrialMainNxt {
 	private JunctionFollower robotMovement;
 	private RobotScreen screen;
+	private String head;
 	public static Client client;
 
 	TrialMainNxt() {
 		client = new Client();
 		client.start();
+		head = "east";
 
 		while (!client.isConnected()) {
 		}
 
 		screen = new RobotScreen();
-		robotMovement = new JunctionFollower(screen);
+		robotMovement = new JunctionFollower(screen, head);
 
 		try {
 			client.join();
