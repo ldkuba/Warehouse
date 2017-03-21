@@ -33,6 +33,11 @@ public class Execute {
 			throw new IllegalArgumentException("Path is empty");
 		 } 
 		 
+		 if(robotId > 2) {
+			log4j.error("Path conversion has been requested for a robot that does not exist");
+			throw new IllegalArgumentException(robotId + "does not exist");			 
+		 }
+		 
 		ConvertToMovement converter = new ConvertToMovement();
 		log4j.trace("Initialised Movement Converting Object");
 		
