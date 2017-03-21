@@ -4,11 +4,34 @@ import java.util.ArrayList;
 
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
+import lejos.nxt.Motor;
+import lejos.nxt.SensorPort;
 import lejos.nxt.addon.OpticalDistanceSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
+import rp.config.WheeledRobotConfiguration;
 import rp.robotics.mapping.GridMap;
+import rp.systems.WheeledRobotSystem;
 import rp.util.HashMap;
+
+/* IMPORTANT!
+   This class needs:
+  
+   	private WheeledRobotConfiguration ROBOT_CONFIG = new WheeledRobotConfiguration (0.056f, 0.129f, 0.180f, Motor.A, Motor.C);
+	private DifferentialPilot pilot = new WheeledRobotSystem (ROBOT_CONFIG).getPilot();
+	private LightSensor leftSensor = new LightSensor (SensorPort.S4);
+	private LightSensor rightSensor = new LightSensor (SensorPort.S1);
+	private OpticalDistanceSensor ranger = new OpticalDistanceSensor (SensorPort.S3);
+
+	Map map = new Map ();
+	FindMyLocation findMyLocation = new FindMyLocation ();
+	public GridMap gridMap = map.createGridMap();
+	
+  	Usage: 
+  	
+  	Result result = findMyLocation.myLocation(gridMap, pilot, rightSensor, leftSensor, ranger);
+  	
+ */
 
 public class FindMyLocation {
 	
