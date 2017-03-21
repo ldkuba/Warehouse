@@ -64,7 +64,11 @@ public class JunctionFollower implements MessageListener {
 	@Override
 	public void recievedNewPathMessage(NewPathMessage msg) {
 		// System.exit(-1);
+		
+		System.out.println("Got path");
+		
 		turnBehavior.setPathFromMessage(msg.getCommands());
+		waitBehavior.suppress();
 
 		// screen.updateState("Path size2: "+msg.getCommands().size());
 	}
@@ -83,7 +87,6 @@ public class JunctionFollower implements MessageListener {
 
 	@Override
 	public void recievedLocationTypeMessage(LocationTypeMessage msg) {
-		System.out.println("RECEIVED LOCATION MESSAGE");
 
 		try {
 			Thread.sleep(2000);
@@ -103,5 +106,7 @@ public class JunctionFollower implements MessageListener {
 			waitBehavior.setatDropoff(true);
 			this.screen.printDropOffState();
 		}
+		
+		
 	}
 }

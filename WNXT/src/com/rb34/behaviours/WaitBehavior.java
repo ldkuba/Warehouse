@@ -12,8 +12,10 @@ import lejos.nxt.Sound;
 import lejos.nxt.comm.RConsole;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
+import lejos.util.Delay;
 
-public class WaitBehavior implements Behavior {
+public class WaitBehavior implements Behavior
+{
 	private DifferentialPilot pilot;
 	private TurnBehavior behavior;
 	private RobotScreen screen;
@@ -28,7 +30,8 @@ public class WaitBehavior implements Behavior {
 	private String pickingState;
 	private boolean dropDone;
 
-	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen, int RobotId) {
+	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen, int RobotId)
+	{
 		this.behavior = _behavior;
 		this.screen = _screen;
 		this.robotId = RobotId;
@@ -45,45 +48,61 @@ public class WaitBehavior implements Behavior {
 	}
 
 	@Override
-	public boolean takeControl() {
+	public boolean takeControl()
+	{
+
 		return behavior.checkIfNoRoute();
 	}
 
 	@Override
-	public void action() {
+	public void action()
+	{
 		supressed = false;
 
-		while (!supressed) {
+		while (!supressed)
+		{
+
+			// System.out.println("Running " + supressed);
+
 			pilot.stop();
 
-			if (Button.ENTER.isDown()) { // multiple times for pick up, just
-											// once for drop off
-				if (atPickup) {
+			if (Button.ENTER.isDown())
+			{ // multiple times for pick up, just
+				// once for drop off
+				Delay.msDelay(1000);
+				if (atPickup)
+				{
 					itemCounter += 1;
 					screen.updateItemPickUpIncrease();
 					screen.printPickingState();
-				} else if (atDropoff) {
+				} else if (atDropoff)
+				{
 					dropDone = true;
 					RobotStatusMessage msg2 = new RobotStatusMessage();
 					msg2.setX(behavior.getX());
 					msg2.setY(behavior.getY());
-					msg2.setOnJob(true);
+					msg2.setOnJob(false);
 					msg2.setOnRoute(false);
 					msg2.setWaitingForNewPath(true);
 					msg2.setRobotId(robotId);
 					TrialMainNxt.client.send(msg2);
+					setPickingState("done");
 				}
 			}
 
-			if (Button.RIGHT.isDown() && atPickup) { // right button should be
-														// pressed when
-														// picking/dropping is
-														// done
+			if (Button.RIGHT.isDown() && atPickup)
+			{ // right button should be
+				// pressed when
+				// picking/dropping is
+				// done
+				Delay.msDelay(1000);
 				screen.printPickingState();
 
-				switch (pickingState) {
+				switch (pickingState)
+				{
 				case "picking":
-					if (itemCount == itemCounter && atPickup) {
+					if (itemCount == itemCounter && atPickup)
+					{
 						RobotStatusMessage msg2 = new RobotStatusMessage();
 						msg2.setX(behavior.getX());
 						msg2.setY(behavior.getY());
@@ -94,17 +113,20 @@ public class WaitBehavior implements Behavior {
 						TrialMainNxt.client.send(msg2);
 						setAtPickup(false);
 						setPickingState("done");
-					} else if (itemCounter > itemCount) {
+					} else if (itemCounter > itemCount)
+					{
 						toRelease = Math.abs(itemCount - itemCounter);
 						setPickingState("dropping");
-					} else {
+					} else
+					{
 						this.itemCount = itemCount - itemCounter;
 						itemCounter = 0;
 						setPickingState("picking");
 					}
 					break;
 				case "dropping":
-					if (toRelease == releaseCounter) {
+					if (toRelease == releaseCounter)
+					{
 						RobotStatusMessage msg2 = new RobotStatusMessage();
 						msg2.setX(behavior.getX());
 						msg2.setY(behavior.getY());
@@ -115,55 +137,68 @@ public class WaitBehavior implements Behavior {
 						TrialMainNxt.client.send(msg2);
 						setAtPickup(false);
 						setPickingState("done");
-					} else if (toRelease > releaseCounter) {
+					} else if (toRelease > releaseCounter)
+					{
 						toRelease = toRelease - releaseCounter;
 						setPickingState("dropping");
-					} else {
+					} else
+					{
 						itemCount = Math.abs(releaseCounter - toRelease);
 						setPickingState("picking");
 					}
 					break;
 				case "done":
 					break;
+				default:
+					break;
 				}
 			}
 
-			if (Button.LEFT.isDown()) { // to decrease items picked up
+			if (Button.LEFT.isDown())
+			{ // to decrease items picked up
+				Delay.msDelay(1000);
 				releaseCounter += 1;
 				screen.updateItemPickUpDecrease();
 				screen.printPickingState();
 			}
 
-			if (!Button.ESCAPE.isDown()) {
+			if (Button.ESCAPE.isDown())
+			{
+				Delay.msDelay(1000);
 				System.exit(0);
 				suppress();
 			}
 		}
-
 	}
 
-	public void setItemCount(int i) {
+	public void setItemCount(int i)
+	{
 		itemCount = i;
 	}
 
-	public int getItemCount() {
+	public int getItemCount()
+	{
 		return itemCount;
 	}
 
-	public void setAtPickup(boolean b) {
+	public void setAtPickup(boolean b)
+	{
 		atPickup = b;
 	}
 
-	public void setatDropoff(boolean b) {
+	public void setatDropoff(boolean b)
+	{
 		atDropoff = b;
 	}
 
-	public void setPickingState(String s) {
+	public void setPickingState(String s)
+	{
 		pickingState = s;
 	}
 
 	@Override
-	public void suppress() {
+	public void suppress()
+	{
 		supressed = true;
 
 	}

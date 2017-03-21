@@ -38,6 +38,7 @@ public class TurnBehavior implements Behavior {
 	
 	private boolean supressed;
 	private boolean actionDone;
+	private boolean lastAction;
 	private static boolean forceFirstAction;
 	
 	private String head ;
@@ -47,6 +48,7 @@ public class TurnBehavior implements Behavior {
 			RobotScreen _screen, LineFollowing followLine, String head) {
 
 		lightSensorR = right;
+		
 		lightSensorL = left;
 		
 		this.screen = _screen;
@@ -57,6 +59,7 @@ public class TurnBehavior implements Behavior {
 		path.clear();
 		
 		forceFirstAction = false;
+		lastAction = false;
 
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
 		pilot.setTravelSpeed(150);
@@ -88,7 +91,7 @@ public class TurnBehavior implements Behavior {
 
 	@Override
 	public boolean takeControl() {
-		if (rightOnBlack() && leftOnBlack() || forceFirstAction) {
+		if ((rightOnBlack() && leftOnBlack()) || forceFirstAction) {
 			setForceFirstAction(false);
 			return true;
 		} else {
@@ -120,6 +123,9 @@ public class TurnBehavior implements Behavior {
 				//screen.updateLocation(x, y);
 				turnDirection = path.get(0).ordinal();
 				path.remove(0);
+				if (path.isEmpty()) {
+					lastAction = true;
+				}
 			}
 		}
 
@@ -128,27 +134,42 @@ public class TurnBehavior implements Behavior {
 			pilot.arc(80.5, 90, true);
 			UpdateDirectionAndCo(0);
 			screen.updateState("Left");
+			if (lastAction) {
+				redirectHead();
+			}
 			break;
 		case 1:
 			pilot.arc(-80.5, -90, true);
 			UpdateDirectionAndCo(1);
 			screen.updateState("Right");
+			if (lastAction) {
+				redirectHead();
+			}
 			break;
 		case 2:
 			pilot.travel(75.0, true);
 			UpdateDirectionAndCo(2);
 			screen.updateState("Forward");
+			if (lastAction) {
+				redirectHead();
+			}
 			break;
 		case 3:
 			pilot.rotate(180, true);
 			UpdateDirectionAndCo(3);
 			screen.updateState("Rotate");
+			if (lastAction) {
+				redirectHead();
+			}
 			break;
 		case 4:
 			try {
 				pilot.wait(timeout);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			}
+			if (lastAction) {
+				redirectHead();
 			}
 		}
 
@@ -163,11 +184,6 @@ public class TurnBehavior implements Behavior {
 		msg.setWaitingForNewPath(false);
 		TrialMainNxt.client.send(msg);
 		
-		if (actionDone) {
-			//Sound.beep();
-			System.out.println("TOLD YOU!!!");		
-		}
-
 		while (!supressed && pilot.isMoving()) {
 
 			if (Button.ESCAPE.isDown()) {
@@ -187,6 +203,21 @@ public class TurnBehavior implements Behavior {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public void redirectHead() { //makes sure that robot faces east every time it gets a new route
+		switch(head) {
+		case "north":
+			pilot.arc(80.5, 90, true);
+			break;
+		case "south":
+			pilot.arc(-80.5, -90, true);
+			break;
+		case "west":
+			pilot.rotate(180, true);
+		case "east":
+			break;				
 		}
 	}
 
