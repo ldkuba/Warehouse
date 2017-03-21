@@ -9,11 +9,9 @@ import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
 import com.rb34.robot_interface.RobotScreen;
 
-public class LineFollowing implements Behavior 
-{	
+public class LineFollowing implements Behavior {	
 	private boolean supressed = true;
 	private boolean doFirstAction = false;
-	
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
 	private DifferentialPilot pilot;
@@ -26,16 +24,16 @@ public class LineFollowing implements Behavior
 	
 	public LineFollowing(LightSensor left, LightSensor right, RobotScreen _screen) {
 		this.screen = _screen;
-		
 		lightSensorR = right;
 		lightSensorL = left;
+		
 		this.whiteInitL = whiteInitL;
 		this.whiteInitR = whiteInitR;
 		
 		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
-		
 		pilot.setTravelSpeed(80);
 		pilot.setRotateSpeed(50);
+		firstAction = 2;
 		
 	}
 	
@@ -58,10 +56,7 @@ public class LineFollowing implements Behavior
 	protected void checkLeft() {
 		// If left sensor on line && right sensor is not => Go left
 		while (leftOnBlack() && !rightOnBlack()) {
-			//pilot.rotate(2.5, true);
 			pilot.rotateLeft();
-
-			//System.out.println("Left rotation");
 			
 			if (Button.ESCAPE.isDown()) { //make sure that robot will stop program if escape button is pressed.
 				System.exit(0);
@@ -74,10 +69,7 @@ public class LineFollowing implements Behavior
 	protected void checkRight() {
 		// If right sensor on line && left sensor is not => Go right
 		while (!leftOnBlack() && rightOnBlack()) {
-			//pilot.rotate(-2.5, true);
 			pilot.rotateRight();
-
-			//System.out.println("Right rotation");
 			
 			if (Button.ESCAPE.isDown()) { //make sure that robot will stop program if escape button is pressed.
 				System.exit(0);
@@ -88,8 +80,7 @@ public class LineFollowing implements Behavior
 	}
 
 	@Override
-	public boolean takeControl() 
-	{
+	public boolean takeControl() {
 		return true; //always true-so will follow line until another behaviour takes control
 	}
 
@@ -100,16 +91,15 @@ public class LineFollowing implements Behavior
 		
 		while (!supressed) {
 			
+			if (doFirstAction) {
+				doAction(firstAction);
+			}
+			
+			pilot.stop();
 			pilot.forward();
 			screen.updateState("Moving foward");
-
 			checkLeft();
-			//System.out.println("Left Initial: " +whiteInitL);
-			//System.out.println("New left:" +lightSensorL.getLightValue());
 			checkRight();
-			//System.out.println("Right: "+rightOnBlack());
-			//System.out.println("Right Initial: " +whiteInitR);
-			//System.out.println("New right:" +lightSensorR.getLightValue());
 
 
 	/*		if (!rightOnBlack() && !leftOnBlack()) { //if greater than 1 must be on white so forward

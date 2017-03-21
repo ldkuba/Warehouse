@@ -2,7 +2,6 @@ package com.rb34.main;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
-
 import com.rb34.behaviours.LineFollowing;
 import com.rb34.behaviours.TurnBehavior;
 import com.rb34.behaviours.WaitBehavior;
@@ -16,7 +15,6 @@ import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.network.Client;
 import com.rb34.robot_interface.RobotScreen;
-
 import lejos.nxt.Button;
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
@@ -25,102 +23,85 @@ import lejos.nxt.comm.RConsole;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
-public class JunctionFollower implements MessageListener
-{
+public class JunctionFollower implements MessageListener {
 	public static int RobotId;
-
 	private Arbitrator arbitrator;
-
 	private ArrayList<PathChoices> path; // Received via bluetooth;
 	private ArrayList<PathChoices> path1; // when we want to pre-define;
-
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
-
 	private LineFollowing followLine;
 	private TurnBehavior turnBehavior;
 	private WaitBehavior waitBehavior;
 	private static RobotScreen screen;
+	private String head;
 
-	public JunctionFollower(RobotScreen _screen)
-	{
-		
+	public JunctionFollower(RobotScreen _screen, String head) {
+
 		System.out.println("test");
 		this.screen = _screen;
+		this.head = head;
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
-
 		path = new ArrayList<>();
-
 		TrialMainNxt.client.addListener(this);
-		
+
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen, followLine);
-		waitBehavior = new WaitBehavior(turnBehavior, screen);
-		
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen,
+				followLine, head);
+		waitBehavior = new WaitBehavior(turnBehavior, screen, RobotId);
+
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
 		arbitrator = new Arbitrator(behaviors);
 		arbitrator.start();
 	}
 
 	@Override
-	public void recievedTestMessage(TestMessage msg)
-	{
+	public void recievedTestMessage(TestMessage msg) {
 
 	}
 
 	@Override
-	public void recievedNewPathMessage(NewPathMessage msg)
-	{
-		//System.exit(-1);
+	public void recievedNewPathMessage(NewPathMessage msg) {
+		// System.exit(-1);
 		turnBehavior.setPathFromMessage(msg.getCommands());
-		
-		//screen.updateState("Path size2: "+msg.getCommands().size());
+
+		// screen.updateState("Path size2: "+msg.getCommands().size());
 	}
 
 	@Override
-	public void recievedRobotStatusMessage(RobotStatusMessage msg)
-	{
+	public void recievedRobotStatusMessage(RobotStatusMessage msg) {
 
 	}
 
 	@Override
-	public void recievedRobotInitMessage(RobotInitMessage msg)
-	{
+	public void recievedRobotInitMessage(RobotInitMessage msg) {
 		RobotId = msg.getRobotId();
 		turnBehavior.setX(msg.getX());
 		turnBehavior.setY(msg.getY());
 	}
 
 	@Override
-	public void recievedLocationTypeMessage(LocationTypeMessage msg)
-	{
+	public void recievedLocationTypeMessage(LocationTypeMessage msg) {
 		System.out.println("RECEIVED LOCATION MESSAGE");
-		
-		try
-		{
+
+		try {
 			Thread.sleep(2000);
-		} catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		if (msg.getLocationType() == 0)
-		{
-			this.screen.updateState("AT ITEM " + msg.getItemId());
-		} else
-		{
-			this.screen.updateState("AT DROPOFF LOCATION");
-		}
 
-		RobotStatusMessage msg2 = new RobotStatusMessage();
-		msg2.setX(turnBehavior.getX());
-		msg2.setY(turnBehavior.getY());
-		msg2.setOnJob(true);
-		msg2.setOnRoute(false);
-		msg2.setWaitingForNewPath(true);
-		msg2.setRobotId(RobotId);
-		TrialMainNxt.client.send(msg2);
+		if (msg.getLocationType() == 0) {
+			this.screen.updateState("AT ITEM " + msg.getItemId());
+			screen.setItemPickUpInfo(msg.getItemCount());
+			waitBehavior.setAtPickup(true);
+			waitBehavior.setItemCount(msg.getItemCount());
+			waitBehavior.setPickingState("picking");
+			this.screen.printPickingState();
+		} else {
+			waitBehavior.setatDropoff(true);
+			this.screen.printDropOffState();
+		}
 	}
 }
