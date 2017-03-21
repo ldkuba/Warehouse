@@ -111,9 +111,4 @@ public class JunctionFollower implements MessageListener {
 			this.screen.printDropOffState();
 		}
 	}
-	
-	public static void main(String args[]) {
-		RobotScreen screen1 = new RobotScreen();
-		JunctionFollower robot = new JunctionFollower(screen1);
-	}
 }
