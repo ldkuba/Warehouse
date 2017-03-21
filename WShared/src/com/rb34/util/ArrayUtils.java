@@ -31,6 +31,28 @@ public class ArrayUtils
 
 		return reverse(bytes);
 	}
+	
+	public static byte[] shortToBytes(short a)
+	{
+		byte[] bytes = new byte[2];
+		for (int i = 0; i < 2; i++)
+		{
+			bytes[i] = (byte) (a >>> (i * 8));
+		}
+
+		return reverse(bytes);
+	}
+	
+	public static byte[] charToBytes(char a)
+	{
+		byte[] bytes = new byte[2];
+		for (int i = 0; i < 2; i++)
+		{
+			bytes[i] = (byte) (a >>> (i * 8));
+		}
+
+		return reverse(bytes);
+	}
 
 	public static byte[] stringToBytes(String s)
 	{
@@ -100,4 +122,15 @@ public class ArrayUtils
 		return output;
 	}
 
+	public static ArrayList<Byte> arrayToArrayList(byte[] bs)
+	{
+		ArrayList<Byte> arrayList = new ArrayList<>();
+		
+		for(int i = 0; i < bs.length; i++)
+		{
+			arrayList.add(bs[i]);
+		}
+		
+		return arrayList;
+	}
 }
