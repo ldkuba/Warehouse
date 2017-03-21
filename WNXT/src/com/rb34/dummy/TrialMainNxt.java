@@ -16,13 +16,12 @@ public class TrialMainNxt {
 	TrialMainNxt() {
 		client = new Client();
 		client.start();
-		head = "east";
 
 		while (!client.isConnected()) {
 		}
 
 		screen = new RobotScreen();
-		robotMovement = new JunctionFollower(screen, head);
+		robotMovement = new JunctionFollower(screen);
 
 		try {
 			client.join();

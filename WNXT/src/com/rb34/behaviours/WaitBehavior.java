@@ -134,7 +134,7 @@ public class WaitBehavior implements Behavior {
 				screen.printPickingState();
 			}
 
-			if (!Button.ESCAPE.isDown()) {
+			if (Button.ESCAPE.isDown()) {
 				System.exit(0);
 				suppress();
 			}

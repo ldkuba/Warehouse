@@ -44,14 +44,14 @@ public class TurnBehavior implements Behavior {
 	private ArrayList<PathChoices> path;
 
 	public TurnBehavior(LightSensor left, LightSensor right,
-			RobotScreen _screen, LineFollowing followLine, String head) {
+			RobotScreen _screen, LineFollowing followLine) {
 
 		lightSensorR = right;
 		lightSensorL = left;
 		
 		this.screen = _screen;
 		this.followLine = followLine;
-		this.head = head;
+		this.head = "east";
 		
 		path = new ArrayList<>();
 		path.clear();
@@ -212,7 +212,7 @@ public class TurnBehavior implements Behavior {
 
 	public void setPathFromMessage(ArrayList<PathChoices> path) {
 		this.path = path;
-		setForceFirstAction(true);
+		//setForceFirstAction(true);
 		
 		/*followLine.doAction(path.get(0).ordinal());
 		UpdateDirectionAndCo(path.get(0).ordinal());

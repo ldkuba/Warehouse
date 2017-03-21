@@ -34,21 +34,27 @@ public class JunctionFollower implements MessageListener {
 	private TurnBehavior turnBehavior;
 	private WaitBehavior waitBehavior;
 	private static RobotScreen screen;
-	private String head;
 
-	public JunctionFollower(RobotScreen _screen, String head) {
+	public JunctionFollower(RobotScreen _screen) {
 
 		System.out.println("test");
 		this.screen = _screen;
-		this.head = head;
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
 		path = new ArrayList<>();
-		TrialMainNxt.client.addListener(this);
+		//TrialMainNxt.client.addListener(this);
+		
+		path1.add(PathChoices.RIGHT);
+		path1.add(PathChoices.FORWARD);
+		path1.add(PathChoices.FORWARD);
+		
 
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
 		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen,
-				followLine, head);
+				followLine);
+		
+		turnBehavior.setPath(path1);
+		turnBehavior.setForceFirstAction(true);
 		waitBehavior = new WaitBehavior(turnBehavior, screen, RobotId);
 
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
@@ -65,6 +71,7 @@ public class JunctionFollower implements MessageListener {
 	public void recievedNewPathMessage(NewPathMessage msg) {
 		// System.exit(-1);
 		turnBehavior.setPathFromMessage(msg.getCommands());
+		turnBehavior.setForceFirstAction(true);
 
 		// screen.updateState("Path size2: "+msg.getCommands().size());
 	}
@@ -103,5 +110,10 @@ public class JunctionFollower implements MessageListener {
 			waitBehavior.setatDropoff(true);
 			this.screen.printDropOffState();
 		}
+	}
+	
+	public static void main(String args[]) {
+		RobotScreen screen1 = new RobotScreen();
+		JunctionFollower robot = new JunctionFollower(screen1);
 	}
 }
