@@ -29,8 +29,8 @@ import rp.util.HashMap;
 	
   	Usage: 
   	
-  	int x;
-  	int y;
+  	int x; // Returns x coordinate 
+  	int y; // Returns y coordinate
   	Result result = findMyLocation.myLocation(gridMap, pilot, rightSensor, leftSensor, ranger);
   	x = result.getX();
   	y = result.getY();
