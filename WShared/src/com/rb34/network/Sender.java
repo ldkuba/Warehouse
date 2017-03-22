@@ -41,6 +41,8 @@ public class Sender extends Thread
 				
 				byte[] message = messageQueue.get(0).toByteArray();
 				
+				//System.out.println(messageQueue.get(0).toString());
+				
 				try
 				{
 					outputStream.write(message, 0, message.length);

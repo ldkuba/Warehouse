@@ -32,6 +32,19 @@ public class ArrayUtils
 		return reverse(bytes);
 	}
 	
+	public static byte[] intArrayToBytes(int[] array)
+	{
+		byte[] bytes = new byte[4];
+		bytes = concat(bytes, intToBytes(array.length));
+		
+		for(int i = 0; i < array.length; i++)
+		{
+			bytes = concat(bytes, intToBytes(array[i]));
+		}
+		
+		return bytes;
+	}
+	
 	public static byte[] shortToBytes(short a)
 	{
 		byte[] bytes = new byte[2];
@@ -43,6 +56,19 @@ public class ArrayUtils
 		return reverse(bytes);
 	}
 	
+	public static byte[] shortArrayToBytes(short[] array)
+	{
+		byte[] bytes = new byte[4];
+		bytes = concat(bytes, intToBytes(array.length));
+		
+		for(int i = 0; i < array.length; i++)
+		{
+			bytes = concat(bytes, shortToBytes(array[i]));
+		}
+		
+		return bytes;
+	}
+	
 	public static byte[] charToBytes(char a)
 	{
 		byte[] bytes = new byte[2];
@@ -52,6 +78,32 @@ public class ArrayUtils
 		}
 
 		return reverse(bytes);
+	}
+	
+	public static byte[] charArrayToBytes(char[] array)
+	{
+		byte[] bytes = new byte[4];
+		bytes = concat(bytes, intToBytes(array.length));
+		
+		for(int i = 0; i < array.length; i++)
+		{
+			bytes = concat(bytes, charToBytes(array[i]));
+		}
+		
+		return bytes;
+	}
+	
+	public static byte[] booleanArrayToBytes(boolean[] array)
+	{
+		byte[] bytes = new byte[4];
+		bytes = concat(bytes, intToBytes(array.length));
+		
+		for(int i = 0; i < array.length; i++)
+		{
+			bytes = concat(bytes, new byte[]{(byte) (array[i]?1:0)});
+		}
+		
+		return bytes;
 	}
 
 	public static byte[] stringToBytes(String s)

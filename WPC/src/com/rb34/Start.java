@@ -87,13 +87,13 @@ public class Start
 		
 		RobotManager rm = new RobotManager();
 		rm.addRobot(robot);
-	//	rm.addRobot(robot2);
+		rm.addRobot(robot2);
 //		rm.addRobot(robot3);
 
 		System.out.println("4");
 
 		master.addListener(rm);
-
+		
 		JobAssigner jobAssigner = new JobAssigner(orderedJobs, rm, drops);
 		jobAssigner.assignJobs(); // Runs Job_Assignment
 

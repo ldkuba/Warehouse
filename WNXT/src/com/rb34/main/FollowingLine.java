@@ -22,7 +22,7 @@ public class FollowingLine {
 		lightSensorL = new LightSensor(SensorPort.S4);
 		screen = new RobotScreen();
 
-		lineFollowing = new LineFollowing(lightSensorL, lightSensorR, screen);
+		lineFollowing = new LineFollowing(lightSensorL, lightSensorR, screen, null);
 
 		Behavior[] behaviors = {lineFollowing};
 		arbitrator = new Arbitrator(behaviors);

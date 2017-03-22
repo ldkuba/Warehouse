@@ -107,6 +107,8 @@ public class Master extends Thread
 
 	public void send(Message msg, int robotId)
 	{
+		System.out.println("Sending message to robot: " + robotId + "\nMessage:\n" + msg.toString());
+		
 		if(connections.size() > robotId)
 		{
 			if(connections.get(robotId) != null)

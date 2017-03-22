@@ -147,5 +147,12 @@ public class RobotStatusMessage implements Message
 		
 		return msg;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "RobotStatusMessage [type=" + type + ", robotId=" + robotId + ", x=" + x + ", y=" + y + ", isOnRoute="
+				+ isOnRoute + ", isOnJob=" + isOnJob + ", isWaitingForNewPath=" + isWaitingForNewPath + "]";
+	}
 	
 }

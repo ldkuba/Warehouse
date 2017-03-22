@@ -29,9 +29,10 @@ public class WaitBehavior implements Behavior
 	private boolean atDropoff;
 	private String pickingState;
 	private boolean dropDone;
-
+	
 	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen, int RobotId)
 	{
+	
 		this.behavior = _behavior;
 		this.screen = _screen;
 		this.robotId = RobotId;
@@ -69,7 +70,7 @@ public class WaitBehavior implements Behavior
 			if (Button.ENTER.isDown())
 			{ // multiple times for pick up, just
 				// once for drop off
-				Delay.msDelay(1000);
+				Delay.msDelay(750);
 				if (atPickup)
 				{
 					itemCounter += 1;
@@ -95,7 +96,7 @@ public class WaitBehavior implements Behavior
 				// pressed when
 				// picking/dropping is
 				// done
-				Delay.msDelay(1000);
+				Delay.msDelay(750);
 				screen.printPickingState();
 
 				switch (pickingState)
@@ -156,7 +157,7 @@ public class WaitBehavior implements Behavior
 
 			if (Button.LEFT.isDown())
 			{ // to decrease items picked up
-				Delay.msDelay(1000);
+				Delay.msDelay(750);
 				releaseCounter += 1;
 				screen.updateItemPickUpDecrease();
 				screen.printPickingState();
@@ -164,7 +165,7 @@ public class WaitBehavior implements Behavior
 
 			if (Button.ESCAPE.isDown())
 			{
-				Delay.msDelay(1000);
+				Delay.msDelay(750);
 				System.exit(0);
 				suppress();
 			}
