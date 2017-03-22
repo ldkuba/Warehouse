@@ -90,11 +90,15 @@ public class WarehouseUITest {
 		robot2.setDestinations(destrb2);
 		robot3.setDestinations(destrb3);
 		
-		
+		robot1.setRobotStatus(Status.RUNNING);
 		while(robot1.getXLoc() < 11) {
 			int val = robot1.getXLoc() + 1;
-			robot1.setRobotStatus(Status.RUNNING);
+
 			robot1.setXLoc(val);
+			
+			if(robot1.getRobotStatus() == Status.IDLE) {
+				break;
+			}
 			
 			try {
 				TimeUnit.SECONDS.sleep(2);
@@ -105,20 +109,25 @@ public class WarehouseUITest {
 			
 		}
 		
-		while(robot1.getYLoc() < 7) {
-			int val = robot1.getYLoc() + 1;
-			robot1.setRobotStatus(Status.RUNNING);
-			robot1.setYLoc(val);
-			if(robot1.getXLoc() == 11 && robot1.getYLoc() == 7) {
-				robot1.setRobotStatus(Status.AT_DROPOFF);
-			}
-			try {
-				TimeUnit.SECONDS.sleep(2);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if(robot1.getRobotStatus() != Status.IDLE) {
+			while(robot1.getYLoc() < 7) {
+				int val = robot1.getYLoc() + 1;
+				//robot1.setRobotStatus(Status.RUNNING);
+
+				
+				robot1.setYLoc(val);
+				if(robot1.getXLoc() == 11 && robot1.getYLoc() == 7) {
+					robot1.setRobotStatus(Status.AT_DROPOFF);
+				}
+				try {
+					TimeUnit.SECONDS.sleep(2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
+		
+
 		
 
 

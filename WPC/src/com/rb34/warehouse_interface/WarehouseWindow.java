@@ -38,7 +38,6 @@ public class WarehouseWindow {
 
 	private JFrame frame;
 	static RobotManager manager;
-	Robot rb1, rb2, rb3;
 	JLabel[] mapLabels;
 	Container cp;
 	JLabel x0y8,x0y7,x0y6,x0y5,x0y4,x0y3,x0y2,x0y1,x0y0;
@@ -64,7 +63,7 @@ public class WarehouseWindow {
 	public WarehouseWindow(RobotManager rm) {
 		this.manager = rm;
 	}
-	public static void launch() {
+	public void launch() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -107,6 +106,7 @@ public class WarehouseWindow {
 		frame.getContentPane().setLayout(gridBagLayout);
 		
 		JButton btnLoadJobList = new JButton("Load Job List");
+		btnLoadJobList.setBackground(Color.WHITE);
 		GridBagConstraints gbc_btnLoadJobList = new GridBagConstraints();
 		gbc_btnLoadJobList.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnLoadJobList.anchor = GridBagConstraints.NORTH;
@@ -135,6 +135,7 @@ public class WarehouseWindow {
 		});
 		
 		JButton btnWarehouseMap = new JButton("Warehouse Map");
+		btnWarehouseMap.setBackground(Color.WHITE);
 		GridBagConstraints gbc_btnWarehouseMap = new GridBagConstraints();
 		gbc_btnWarehouseMap.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnWarehouseMap.anchor = GridBagConstraints.NORTH;
@@ -247,6 +248,7 @@ public class WarehouseWindow {
 		
 			
 		JButton btnRewardSummary = new JButton("Job Information");
+		btnRewardSummary.setBackground(Color.WHITE);
 		GridBagConstraints gbc_btnRewardSummary = new GridBagConstraints();
 		gbc_btnRewardSummary.insets = new Insets(5, 5, 5, 5);
 		gbc_btnRewardSummary.fill = GridBagConstraints.HORIZONTAL;
@@ -283,6 +285,7 @@ public class WarehouseWindow {
 		gbc_lblStatus.gridx = 2;
 		gbc_lblStatus.gridy = 1;
 		frame.getContentPane().add(lblStatus, gbc_lblStatus);
+		lblStatus.setName("RB1Status");
 		
 		JLabel lblRobot3 = new JLabel("Robot 3:");
 		lblRobot3.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -468,7 +471,7 @@ public class WarehouseWindow {
 		// Polls relevant classes for required information on a set interval
 		// and updates the corresponding UI elements
 		int delay = 2000; //milliseconds
-	      ActionListener taskPerformer = new ActionListener() {
+	      ActionListener uiUpdate = new ActionListener() {
 	          public void actionPerformed(ActionEvent evt) {
 
 	        	  setStatus(lblStatus,0);
@@ -490,7 +493,7 @@ public class WarehouseWindow {
 
 	          }
 	      };
-	      new Timer(delay, taskPerformer).start();
+	      new Timer(delay, uiUpdate).start();
 	}
 	
 	// Moved all UI updating functions to separate methods in an attempt to clean up
@@ -899,5 +902,12 @@ public class WarehouseWindow {
 		val.setOpaque(true);
 		//ImageIcon dest = new ImageIcon("res/rb1.png");
 		//val.setIcon(dest);
+	}
+	
+	
+	
+	// Following methods are present to allow JUnit Test access to the Swing components
+	public RobotManager getManager() {
+		return manager;
 	}
 }
