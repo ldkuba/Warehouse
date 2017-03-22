@@ -486,7 +486,7 @@ public class FindMyLocation {
 					}
 					
 					listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
-					
+					distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
 					switch (listOfPossibleLocations.size()) {
 						case 1:
 							x = listOfPossibleLocations.get(0).getX();
@@ -504,7 +504,157 @@ public class FindMyLocation {
 							x = listOfPossibleLocations.get(0).getX();
 							y = listOfPossibleLocations.get(0).getY();
 							break;
-						case 12:
+						case 12: // Done. NOT TESTED
+							switch (currentHeading) {
+								case PLUS_X:
+									if (currentPLUS_Y == 1) {
+										for (int i = 1; i <= 3; i++) {
+											performARegularScan (ranger, pilot);
+											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+											switch (listOfPossibleLocations.size()) {
+												case 4:
+													x = 0;
+													y = 0;
+													pilot.rotate(180);
+													break;
+												case 12:
+													x = 3;
+													y = 0;
+													pilot.rotate(180);
+													break;
+											}
+										}
+									} else if (currentPLUS_Y == 3) {
+										for (int i = 1; i <= 3; i++) {
+											performARegularScan (ranger, pilot);
+											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+											switch (listOfPossibleLocations.size()) {
+												case 4:
+													x = 11;
+													y = 0;
+													pilot.rotate(180);
+													break;
+												case 12:
+													x = 8;
+													y = 0;
+													pilot.rotate(180);
+													break;
+											}
+										}
+									}
+									break;
+								case MINUS_X:
+									if (currentMINUS_Y == 1) {
+										for (int i = 1; i <= 3; i++) {
+											performARegularScan (ranger, pilot);
+											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+											switch (listOfPossibleLocations.size()) {
+												case 4:
+													x = 0;
+													y = 0;
+													pilot.rotate(180);
+													break;
+												case 12:
+													x = 3;
+													y = 0;
+													pilot.rotate(180);
+													break;
+											}
+										}
+									} else if (currentMINUS_Y == 3) {
+										for (int i = 1; i <= 3; i++) {
+											performARegularScan (ranger, pilot);
+											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+											switch (listOfPossibleLocations.size()) {
+												case 4:
+													x = 11;
+													y = 0;
+													pilot.rotate(180);
+													break;
+												case 12:
+													x = 8;
+													y = 0;
+													pilot.rotate(180);
+													break;
+											}
+										}
+									}
+									break;
+								case PLUS_Y:
+									if (currentPLUS_X == 1) {
+										for (int i = 1; i <= 3; i++) {
+											performARegularScan (ranger, pilot);
+											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+											switch (listOfPossibleLocations.size()) {
+												case 4:
+													x = 0;
+													y = 0;
+													pilot.rotate(180);
+													break;
+												case 12:
+													x = 3;
+													y = 0;
+													pilot.rotate(180);
+													break;
+											}
+										}
+									} else if (currentPLUS_X == 3) {
+										for (int i = 1; i <= 3; i++) {
+											performARegularScan (ranger, pilot);
+											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+											switch (listOfPossibleLocations.size()) {
+												case 4:
+													x = 11;
+													y = 0;
+													pilot.rotate(180);
+													break;
+												case 12:
+													x = 8;
+													y = 0;
+													pilot.rotate(180);
+													break;
+											}
+										}
+									}
+									break;
+								case MINUS_Y:
+									if (currentPLUS_X == 1) {
+										for (int i = 1; i <= 3; i++) {
+											performARegularScan (ranger, pilot);
+											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+											switch (listOfPossibleLocations.size()) {
+												case 4:
+													x = 0;
+													y = 0;
+													pilot.rotate(180);
+													break;
+												case 12:
+													x = 3;
+													y = 0;
+													pilot.rotate(180);
+													break;
+											}
+										}
+									} else if (currentPLUS_X == 3) {
+										for (int i = 1; i <= 3; i++) {
+											performARegularScan (ranger, pilot);
+											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+											switch (listOfPossibleLocations.size()) {
+												case 4:
+													x = 11;
+													y = 0;
+													pilot.rotate(180);
+													break;
+												case 12:
+													x = 8;
+													y = 0;
+													pilot.rotate(180);
+													break;
+											}
+										}
+									}
+									break;
+							}
 							break;
 						case 10:
 							if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
@@ -512,11 +662,11 @@ public class FindMyLocation {
 								listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
 								
 								switch (listOfPossibleLocations.size()) {
-								case 1:
+								case 1: // Done. NOT TESTED
 									x = listOfPossibleLocations.get(0).getX();
 									y = listOfPossibleLocations.get(0).getY();
 									break;
-								case 4:
+								case 4: // Done. NOT TESTED
 									turnToDistance (pilot, 3f, distanceFromJunction);
 									for (int i = 1; i <= 5; i++) {
 										if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
@@ -528,19 +678,20 @@ public class FindMyLocation {
 										turnToDistance (pilot, 2f, distanceFromJunction);
 									}
 									break;
-								case 10:
+								case 10: // Done. NOT TESTED
 									for (int i = 1; i <= 2; i++) {
 										if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
 											performARegularScan (ranger, pilot);
-											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
 										}
 									}
-											switch (listOfPossibleLocations.size()) {
-											case 1:
+									listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+									
+										switch (listOfPossibleLocations.size()) {
+											case 1: // Done. NOT TESTED
 												x = listOfPossibleLocations.get(0).getX();
 												y = listOfPossibleLocations.get(0).getY();
 												break;
-											case 4:
+											case 4: // Done. NOT TESTED
 												turnToDistance (pilot, 3f, distanceFromJunction);
 												for (int i = 1; i <= 5; i++) {
 													if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
@@ -552,14 +703,64 @@ public class FindMyLocation {
 													turnToDistance (pilot, 2f, distanceFromJunction);
 												}
 												break;
-											}
+										}
 									break;
 								}
 							}
 					}
-					
 					break;
-				case 12:
+				case 12: // Done. NOT TESTED
+					distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
+					turnToYAxisAndDistance (pilot, distanceFromJunction, gridMap, 3f);
+					
+					if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+						listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+					}
+					distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
+						switch (listOfPossibleLocations.size()) {
+							case 6: // Done. NOT TESTED
+								turnToXAxis (pilot, distanceFromJunction, currentHeading, gridMap);
+								find1 = false;
+								
+								while (!find1) {
+									if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+										performARegularScan(ranger, pilot);
+										
+										listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+										
+										if (listOfPossibleLocations.size() == 1) {
+											x = listOfPossibleLocations.get(0).getX();
+											y = listOfPossibleLocations.get(0).getY();
+											find1 = true;
+										}
+									}
+								}
+								break;
+							case 5: // Done. NOT TESTED
+								for (int i = 1; i <= 5; i++) {
+									if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+										pilot.stop();
+									}
+								}
+								turnToXAxis (pilot, distanceFromJunction, currentHeading, gridMap);
+								find1 = false;
+								
+								while (!find1) {
+									if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+										performARegularScan(ranger, pilot);
+										
+										listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+										
+										if (listOfPossibleLocations.size() == 1) {
+											x = listOfPossibleLocations.get(0).getX();
+											y = listOfPossibleLocations.get(0).getY();
+											find1 = true;
+										}
+									}
+								}
+								break;
+						}
+					
 					break;
 				case 28:
 					break;
@@ -905,10 +1106,6 @@ public class FindMyLocation {
 		
 	}
 	
-	public boolean isPositionSimilar (int x, int y,float PLUS_X, float MINUS_X, float PLUS_Y, float MINUS_Y, GridMap gridMap) {
-		return false;
-	}
-	
 	public ArrayList <DistanceFromJunction> coordinatesToDistances (int x, int y, GridMap gridMap) {
 
 		
@@ -922,7 +1119,6 @@ public class FindMyLocation {
 		
 		return arrayList;
 	}
-	
 	
 	public static boolean ifPossibleToDetermineXYAxis (float PLUS_X, float MINUS_X, float PLUS_Y, float MINUS_Y, GridMap gridMap) {
 		
@@ -946,7 +1142,6 @@ public class FindMyLocation {
 				return false;
 		}
 	}
-	
 	
 	public static int levelOfDifficulty (float PLUS_X, float MINUS_X, float PLUS_Y, float MINUS_Y, GridMap gridMap) {
 		
@@ -976,7 +1171,6 @@ public class FindMyLocation {
 		}
 		return checking;
 	}
-	
 	
 	public int checkPositions (int firstPossibilityDistribution, int secondPossibilityDistribution, GridMap gridMap) {
 		
@@ -1095,29 +1289,6 @@ public class FindMyLocation {
 			}
 		}
 		return -1;
-	}
-	
-	public void moveMeAroundTheMap (DifferentialPilot pilot, LightSensor rightSensor, LightSensor leftSensor,int referenceValue) {
-		
-		for (int i = 0; i < 7; i++) {
-			putMeInJunction(pilot, rightSensor, leftSensor, referenceValue);
-		}
-		
-		pilot.rotate(90);
-		for (int i = 0; i < 2; i++) {
-			putMeInJunction(pilot, rightSensor, leftSensor, referenceValue);
-		}
-		
-		pilot.rotate(90);
-		for (int i = 0; i < 7; i++) {
-			putMeInJunction(pilot, rightSensor, leftSensor, referenceValue);
-		}
-		pilot.rotate(90);
-		for (int i = 0; i < 2; i++) {
-			putMeInJunction(pilot, rightSensor, leftSensor, referenceValue);
-		}
-		
-		pilot.rotate(90);
 	}
 	
 	public static boolean putMeInJunction (DifferentialPilot pilot, LightSensor rightSensor, LightSensor leftSensor, int referenceValue) {
@@ -1443,6 +1614,7 @@ public class FindMyLocation {
 	}
 	
 	public static void turnToXAxis (DifferentialPilot pilot, DistanceFromJunction distanceFromJunction, Heading heading, GridMap gridMap) {
+
 		if (ifPossibleToDetermineXYAxis (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap)) {
 			ArrayList <DistanceFromJunction> compareDistance = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
 			switch (currentHeading) {
@@ -1477,8 +1649,68 @@ public class FindMyLocation {
 		}
 	}
 	
-	public static void rotateNTimes (LightSensor leftSensor, LightSensor rightSensor, DifferentialPilot pilot, int timesToRotatate) {
+	public static void turnToYAxisAndDistance (DifferentialPilot pilot, DistanceFromJunction distanceFromJunction, GridMap gridMap, float distance) {
 		
+		if (ifPossibleToDetermineXYAxis (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap)) {
+			ArrayList <DistanceFromJunction> compareDistance = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+			switch (currentHeading) {
+				case PLUS_X:
+					if ((currentPLUS_X != compareDistance.get(0).getPlusY() || currentMINUS_X != compareDistance.get(0).getMinusY()) ||
+						(currentMINUS_X != compareDistance.get(0).getPlusY() || currentPLUS_X != compareDistance.get(0).getMinusY())) {
+						pilot.rotate(90);
+						setHeading (Heading.MINUS_Y);
+					}
+					break;
+				case MINUS_X:
+					if ((currentMINUS_X != compareDistance.get(0).getPlusY() || currentPLUS_X != compareDistance.get(0).getMinusY()) ||
+						(currentPLUS_X != compareDistance.get(0).getPlusY() || currentMINUS_X != compareDistance.get(0).getMinusY())) {
+						pilot.rotate(90);
+						setHeading (Heading.PLUS_Y);
+					}
+					break;
+				case PLUS_Y:
+					if ((currentPLUS_Y != compareDistance.get(0).getPlusY() || currentMINUS_Y != compareDistance.get(0).getMinusY()) ||
+						(currentMINUS_Y != compareDistance.get(0).getPlusY() || currentPLUS_Y != compareDistance.get(0).getMinusY())) {
+						pilot.rotate(90);
+						setHeading (Heading.PLUS_X);
+					}
+					break;
+				case MINUS_Y:
+					if ((currentMINUS_Y != compareDistance.get(0).getPlusY() || currentPLUS_Y != compareDistance.get(0).getMinusY()) ||
+						(currentPLUS_Y != compareDistance.get(0).getPlusY() || currentMINUS_Y != compareDistance.get(0).getMinusY())) {
+						pilot.rotate(90);
+						setHeading (Heading.MINUS_X);
+					}
+			}
+			
+			switch (currentHeading) {
+			case PLUS_X:
+				if (currentPLUS_X != distance) {
+					pilot.rotate(180);
+					setHeading (Heading.MINUS_X);
+				}
+				break;
+			case MINUS_X:
+				if (currentMINUS_X != distance) {
+					pilot.rotate(180);
+					setHeading (Heading.PLUS_X);
+				}
+				break;
+			case PLUS_Y:
+				if (currentPLUS_Y != distance) {
+					pilot.rotate(180);
+					setHeading (Heading.MINUS_Y);
+				}
+				break;
+			case MINUS_Y:
+				if (currentMINUS_Y != distance) {
+					pilot.rotate(180);
+					setHeading (Heading.PLUS_Y);
+					break;
+				}
+			}
+		}
 	}
+	
 	
 }
