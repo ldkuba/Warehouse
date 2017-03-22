@@ -762,7 +762,7 @@ public class FindMyLocation {
 						}
 					
 					break;
-				case 28:
+				case 28: // Done. NOT TESTED
 					distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
 					turnToDistanceAdvanced (pilot, 3f, distanceFromJunction, currentHeading);
 					if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
@@ -790,7 +790,7 @@ public class FindMyLocation {
 								}
 							}
 							break;
-						case 5:
+						case 5: // Done. NOT TESTED
 							distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
 							turnToDistanceAdvanced (pilot, 3f, distanceFromJunction, currentHeading);
 							for (int i = 1; i <= 5; i++) {
@@ -818,9 +818,94 @@ public class FindMyLocation {
 								}
 							}
 							break;
-						case 12:
+						case 12: // Done. NOT TESTED
+							distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
+							turnToYAxisAndDistance (pilot, distanceFromJunction, gridMap, 3f);
+							
+							if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+								performARegularScan (ranger, pilot);
+								distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
+								turnToXAxis (pilot, distanceFromJunction, currentHeading, gridMap);
+							}
+							
+							find1 = false;
+							while (!find1) {
+								if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+									performARegularScan(ranger, pilot);
+									
+									listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+									
+									if (listOfPossibleLocations.size() == 1) {
+										x = listOfPossibleLocations.get(0).getX();
+										y = listOfPossibleLocations.get(0).getY();
+										find1 = true;
+									}
+								}
+							}
 							break;
-						case 28:
+						case 28: // Done. NOT TESTED
+							find1 = false;
+							while (!find1) {
+								if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+									performARegularScan(ranger, pilot);
+									
+									listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+									
+									if (listOfPossibleLocations.size() == 5 || listOfPossibleLocations.size() == 6) {
+										find1 = true;
+									}
+								}
+							}
+							
+							switch (listOfPossibleLocations.size()) {
+								case 5: // Done. NOT TESTED
+									distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
+									turnToDistanceAdvanced (pilot, 3f, distanceFromJunction, currentHeading);
+									for (int i = 1; i <= 5; i++) {
+										if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+											pilot.stop();
+										}
+									}
+									
+									performARegularScan (ranger, pilot);
+									distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
+									turnToYAxisAndDistance (pilot, distanceFromJunction, gridMap, 3f);
+									
+									find1 = false;
+									while (!find1) {
+										if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+											performARegularScan(ranger, pilot);
+											
+											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+											
+											if (listOfPossibleLocations.size() == 1) {
+												x = listOfPossibleLocations.get(0).getX();
+												y = listOfPossibleLocations.get(0).getY();
+												find1 = true;
+											}
+										}
+									}
+									break;
+								case 6: // Done. NOT TESTED
+									turnToXAxis (pilot, distanceFromJunction, currentHeading, gridMap);
+									find1 = false;
+									
+									while (!find1) {
+										if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+											performARegularScan(ranger, pilot);
+											
+											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+											
+											if (listOfPossibleLocations.size() == 1) {
+												x = listOfPossibleLocations.get(0).getX();
+												y = listOfPossibleLocations.get(0).getY();
+												find1 = true;
+											}
+										}
+									}
+									break;
+							}
+							
 							break;
 					}
 					break;
