@@ -763,6 +763,66 @@ public class FindMyLocation {
 					
 					break;
 				case 28:
+					distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
+					turnToDistanceAdvanced (pilot, 3f, distanceFromJunction, currentHeading);
+					if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+						performARegularScan(ranger, pilot);
+					}
+					
+					listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+					
+					switch (listOfPossibleLocations.size()) {
+						case 6: // Done. NOT TESTED
+							turnToXAxis (pilot, distanceFromJunction, currentHeading, gridMap);
+							find1 = false;
+							
+							while (!find1) {
+								if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+									performARegularScan(ranger, pilot);
+									
+									listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+									
+									if (listOfPossibleLocations.size() == 1) {
+										x = listOfPossibleLocations.get(0).getX();
+										y = listOfPossibleLocations.get(0).getY();
+										find1 = true;
+									}
+								}
+							}
+							break;
+						case 5:
+							distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
+							turnToDistanceAdvanced (pilot, 3f, distanceFromJunction, currentHeading);
+							for (int i = 1; i <= 5; i++) {
+								if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+									pilot.stop();
+								}
+							}
+							
+							performARegularScan (ranger, pilot);
+							distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
+							turnToYAxisAndDistance (pilot, distanceFromJunction, gridMap, 3f);
+							
+							find1 = false;
+							while (!find1) {
+								if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+									performARegularScan(ranger, pilot);
+									
+									listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
+									
+									if (listOfPossibleLocations.size() == 1) {
+										x = listOfPossibleLocations.get(0).getX();
+										y = listOfPossibleLocations.get(0).getY();
+										find1 = true;
+									}
+								}
+							}
+							break;
+						case 12:
+							break;
+						case 28:
+							break;
+					}
 					break;
 			}
 		}
@@ -770,78 +830,8 @@ public class FindMyLocation {
 		return new Result (x, y);
 	}
 
-	static String putHashMapToScreen (GridMap gridMap, HashMap <Result, Integer> hashMap) {
-		
-		String a = "";
-		for (int i = 0; i < gridMap.getXSize(); i++) {
-			for (int j = 0; j < gridMap.getYSize(); j++) {
-				a += i + " " + j + " " + hashMap.get(new Result (i, j)) + "\n";
-			}
-		}
-		return a;
-	}
-		
-	static HashMap <Result, Float> fillHashMap (GridMap gridMap, ArrayList <Result> arrayList) {
-		
-		HashMap <Result, Float> hashMap = new HashMap <Result, Float> ();
-		
-		for (int i = 0; i < gridMap.getXSize(); i++) {
-			for (int j = 0; j < gridMap.getYSize(); j++) {
-				Result result = new Result (i, j);
-				if (!gridMap.isObstructed(i, j)) {
-					arrayList.add(result);
-					hashMap.put(result, 1 / (float) possibleLocations (gridMap));
-				}
-			}
-		}
-		return hashMap;
-	}
 	
-	static int getArrayPositionByLocation (int x, int y, ArrayList <Result> arrayList, GridMap gridMap) {
-		
-		for (int i = 0; i < arrayList.size(); i++) {
-			if (arrayList.get(i).getX() == x && arrayList.get(i).getY() == y) {
-				return i;
-			}
-		}
-		
-		// If returns -1, position was not found or it is a wall
-		return -1;
-	}
-	
-	static HashMap <Result, Float> updateHashMap (int x, int y, float probability, HashMap <Result, Float> hashMap, ArrayList <Result> arrayList, GridMap gridMap) {
-		
-		int arrayPosition = getArrayPositionByLocation (x, y, arrayList, gridMap);
-		
-		if (!hashMap.containsKey(arrayList.get(arrayPosition))) {
-			if (probability == 0) {
-				
-				hashMap.remove(arrayPosition);
-				
-				if (arrayPosition != -1) {
-					arrayList.remove(getArrayPositionByLocation (x, y, arrayList, gridMap));
-				}
-				
-			} else {
-				
-				hashMap.remove(arrayList.get(arrayPosition));
-				if (getArrayPositionByLocation (x, y, arrayList, gridMap) != -1) {
-					arrayList.remove(getArrayPositionByLocation (x, y, arrayList, gridMap));
-				}
-				
-				Result result = new Result (x, y);
-				
-				hashMap.put (result, probability);
-				arrayList.add (result);
-			}
-			
-		} else {
-			
-			hashMap.put(new Result (x, y), probability);
-		}
-		
-		return hashMap;
-	}
+	// Gets light value from the ground. Should be white floor
 	
 	// Checks ground's colour value
 	static int getReferenceValue (LightSensor rightSensor, LightSensor leftSensor) {
@@ -855,19 +845,7 @@ public class FindMyLocation {
 	}
 	
 	// Possible locations for a robot to be in (needs fixing)
-	static int possibleLocations (GridMap gridMap) {
-		
-		int locations = 0;
-		
-		for (int i = 0; i < gridMap.getXSize(); i++) {
-			for (int j = 0; j < gridMap.getYSize(); j++) {
-				if (!gridMap.isObstructed(i, j)) {
-					locations++;
-				}
-			}
-		}
-		return locations;
-	}
+	
 	
 	// Puts x, y coordinates, north south east west distance to walls
 	public static ArrayList<DistanceFromJunction> distanceFromJunction (GridMap gridMap) {
@@ -941,54 +919,9 @@ public class FindMyLocation {
 	}
 	
 	// Returns x if a wall, o if not a wall, x, y coordinates, north south east west distances to walls
-	public String putDistancesToAString (GridMap gridMap) {
-		String representation = "";
-		ArrayList <DistanceFromJunction> distanceArray = distanceFromJunction (gridMap);
-		int locations = 0;
-		
-		for (int x = 0; x < gridMap.getXSize(); x++) {
-			for (int y = 0; y < gridMap.getYSize(); y++) {
-				if (gridMap.isObstructed(x, y)) {
-					representation += " x " + "\n";
-					locations++;
-				} else {
-					representation += " o " + distanceArray.get (locations).putToString() + "\n";
-					locations++;
-				}
-			}
-		}
-		return representation;
-	}
-	
-	public void putDistancesToTheScreen (GridMap gridMap) {
-		System.out.print (putDistancesToAString(gridMap));
-	}
 	
 	// Returns x if a wall, o if not a wall
-	public String putGridMapToTheString (GridMap gridMap) {
-		String representation = "";
-		for (int i = gridMap.getYSize() - 1; i >= 0; i--) {
-			for (int j = gridMap.getXSize() - 1; j >= 0; j--) {
-				
-				if (gridMap.isObstructed(j, i)) {
-					representation += "x";
-				} else {
-					representation += "o";
-				}
-				
-				if (j == 0) {
-					representation += "\n";
-				}
-			}
-		}
-		return representation;
-	}
 	
-	public void putToTheScreen (GridMap gridMap) {
-
-		System.out.print (putGridMapToTheString (gridMap));
-		
-	}
 		
 	// Returns an arrayList with positions (and distances) where a robot can be
 	public static ArrayList <DistanceFromJunction> compareDistances (float PLUS_X, float MINUS_X, float PLUS_Y, float MINUS_Y, GridMap gridMap) {
@@ -1023,6 +956,7 @@ public class FindMyLocation {
 		return coordinates;
 	}
 	
+	
 	// Returns how many positions are similar to the one you are standing on right now
 	public static int compareDistancesInt (float PLUS_X, float MINUS_X, float PLUS_Y, float MINUS_Y, GridMap gridMap) {
 		ArrayList <DistanceFromJunction> arrayList = new ArrayList <DistanceFromJunction> ();
@@ -1056,69 +990,11 @@ public class FindMyLocation {
 		}
 		return matches;
 	}
-	
+		
 	// Puts to the screen all locations with a number of similar locations
-	public void putPossiblePositionsToTheScreen (GridMap gridMap) {
-
-		ArrayList <DistanceFromJunction> arrayList = new ArrayList <DistanceFromJunction> ();
-		arrayList = distanceFromJunction (gridMap);
-		
-		int arraySize = arrayList.size();
-		
-		for (int i = 0; i < arraySize; i++) {
-			if (gridMap.isObstructed(arrayList.get(i).getX(), arrayList.get(i).getY())) {
-				System.out.println (arrayList.get(i).getX() + ":" + arrayList.get(i).getY() + " " + " x");
-			} else {
-				System.out.println (arrayList.get(i).getX() + ":" + arrayList.get(i).getY() + " " + compareDistancesInt (arrayList.get(i).getPlusX(), arrayList.get(i).getMinusX(), arrayList.get(i).getPlusY(), arrayList.get(i).getMinusY(), gridMap) + " " + ifPossibleToDetermineXYAxis(arrayList.get(i).getPlusX(), arrayList.get(i).getMinusX(), arrayList.get(i).getPlusY(), arrayList.get(i).getMinusY(), gridMap ));
-			}
-		}
-	}
 	
-	public ArrayList <DistanceFromJunction> locationsForThePosition (float PLUS_X, float MINUS_X, float PLUS_Y, float MINUS_Y, GridMap gridMap) {
-		ArrayList <DistanceFromJunction> arrayList = new ArrayList <DistanceFromJunction> ();
-		arrayList = distanceFromJunction (gridMap);
-		ArrayList <DistanceFromJunction> arrayAnswer = new ArrayList <DistanceFromJunction> ();
-		boolean ifMatches = false;
-		
-		for (int i = 0; i < gridMap.getXSize() * gridMap.getYSize(); i++) {
-			if (!gridMap.isObstructed(arrayList.get(i).getX(), arrayList.get(i).getY())) {
-				if (arrayList.get(i).getPlusX()  == PLUS_X  && arrayList.get(i).getMinusX() == MINUS_X && arrayList.get(i).getPlusY() == PLUS_Y && arrayList.get(i).getMinusY() == MINUS_Y) {
-					ifMatches = true;
-					arrayAnswer.add(new DistanceFromJunction (arrayList.get(i).getX(), arrayList.get(i).getY(), arrayList.get(i).getPlusX(), arrayList.get(i).getMinusX(), arrayList.get(i).getPlusY(), arrayList.get(i).getMinusY()));
-				} else if (arrayList.get(i).getPlusX()  == MINUS_X  && arrayList.get(i).getMinusX() == PLUS_X && arrayList.get(i).getPlusY() == MINUS_Y && arrayList.get(i).getMinusY() == PLUS_Y) {
-					arrayAnswer.add(new DistanceFromJunction (arrayList.get(i).getX(), arrayList.get(i).getY(), arrayList.get(i).getPlusX(), arrayList.get(i).getMinusX(), arrayList.get(i).getPlusY(), arrayList.get(i).getMinusY()));
-					ifMatches = true;
-				} else if (arrayList.get(i).getPlusX()  == MINUS_Y  && arrayList.get(i).getMinusX() == PLUS_Y && arrayList.get(i).getPlusY() == PLUS_X && arrayList.get(i).getMinusY() == MINUS_X) {
-					arrayAnswer.add(new DistanceFromJunction (arrayList.get(i).getX(), arrayList.get(i).getY(), arrayList.get(i).getPlusX(), arrayList.get(i).getMinusX(), arrayList.get(i).getPlusY(), arrayList.get(i).getMinusY()));					
-					ifMatches = true;
-				} else if (arrayList.get(i).getPlusX()  == PLUS_Y  && arrayList.get(i).getMinusX() == MINUS_Y && arrayList.get(i).getPlusY() == MINUS_X && arrayList.get(i).getMinusY() == PLUS_X) {
-					arrayAnswer.add(new DistanceFromJunction (arrayList.get(i).getX(), arrayList.get(i).getY(), arrayList.get(i).getPlusX(), arrayList.get(i).getMinusX(), arrayList.get(i).getPlusY(), arrayList.get(i).getMinusY()));					
-					ifMatches = true;
-				}
-			}
-			
-			if (ifMatches) {
-				ifMatches = false;
-			}
-		}
-		
-		return arrayAnswer;
-		
-	}
 	
-	public ArrayList <DistanceFromJunction> coordinatesToDistances (int x, int y, GridMap gridMap) {
 
-		
-		ArrayList <DistanceFromJunction> arrayList = new ArrayList <DistanceFromJunction> ();
-		
-		for (int i = 0; i < distanceFromJunction(gridMap).size(); i++) {
-			if (x == distanceFromJunction(gridMap).get(i).getX() && y == distanceFromJunction(gridMap).get(i).getY()) {
-				arrayList.add(new DistanceFromJunction (x, y, distanceFromJunction (gridMap).get(i).getPlusX(), distanceFromJunction (gridMap).get(i).getMinusX(), distanceFromJunction (gridMap).get(i).getPlusY(), distanceFromJunction (gridMap).get(i).getMinusY()));
-			}
-		}
-		
-		return arrayList;
-	}
 	
 	public static boolean ifPossibleToDetermineXYAxis (float PLUS_X, float MINUS_X, float PLUS_Y, float MINUS_Y, GridMap gridMap) {
 		
@@ -1143,34 +1019,14 @@ public class FindMyLocation {
 		}
 	}
 	
+	
 	public static int levelOfDifficulty (float PLUS_X, float MINUS_X, float PLUS_Y, float MINUS_Y, GridMap gridMap) {
 		
 		return compareDistancesInt (PLUS_X, MINUS_X, PLUS_Y, MINUS_Y, gridMap);
 		
 	}
-	
-	public boolean ifPositionsShareXYAxis (ArrayList <DistanceFromJunction> arrayList) {
 		
-		boolean checking = true;
-		
-		if (arrayList.size() == 0) {
-			return true;
-		}
-		
-		float PLUS_X  = arrayList.get(0).getPlusX();
-		float MINUS_X = arrayList.get(0).getMinusX();
-		float PLUS_Y  = arrayList.get(0).getPlusY();
-		float MINUS_Y = arrayList.get(0).getMinusY();
-		
-		for (int i = 0; i < arrayList.size(); i++) {
-			if (!(arrayList.get(i).getPlusX() == PLUS_X && arrayList.get(i).getMinusX() == MINUS_X) || !(arrayList.get(i).getPlusX() == MINUS_X && arrayList.get(i).getMinusX() == PLUS_X)) {
-				if (!(arrayList.get(i).getPlusY() == PLUS_Y && arrayList.get(i).getMinusY() == MINUS_Y) || !(arrayList.get(i).getPlusY() == MINUS_Y && arrayList.get(i).getMinusY() == PLUS_Y)) {
-					checking = false;
-				}
-			}
-		}
-		return checking;
-	}
+
 	
 	public int checkPositions (int firstPossibilityDistribution, int secondPossibilityDistribution, GridMap gridMap) {
 		
@@ -1255,28 +1111,7 @@ public class FindMyLocation {
 		return answer;
 	}
 	
-	/*
-	public ArrayList <DistanceFromJunction> checkPositionsToArrayList (int firstPossibilityDistribution, int secondPossibilityDistribution, GridMap gridMap) {
-		
-		ArrayList <DistanceFromJunction> arrayList = new ArrayList <DistanceFromJunction> ();
-		arrayList = distanceFromJunction (gridMap);
-		ArrayList <DistanceFromJunction> answerArrayList = new ArrayList <DistanceFromJunction> ();
-		
-		int answer = 0;
-		
-		for (int x = 0; x <= 10;  x+= 2) {
-			for (int y = 0; y <= 7; y++) {
-				if (getIndexByCoordinates (x, y, gridMap) != -1 && getIndexByCoordinates (x + 1, y, gridMap) != -1) {
-						if (compareDistancesInt (arrayList.get(getIndexByCoordinates (x, y, gridMap)).getPlusX(), arrayList.get(getIndexByCoordinates (x, y, gridMap)).getMinusX(), arrayList.get(getIndexByCoordinates (x, y, gridMap)).getPlusY(), arrayList.get(getIndexByCoordinates (x, y, gridMap)).getMinusY(), gridMap) == firstPossibilityDistribution && compareDistancesInt (arrayList.get(getIndexByCoordinates (x + 1, y, gridMap)).getPlusX(), arrayList.get(getIndexByCoordinates (x + 1, y, gridMap)).getMinusX(), arrayList.get(getIndexByCoordinates (x + 1, y, gridMap)).getPlusY(), arrayList.get(getIndexByCoordinates (x + 1, y, gridMap)).getMinusY(), gridMap) == secondPossibilityDistribution) {
-							answerArrayList.add(new DistanceFromJunction (x, y, arrayList.get));
-					}
-				}
-			}
-		}
-		
-		return answer;
-	}
-	*/
+	
 	
 	public int getIndexByCoordinates (int xCoordinate, int yCoordinate, GridMap gridMap) {
 		ArrayList <DistanceFromJunction> arrayList = new ArrayList <DistanceFromJunction> ();
@@ -1290,6 +1125,8 @@ public class FindMyLocation {
 		}
 		return -1;
 	}
+	
+	
 	
 	public static boolean putMeInJunction (DifferentialPilot pilot, LightSensor rightSensor, LightSensor leftSensor, int referenceValue) {
 		int error = 7;
@@ -1368,6 +1205,7 @@ public class FindMyLocation {
 		return true;
 	}
 	
+	
 	public static void turnToDistance (DifferentialPilot pilot, float distance, DistanceFromJunction distanceFromJunction) {
 		
 		if (distanceFromJunction.getPlusX() == distance) {
@@ -1382,15 +1220,18 @@ public class FindMyLocation {
 		}
 	}
 	
+	
 	public static void setHeading (Heading heading) {
 
 		currentHeading = heading;
 	}
 	
+	
 	public Heading getHeading () {
 
 		return currentHeading;
 	}
+	
 	
 	public static void putMeIntoCorrectHeading (ArrayList <DistanceFromJunction> arrayList, float PLUS_X, float MINUS_X, float PLUS_Y, float MINUS_Y, DifferentialPilot pilot) {
 		if (arrayList.get(0).getPlusX() == PLUS_X &&
@@ -1411,6 +1252,7 @@ public class FindMyLocation {
 			pilot.rotate(90);
 		}
 	}
+	
 	
 	public static void performAFirstScan (OpticalDistanceSensor ranger, DifferentialPilot pilot) {
 		
@@ -1454,6 +1296,7 @@ public class FindMyLocation {
 			Delay.msDelay(200);
 		}
 	}
+	
 	
 	public static void performARegularScan (OpticalDistanceSensor ranger, DifferentialPilot pilot) {
 		
@@ -1560,6 +1403,7 @@ public class FindMyLocation {
 		}
 	}
 	
+	
 	public static void turnToDistanceAdvanced (DifferentialPilot pilot, float distance, DistanceFromJunction distanceFromJunction, Heading heading) {
 		switch (heading) {
 			case PLUS_X:
@@ -1612,6 +1456,7 @@ public class FindMyLocation {
 				break;
 		}
 	}
+	
 	
 	public static void turnToXAxis (DifferentialPilot pilot, DistanceFromJunction distanceFromJunction, Heading heading, GridMap gridMap) {
 
