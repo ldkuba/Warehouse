@@ -138,7 +138,7 @@ public class LineFollowing implements Behavior
 				if (Button.ESCAPE.isDown())
 				{ // make sure that robot will stop program if escape button is
 					// pressed.
-					System.exit(0);
+					System.out.println("HEYOOOOO");
 					suppress();
 				}
 

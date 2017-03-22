@@ -20,7 +20,8 @@ import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
 
-public class TurnBehavior implements Behavior {
+public class TurnBehavior implements Behavior
+{
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
 	private WheeledRobotConfiguration robotConfig;
@@ -49,10 +50,10 @@ public class TurnBehavior implements Behavior {
 	private String head;
 	private ArrayList<PathChoices> path;
 
-	public TurnBehavior(LightSensor left, LightSensor right,
-			RobotScreen _screen, LineFollowing followLine, String head,
-			ShouldMove shouldMove) {
-		
+	public TurnBehavior(LightSensor left, LightSensor right, RobotScreen _screen, LineFollowing followLine, String head,
+			ShouldMove shouldMove)
+	{
+
 		this.shouldMove = shouldMove;
 
 		lightSensorR = right;
@@ -69,49 +70,59 @@ public class TurnBehavior implements Behavior {
 		forceFirstAction = false;
 		lastAction = false;
 
-		robotConfig = new WheeledRobotConfiguration (0.059f, 0.115f, 0.17f, Motor.A, Motor.C);
-		pilot = new WheeledRobotSystem (robotConfig).getPilot();
-		pilot.setTravelSpeed((pilot.getMaxTravelSpeed()/10)*2);
-		pilot.setRotateSpeed((pilot.getRotateMaxSpeed()/10)*2);
+		robotConfig = new WheeledRobotConfiguration(0.059f, 0.115f, 0.17f, Motor.A, Motor.C);
+		pilot = new WheeledRobotSystem(robotConfig).getPilot();
+		pilot.setTravelSpeed((pilot.getMaxTravelSpeed() / 10) * 2);
+		pilot.setRotateSpeed((pilot.getRotateMaxSpeed() / 10) * 2);
 	}
 
-	public void setPath(ArrayList<PathChoices> path) {
+	public void setPath(ArrayList<PathChoices> path)
+	{
 		this.path = path;
 	}
 
-	public ArrayList<PathChoices> getPath() {
+	public ArrayList<PathChoices> getPath()
+	{
 		return this.path;
 	}
 
-	public boolean rightOnBlack() {
-		if (lightSensorR.getLightValue() <= THRESHOLD) {
+	public boolean rightOnBlack()
+	{
+		if (lightSensorR.getLightValue() <= THRESHOLD)
+		{
 			return true;
-		} else {
+		} else
+		{
 			return false;
 		}
 	}
 
-	public boolean leftOnBlack() {
-		if (lightSensorL.getLightValue() <= THRESHOLD) {
+	public boolean leftOnBlack()
+	{
+		if (lightSensorL.getLightValue() <= THRESHOLD)
+		{
 			return true;
-		} else {
+		} else
+		{
 			return false;
 		}
 	}
 
 	@Override
-	public boolean takeControl() {
-		if ((rightOnBlack() && leftOnBlack()) || forceFirstAction) {
+	public boolean takeControl()
+	{
+		if ((rightOnBlack() && leftOnBlack()) || forceFirstAction)
+		{
 			return true;
-		} else {
+		} else
+		{
 			return false;
 		}
 	}
 
 	@Override
-	public void action() {
-		setForceFirstAction(false);
-
+	public void action()
+	{
 		// turnDirection = 4;
 
 		screen.updateState("Path size: " + path.size());
@@ -122,60 +133,145 @@ public class TurnBehavior implements Behavior {
 		readingL = lightSensorL.getLightValue();
 		readingR = lightSensorR.getLightValue();
 
-		if (path != null) {
+		if (path != null)
+		{
 			actionDone = false;
 
-			if (path.isEmpty()) {
+			if (path.isEmpty())
+			{
 				// Sound.beep();
 				actionDone = true;
+				lastAction = true;
 
-			} else {
+			} else
+			{
 				// screen.updateLocation(x, y);
 				turnDirection = path.get(0).ordinal();
 				path.remove(0);
-				if (path.isEmpty()) {
-					lastAction = true;
-				}
+
 			}
 		}
 
-		switch (turnDirection) {
+		// System.out.println("FIRST: " + (!forceFirstAction) + " LAST: " +
+		// (!lastAction));
+
+		switch (turnDirection)
+		{
 		case 0:
-			pilot.arc(80.5, 90, true);
-			updateDirection(0);
 			if (!forceFirstAction) {
+				pilot.travel(0.05, true);
+
+				while (!supressed && pilot.isMoving())
+				{
+
+					if (Button.ESCAPE.isDown())
+					{
+						System.exit(0);
+					}
+				}
+
+				pilot.rotate(90, true);
+			} else {
+				pilot.rotateLeft();
+				
+				while (!leftOnBlack())
+				{
+					if (Button.ESCAPE.isDown())
+					{ // make sure that robot will stop program if escape button
+						// is
+						// pressed.
+						System.exit(0);
+						suppress();
+					}
+					Delay.msDelay(20);
+				}
+				pilot.stop();
+			}
+	
+			if (!forceFirstAction && !lastAction)
+			{
 				updateCo(0);
 			}
+			updateDirection(0);
 			screen.updateState("Left");
 			break;
 		case 1:
-			pilot.arc(-80.5, -90, true);
-			updateDirection(1);
-			if (!forceFirstAction) {
+			if (!forceFirstAction)
+			{
+				pilot.travel(0.05, true);
+
+				while (!supressed && pilot.isMoving())
+				{
+
+					if (Button.ESCAPE.isDown())
+					{
+						System.exit(0);
+					}
+				}
+
+				pilot.rotate(-90, true);
+			} else
+			{
+				pilot.rotateLeft();
+				
+				while (!rightOnBlack())
+				{
+
+					if (Button.ESCAPE.isDown())
+					{ // make sure that robot will stop program if escape button
+						// is
+						// pressed.
+						System.exit(0);
+						suppress();
+					}
+					Delay.msDelay(20);
+				}
+				
+				pilot.stop();
+			}
+
+			if (!forceFirstAction && !lastAction)
+			{
 				updateCo(1);
 			}
+			updateDirection(1);
 			screen.updateState("Right");
 			break;
 		case 2:
-			pilot.travel(75.0, true);
-			updateDirection(2);
-			if (!forceFirstAction) {
+			pilot.travel(0.05, true);
+			if (!forceFirstAction && !lastAction)
+			{
 				updateCo(2);
 			}
+			updateDirection(2);
 			screen.updateState("Forward");
 			break;
 		case 3:
+			pilot.travel(0.05, true);
+
+			while (!supressed && pilot.isMoving())
+			{
+
+				if (Button.ESCAPE.isDown())
+				{
+					System.exit(0);
+				}
+			}
+
 			pilot.rotate(180, true);
-			updateDirection(3);
-			if (!forceFirstAction) {
+			if (!forceFirstAction && !lastAction)
+			{
 				updateCo(3);
 			}
+			updateDirection(3);
 			screen.updateState("Rotate");
 			break;
 		case 4:
-			try {
+			try
+			{
 				pilot.wait(TIMEOUT);
-			} catch (InterruptedException e) {
+			} catch (InterruptedException e)
+			{
 				System.out.println("Something wrong while in stay command.");
 			}
 		}
@@ -190,9 +286,11 @@ public class TurnBehavior implements Behavior {
 		msg.setWaitingForNewPath(false);
 		TrialMainNxt.client.send(msg);
 
-		while (!supressed && pilot.isMoving()) {
+		while (!supressed && pilot.isMoving())
+		{
 
-			if (Button.ESCAPE.isDown()) {
+			if (Button.ESCAPE.isDown())
+			{
 				System.exit(0);
 			}
 		}
@@ -204,62 +302,68 @@ public class TurnBehavior implements Behavior {
 		 * 
 		 * if (Button.ESCAPE.isDown()) { System.exit(0); } }
 		 */
-
+		setForceFirstAction(false);
 		suppress();
 	}
 
 	@Override
-	public void suppress() {
+	public void suppress()
+	{
 		supressed = true;
 	}
 
-	public boolean checkIfNoRoute() {
-		if (actionDone && path.isEmpty()) {
+	public boolean checkIfNoRoute()
+	{
+		if (actionDone && path.isEmpty())
+		{
 			shouldMove.setShouldMove(false);
 			return true;
-		} else {
+		} else
+		{
 			shouldMove.setShouldMove(true);
 			return false;
 		}
 	}
 
-	public void redirectHead() { // makes sure that robot faces east every time
-									// it gets a new route
-		switch (head) {
-		case "north":
-			pilot.arc(-80.5, -90, true);
-			break;
-		case "south":
-			pilot.arc(80.5, 90, true);
-			break;
-		case "west":
-			pilot.rotate(180, true);
-		case "east":
-			break;
-		}
-	}
-
-	public void setX(int i) {
+	public void setX(int i)
+	{
 		x += i;
 	}
 
-	public void setY(int i) {
+	public void setY(int i)
+	{
 		y += i;
 	}
 
-	public int getX() {
+	public void setAbsoluteX(int x)
+	{
+		this.x = x;
+	}
+
+	public void setAbsoluteY(int y)
+	{
+		this.y = y;
+	}
+
+	public int getX()
+	{
 		return x;
 	}
 
-	public int getY() {
+	public int getY()
+	{
 		return y;
 	}
 
-	public void setForceFirstAction(boolean b) {
+	public void setForceFirstAction(boolean b)
+	{
 		forceFirstAction = b;
 	}
 
-	public void setPathFromMessage(ArrayList<PathChoices> path) {
+	public void setPathFromMessage(ArrayList<PathChoices> path)
+	{
+
+		lastAction = false;
 		this.path = path;
 		// setForceFirstAction(true);
 
@@ -271,33 +375,44 @@ public class TurnBehavior implements Behavior {
 
 	}
 
-	public void setFirstAction(int i) {
+	public void setFirstAction(int i)
+	{
 		firstAction = i;
 	}
 
-	public void updateDirection(int move) {
+	public void updateDirection(int move)
+	{
 		int movement = move;
 
-		switch (movement) {
+		switch (movement)
+		{
 		case 0: // left
-			if (head.equals("north")) {
+			if (head.equals("north"))
+			{
 				head = "west";
-			} else if (head.equals("east")) {
+			} else if (head.equals("east"))
+			{
 				head = "north";
-			} else if (head.equals("south")) {
+			} else if (head.equals("south"))
+			{
 				head = "east";
-			} else {
+			} else
+			{
 				head = "south";
 			}
 			break;
 		case 1:// right
-			if (head.equals("north")) {
+			if (head.equals("north"))
+			{
 				head = "east";
-			} else if (head.equals("east")) {
+			} else if (head.equals("east"))
+			{
 				head = "south";
-			} else if (head.equals("south")) {
+			} else if (head.equals("south"))
+			{
 				head = "west";
-			} else {
+			} else
+			{
 				head = "north";
 			}
 			break;
@@ -305,65 +420,90 @@ public class TurnBehavior implements Behavior {
 			head.equals(head);
 			break;
 		case 3: // rotate 180
-			if (head.equals("north")) {
+			if (head.equals("north"))
+			{
 				head = "south";
-			} else if (head.equals("east")) {
+			} else if (head.equals("east"))
+			{
 				head = "west";
-			} else if (head.equals("south")) {
+			} else if (head.equals("south"))
+			{
 				head = "north";
-			} else {
+			} else
+			{
 				head = "east";
 			}
 		}
 	}
-	
-	public void updateCo(int move) {
+
+	public void updateCo(int move)
+	{
 		int movement = move;
 
-		switch (movement) {
+		switch (movement)
+		{
 		case 0: // left
-			if (head.equals("north")) {
+			if (head.equals("north"))
+			{
 				setX(-1);
-			} else if (head.equals("east")) {
+			} else if (head.equals("east"))
+			{
 				setY(1);
-			} else if (head.equals("south")) {
+			} else if (head.equals("south"))
+			{
 				setX(1);
-			} else {
+			} else
+			{
 				setY(-1);
 			}
 			break;
 		case 1:// right
-			if (head.equals("north")) {
+			if (head.equals("north"))
+			{
 				setX(1);
-			} else if (head.equals("east")) {
+			} else if (head.equals("east"))
+			{
 				setY(-1);
-			} else if (head.equals("south")) {
+			} else if (head.equals("south"))
+			{
 				setX(1);
-			} else {
+			} else
+			{
 				setY(1);
 			}
 			break;
 		case 2: // forward
-			if (head.equals("north")) {
+			if (head.equals("north"))
+			{
 				setY(1);
-			} else if (head.equals("east")) {
+			} else if (head.equals("east"))
+			{
 				setX(1);
-			} else if (head.equals("south")) {
+			} else if (head.equals("south"))
+			{
 				setY(-1);
-			} else {
+			} else
+			{
 				setX(-1);
 			}
 			break;
 		case 3: // rotate 180
-			if (head.equals("north")) {
-				head = "south";
-			} else if (head.equals("east")) {
-				head = "west";
-			} else if (head.equals("south")) {
-				head = "north";
-			} else {
-				head = "east";
+			// System.out.println("AKJF
+			// BUSKUFHBSADUSDGJSKADGYSAGDFYSAGDSKADYGYSADGSADGFYUSADGFAKSYDGASDGSADHGY");
+			if (head.equals("north"))
+			{
+				setY(-1);
+			} else if (head.equals("east"))
+			{
+				setX(-1);
+			} else if (head.equals("south"))
+			{
+				setY(1);
+			} else
+			{
+				setX(1);
 			}
+			break;
 		}
 	}
 }

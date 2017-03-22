@@ -253,7 +253,8 @@ public class Graph implements IGraph {
 									+ currentVertex.getLabel().getTimestep() + " by " + resInfo.getRobotId());
 							closedList.add(currentVertex);
 							occupiedNode = true;
-							time = openList.peek().getLabel().getTimestep();
+							if (!openList.isEmpty()) time = openList.peek().getLabel().getTimestep();
+							else break;
 						}
 					}
 				}

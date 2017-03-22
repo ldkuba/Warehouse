@@ -85,8 +85,8 @@ public class JunctionFollower implements MessageListener {
 	@Override
 	public void recievedRobotInitMessage(RobotInitMessage msg) {
 		RobotId = msg.getRobotId();
-		turnBehavior.setX(msg.getX());
-		turnBehavior.setY(msg.getY());
+		turnBehavior.setAbsoluteX(msg.getX());
+		turnBehavior.setAbsoluteY(msg.getY());
 	}
 
 	@Override

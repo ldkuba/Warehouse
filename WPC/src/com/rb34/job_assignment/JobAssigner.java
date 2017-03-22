@@ -40,13 +40,13 @@ public class JobAssigner
 		ArrayList<Robot> robots = robotManager.getRobots();
 
 		// run while there are jobs in the PriorityQueue
-		while (!jobs.isEmpty())
+		while (!jobs.isEmpty() || !areAllIdle(robots))
 		{
 
 			// iterate through every robot and check the status
 			for (Robot robot : robots)
 			{
-				if (robot.getRobotStatus() == Status.IDLE)
+				if (!jobs.isEmpty() && robot.getRobotStatus() == Status.IDLE)
 				{
 					// get the first job
 					Job job = jobs.poll();
@@ -130,12 +130,21 @@ public class JobAssigner
 					} else
 					{
 						// robot.setRobotStatus(Status.IDLE);
-						logger.debug("Robot #" + robot.getRobotId() + " has finished job "
-								+ robot.getCurrentJob().getJobId());
+						//logger.debug("Robot #" + robot.getRobotId() + " has finished job "
+							//	+ robot.getCurrentJob().getJobId());
 					}
 				}
 			}
 		}
 		logger.debug("Ran out of jobs");
+	}
+
+	private boolean areAllIdle(ArrayList<Robot> robots) {
+		boolean areAllIdle = true;
+		for (Robot robot : robots) {
+		if (robot.getRobotStatus() != Status.IDLE) 
+			areAllIdle = false;
+		}
+		return areAllIdle;
 	}
 }

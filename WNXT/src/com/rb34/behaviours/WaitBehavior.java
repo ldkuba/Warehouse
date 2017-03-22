@@ -52,6 +52,13 @@ public class WaitBehavior implements Behavior
 		atDropoff = false;
 
 	}
+	
+	public void resetAllCounters() {
+		itemCount = 0;
+		itemCounter = 0;
+		releaseCounter = 0;
+		toRelease = 0;
+	}
 
 	@Override
 	public boolean takeControl()
@@ -93,6 +100,9 @@ public class WaitBehavior implements Behavior
 					msg2.setRobotId(robotId);
 					TrialMainNxt.client.send(msg2);
 					setPickingState("done");
+					atDropoff = false;
+					resetAllCounters();
+					screen.resetCounter();
 				}
 			}
 
@@ -119,6 +129,9 @@ public class WaitBehavior implements Behavior
 						TrialMainNxt.client.send(msg2);
 						setAtPickup(false);
 						setPickingState("done");
+						atPickup = false;
+						resetAllCounters();
+						screen.resetCounter();
 					} else if (itemCounter > itemCount)
 					{
 						toRelease = Math.abs(itemCount - itemCounter);
@@ -143,6 +156,9 @@ public class WaitBehavior implements Behavior
 						TrialMainNxt.client.send(msg2);
 						setAtPickup(false);
 						setPickingState("done");
+						atPickup = false;
+						resetAllCounters();
+						screen.resetCounter();
 					} else if (toRelease > releaseCounter)
 					{
 						toRelease = toRelease - releaseCounter;

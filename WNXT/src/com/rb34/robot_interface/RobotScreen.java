@@ -41,6 +41,11 @@ public class RobotScreen {
 		this.y = y;
 	}
 	
+	public void resetCounter() {
+		itemsPickedUp = 0;
+		itemsToPickUp = 0;	
+	}
+	
 	public void updateState (String state) {
 		this.state = state;
 	}

@@ -34,6 +34,8 @@ public class RobotManager implements IRobotManager, MessageListener
 		robotList.add(newRobot);
 		RobotInitMessage msg = new RobotInitMessage();
 		msg.setRobotId(newRobot.getRobotId());
+		msg.setX(newRobot.getXLoc());
+		msg.setY(newRobot.getYLoc());
 		Start.master.send(msg, newRobot.getRobotId());
 	}
 
