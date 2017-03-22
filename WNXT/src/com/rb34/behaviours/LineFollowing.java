@@ -1,5 +1,7 @@
 package com.rb34.behaviours;
 
+import rp.config.WheeledRobotConfiguration;
+import rp.systems.WheeledRobotSystem;
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
@@ -7,6 +9,7 @@ import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
+
 import com.rb34.robot_interface.RobotScreen;
 
 public class LineFollowing implements Behavior
@@ -15,6 +18,7 @@ public class LineFollowing implements Behavior
 	private boolean doFirstAction = false;
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
+	private WheeledRobotConfiguration robotConfig;
 	private DifferentialPilot pilot;
 	private RobotScreen screen;
 	private ShouldMove shouldMove;
@@ -33,9 +37,10 @@ public class LineFollowing implements Behavior
 		this.whiteInitL = whiteInitL;
 		this.whiteInitR = whiteInitR;
 
-		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
-		pilot.setTravelSpeed(80);
-		pilot.setRotateSpeed(50);
+		robotConfig = new WheeledRobotConfiguration (0.059f, 0.115f, 0.17f, Motor.A, Motor.C);
+		pilot = new WheeledRobotSystem (robotConfig).getPilot();
+		pilot.setTravelSpeed((pilot.getMaxTravelSpeed()/10)*2);
+		pilot.setRotateSpeed((pilot.getRotateMaxSpeed()/10)*2);
 
 	}
 

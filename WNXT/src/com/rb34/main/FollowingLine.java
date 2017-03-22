@@ -1,6 +1,7 @@
 package com.rb34.main;
 
 import com.rb34.behaviours.LineFollowing;
+import com.rb34.behaviours.ShouldMove;
 import com.rb34.behaviours.StopBehaviour;
 import com.rb34.robot_interface.RobotScreen;
 
@@ -21,8 +22,10 @@ public class FollowingLine {
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
 		screen = new RobotScreen();
+		ShouldMove shouldMove = new ShouldMove();
+		shouldMove.setShouldMove(true);
 
-		lineFollowing = new LineFollowing(lightSensorL, lightSensorR, screen, null);
+		lineFollowing = new LineFollowing(lightSensorL, lightSensorR, screen, shouldMove);
 
 		Behavior[] behaviors = {lineFollowing};
 		arbitrator = new Arbitrator(behaviors);

@@ -1,5 +1,7 @@
 package com.rb34.behaviours;
 
+import rp.config.WheeledRobotConfiguration;
+import rp.systems.WheeledRobotSystem;
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.addon.OpticalDistanceSensor;
@@ -8,6 +10,7 @@ import lejos.robotics.subsumption.Behavior;
 
 public class DistanceKeeping implements Behavior {
 	private Float maxDistance;
+	private WheeledRobotConfiguration robotConfig;
 	private DifferentialPilot pilot;
 	private OpticalDistanceSensor irSensor;
 	private double maxSpeed;
@@ -21,9 +24,10 @@ public class DistanceKeeping implements Behavior {
 		maxDistance = _maxDis;
 		irSensor = _s;
 		
-		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
-		pilot.setTravelSpeed(125);
-		pilot.setAcceleration(1000);
+		robotConfig = new WheeledRobotConfiguration (0.059f, 0.115f, 0.17f, Motor.A, Motor.C);
+		pilot = new WheeledRobotSystem (robotConfig).getPilot();
+		pilot.setTravelSpeed((pilot.getMaxTravelSpeed()/10)*2);
+		pilot.setRotateSpeed((pilot.getRotateMaxSpeed()/10)*2);
 	}
 
 	@Override

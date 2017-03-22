@@ -2,6 +2,9 @@ package com.rb34.behaviours;
 
 import java.io.PrintStream;
 
+import rp.config.WheeledRobotConfiguration;
+import rp.systems.WheeledRobotSystem;
+
 import com.rb34.dummy.TrialMainNxt;
 import com.rb34.message.RobotStatusMessage;
 import com.rb34.robot_interface.RobotScreen;
@@ -16,6 +19,7 @@ import lejos.util.Delay;
 
 public class WaitBehavior implements Behavior
 {
+	private WheeledRobotConfiguration robotConfig;
 	private DifferentialPilot pilot;
 	private TurnBehavior behavior;
 	private RobotScreen screen;
@@ -36,10 +40,11 @@ public class WaitBehavior implements Behavior
 		this.behavior = _behavior;
 		this.screen = _screen;
 		this.robotId = RobotId;
-		pilot = new DifferentialPilot(56, 120, Motor.A, Motor.B);
+		robotConfig = new WheeledRobotConfiguration (0.059f, 0.115f, 0.17f, Motor.A, Motor.C);
+		pilot = new WheeledRobotSystem (robotConfig).getPilot();
 
-		pilot.setTravelSpeed(125.0);
-		pilot.setRotateSpeed(150.0);
+		pilot.setTravelSpeed((pilot.getMaxTravelSpeed()/10)*2);
+		pilot.setRotateSpeed((pilot.getRotateMaxSpeed()/10)*2);
 
 		itemCounter = 0;
 		itemCount = 0;
