@@ -13,6 +13,8 @@ import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
 import com.rb34.general.interfaces.IRobot.Status;
 import com.rb34.jobInput.Item;
+import com.rb34.jobInput.Reader;
+
 import rp.robotics.visualisation.KillMeNow;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
@@ -23,6 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -89,9 +92,11 @@ public class WarehouseWindow {
 
 		
 		frame = new JFrame();
+		ImageIcon img = new ImageIcon("res/icon.png");
+		frame.setIconImage(img.getImage());
 		frame.getContentPane().setFont(new Font("Dialog", Font.PLAIN, 20));
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 650, 300);
+		frame.setBounds(100, 100, 600, 250);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
@@ -104,24 +109,24 @@ public class WarehouseWindow {
 		GridBagConstraints gbc_btnLoadJobList = new GridBagConstraints();
 		gbc_btnLoadJobList.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnLoadJobList.anchor = GridBagConstraints.NORTH;
-		gbc_btnLoadJobList.insets = new Insets(0, 0, 5, 5);
+		gbc_btnLoadJobList.insets = new Insets(5, 5, 5, 5);
 		gbc_btnLoadJobList.gridx = 0;
 		gbc_btnLoadJobList.gridy = 0;
 		frame.getContentPane().add(btnLoadJobList, gbc_btnLoadJobList);
 		
-		
-		// Preparation for selecting job list file at runtime
 		btnLoadJobList.addActionListener(new ActionListener() {
 			
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			
-			JFileChooser fc = new JFileChooser();
+			JFileChooser fc = new JFileChooser("");
+			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			fc.setDialogTitle("Choose Folder Containing Job Info:");
 			int val = fc.showOpenDialog((Component)arg0.getSource());
 			if (val == JFileChooser.APPROVE_OPTION) {
 				File file = fc.getSelectedFile();
 				String pathName = file.getAbsolutePath();
-				//Should Pass 'pathName' string to the relevant class after integration
+				Reader.setFilePath(pathName);
 				System.out.println(pathName);
 			}
 				
@@ -132,7 +137,7 @@ public class WarehouseWindow {
 		GridBagConstraints gbc_btnWarehouseMap = new GridBagConstraints();
 		gbc_btnWarehouseMap.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnWarehouseMap.anchor = GridBagConstraints.NORTH;
-		gbc_btnWarehouseMap.insets = new Insets(0, 0, 5, 5);
+		gbc_btnWarehouseMap.insets = new Insets(5, 5, 5, 5);
 		gbc_btnWarehouseMap.gridx = 2;
 		gbc_btnWarehouseMap.gridy = 0;
 		frame.getContentPane().add(btnWarehouseMap, gbc_btnWarehouseMap);
@@ -240,9 +245,9 @@ public class WarehouseWindow {
 		});
 		
 			
-		JButton btnRewardSummary = new JButton("Reward Summary");
+		JButton btnRewardSummary = new JButton("More Information");
 		GridBagConstraints gbc_btnRewardSummary = new GridBagConstraints();
-		gbc_btnRewardSummary.insets = new Insets(0, 0, 5, 5);
+		gbc_btnRewardSummary.insets = new Insets(5, 5, 5, 5);
 		gbc_btnRewardSummary.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnRewardSummary.gridx = 4;
 		gbc_btnRewardSummary.gridy = 0;
@@ -254,7 +259,8 @@ public class WarehouseWindow {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+				RobotInformation robotInformation = new RobotInformation(manager);
+				robotInformation.run();
 				
 			}
 		});
@@ -263,27 +269,11 @@ public class WarehouseWindow {
 		lblRobot.setFont(new Font("Dialog", Font.BOLD, 20));
 		GridBagConstraints gbc_lblRobot = new GridBagConstraints();
 		gbc_lblRobot.anchor = GridBagConstraints.WEST;
-		gbc_lblRobot.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRobot.insets = new Insets(0, 5, 5, 5);
 		gbc_lblRobot.gridx = 0;
 		gbc_lblRobot.gridy = 1;
 		frame.getContentPane().add(lblRobot, gbc_lblRobot);
-		
-		lblRobot.addMouseListener(new MouseAdapter() {
-			
-			//Contains Robot 1 Specific Job Breakdown
-			public void mouseClicked(MouseEvent e) {
-				JFrame frame3 = new JFrame();
-				frame3.getContentPane();
-				frame3.setLocationRelativeTo(frame);
-				frame.addWindowListener(new KillMeNow());
-				frame3.pack();
-				frame3.setLocation(760, 100);
-				frame3.setSize(300, 300);
-				frame3.setVisible(true);
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			}
-		});
-		
+				
 		JLabel lblStatus = new JLabel("ACQUIRING STATUS");
 		lblStatus.setFont(new Font("Dialog", Font.BOLD, 15));
 		GridBagConstraints gbc_lblStatus = new GridBagConstraints();
@@ -314,7 +304,7 @@ public class WarehouseWindow {
 		JLabel lblRobotLocation = new JLabel("Robot Location: ");
 		GridBagConstraints gbc_lblRobotLocation = new GridBagConstraints();
 		gbc_lblRobotLocation.anchor = GridBagConstraints.WEST;
-		gbc_lblRobotLocation.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRobotLocation.insets = new Insets(0, 5, 5, 5);
 		gbc_lblRobotLocation.gridx = 0;
 		gbc_lblRobotLocation.gridy = 2;
 		frame.getContentPane().add(lblRobotLocation, gbc_lblRobotLocation);
@@ -346,7 +336,7 @@ public class WarehouseWindow {
 		JLabel lblCurrentJob = new JLabel("Current Job: ");
 		GridBagConstraints gbc_lblCurrentJob = new GridBagConstraints();
 		gbc_lblCurrentJob.anchor = GridBagConstraints.WEST;
-		gbc_lblCurrentJob.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCurrentJob.insets = new Insets(0, 5, 5, 5);
 		gbc_lblCurrentJob.gridx = 0;
 		gbc_lblCurrentJob.gridy = 3;
 		frame.getContentPane().add(lblCurrentJob, gbc_lblCurrentJob);
@@ -378,7 +368,7 @@ public class WarehouseWindow {
 		JLabel lblPotentialReward = new JLabel("Potential Reward:");
 		GridBagConstraints gbc_lblPotentialReward = new GridBagConstraints();
 		gbc_lblPotentialReward.anchor = GridBagConstraints.WEST;
-		gbc_lblPotentialReward.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPotentialReward.insets = new Insets(0, 5, 5, 5);
 		gbc_lblPotentialReward.gridx = 0;
 		gbc_lblPotentialReward.gridy = 4;
 		frame.getContentPane().add(lblPotentialReward, gbc_lblPotentialReward);
@@ -411,7 +401,7 @@ public class WarehouseWindow {
 		lblRobot2.setFont(new Font("Dialog", Font.BOLD, 20));
 		GridBagConstraints gbc_lblRobot2 = new GridBagConstraints();
 		gbc_lblRobot2.anchor = GridBagConstraints.WEST;
-		gbc_lblRobot2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRobot2.insets = new Insets(0, 5, 5, 5);
 		gbc_lblRobot2.gridx = 0;
 		gbc_lblRobot2.gridy = 6;
 		frame.getContentPane().add(lblRobot2, gbc_lblRobot2);
@@ -428,7 +418,7 @@ public class WarehouseWindow {
 		JLabel lblRobotLocation2 = new JLabel("Robot Location:");
 		GridBagConstraints gbc_lblRobotLocation2 = new GridBagConstraints();
 		gbc_lblRobotLocation2.anchor = GridBagConstraints.WEST;
-		gbc_lblRobotLocation2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRobotLocation2.insets = new Insets(0, 5, 5, 5);
 		gbc_lblRobotLocation2.gridx = 0;
 		gbc_lblRobotLocation2.gridy = 7;
 		frame.getContentPane().add(lblRobotLocation2, gbc_lblRobotLocation2);
@@ -444,7 +434,7 @@ public class WarehouseWindow {
 		JLabel lblCurrentJob2 = new JLabel("Current Job:");
 		GridBagConstraints gbc_lblCurrentJob2 = new GridBagConstraints();
 		gbc_lblCurrentJob2.anchor = GridBagConstraints.WEST;
-		gbc_lblCurrentJob2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCurrentJob2.insets = new Insets(0, 5, 5, 5);
 		gbc_lblCurrentJob2.gridx = 0;
 		gbc_lblCurrentJob2.gridy = 8;
 		frame.getContentPane().add(lblCurrentJob2, gbc_lblCurrentJob2);
@@ -460,7 +450,7 @@ public class WarehouseWindow {
 		JLabel lblPotentialReward2 = new JLabel("Potential Reward:");
 		GridBagConstraints gbc_lblPotentialReward2 = new GridBagConstraints();
 		gbc_lblPotentialReward2.anchor = GridBagConstraints.WEST;
-		gbc_lblPotentialReward2.insets = new Insets(0, 0, 0, 5);
+		gbc_lblPotentialReward2.insets = new Insets(0, 5, 0, 5);
 		gbc_lblPotentialReward2.gridx = 0;
 		gbc_lblPotentialReward2.gridy = 10;
 		frame.getContentPane().add(lblPotentialReward2, gbc_lblPotentialReward2);
@@ -487,8 +477,8 @@ public class WarehouseWindow {
 	              setCoords(lblCoords,0);
 	              setCoords(lblCoords2,1);
 	              setCoords(lblCoords3,2);
-	            
 	              
+	              setJob(lblJobid, 0);
 	              /*
 	              Commented out as it throws exception due to no data being returned
 	              setJob(lblJobid, 0);
@@ -500,6 +490,7 @@ public class WarehouseWindow {
 	              setReward(lblReward2, 1);
 	              setReward(lblReward3, 2);
 	              */
+	              setReward(lblReward,0);
 	          }
 	      };
 	      new Timer(delay, taskPerformer).start();
@@ -543,14 +534,14 @@ public class WarehouseWindow {
 	}
 	
 	public void setJob(JLabel val, int robotId) {
-        String jobID = manager.getRobot(robotId).getCurrentJob().getJobId();
+        String jobID = "";
         if(manager.getRobot(robotId).getCurrentJob().getJobId() == null) {
         	jobID = "No Current Job";
         } else { 
         	jobID = manager.getRobot(robotId).getCurrentJob().getJobId();
         }
         	
-        val.setText(jobID);
+        val.setText("" + jobID);
         int rb = robotId +1;
         
         log4j.trace("Updated Robot " + rb + "'s Current Job");
