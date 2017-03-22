@@ -62,6 +62,8 @@ public class RobotManager implements IRobotManager, MessageListener
 	@Override
 	public void recievedRobotStatusMessage(RobotStatusMessage msg)
 	{
+		System.out.println(msg.toString());
+		
 		getRobot(msg.getRobotId()).setXLoc(msg.getX());
 		getRobot(msg.getRobotId()).setYLoc(msg.getY());
 		
@@ -69,14 +71,20 @@ public class RobotManager implements IRobotManager, MessageListener
 		{
 			getRobot(msg.getRobotId()).setRobotStatus(Status.RUNNING);
 		}else
-		{
+		{			
 			if(msg.isWaitingForNewPath())
 			{
 				getRobot(msg.getRobotId()).setRobotStatus(Status.AT_ITEM);
+				System.out.println("WAITING FOR NEW PATH");
+				
 			}else
 			{
+				System.out.println("NOOOOOOOOOOT WAITING FOR NEW PATH");
 				getRobot(msg.getRobotId()).notifyOfLocation();
 			}
+		} 
+		if (!msg.isOnJob()) {
+			getRobot(msg.getRobotId()).setRobotStatus(Status.IDLE);
 		}
 	}
 

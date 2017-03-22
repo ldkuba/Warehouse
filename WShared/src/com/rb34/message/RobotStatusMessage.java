@@ -10,6 +10,11 @@ public class RobotStatusMessage implements Message
 	private int x, y;
 	private boolean isOnRoute, isOnJob, isWaitingForNewPath;
 
+	public RobotStatusMessage()
+	{
+
+	}
+	
 	public boolean isWaitingForNewPath()
 	{
 		return isWaitingForNewPath;
@@ -18,11 +23,6 @@ public class RobotStatusMessage implements Message
 	public void setWaitingForNewPath(boolean isWaitingForNewPath)
 	{
 		this.isWaitingForNewPath = isWaitingForNewPath;
-	}
-
-	public RobotStatusMessage()
-	{
-
 	}
 
 	public int getRobotId()
@@ -146,6 +146,13 @@ public class RobotStatusMessage implements Message
 		}
 		
 		return msg;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "RobotStatusMessage [type=" + type + ", robotId=" + robotId + ", x=" + x + ", y=" + y + ", isOnRoute="
+				+ isOnRoute + ", isOnJob=" + isOnJob + ", isWaitingForNewPath=" + isWaitingForNewPath + "]";
 	}
 	
 }

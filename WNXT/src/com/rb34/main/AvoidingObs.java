@@ -26,13 +26,16 @@ public class AvoidingObs {
 	private TurnBehavior turnBehavior;
 	private DistanceKeeping keepDistance;
 	private RobotScreen screen;
+	private String head;
 
 	private ArrayList<PathChoices> path1;
 
-	public AvoidingObs() {
+	public AvoidingObs(String head) {
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
 		irSensor = new OpticalDistanceSensor(SensorPort.S2);
+		
+		this.head = head;
 
 		path1 = new ArrayList<PathChoices>();
 
@@ -46,8 +49,8 @@ public class AvoidingObs {
 		int whiteInitL = lightSensorL.getLightValue();
 		int whiteInitR = lightSensorR.getLightValue();
 
-		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen, followLine);
+		followLine = new LineFollowing(lightSensorL, lightSensorR, screen, null);
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen, followLine, head, null);
 		keepDistance = new DistanceKeeping(MAX_DISTANCE, irSensor);
 
 		Behavior[] behaviors = { followLine, turnBehavior, keepDistance };
@@ -57,6 +60,7 @@ public class AvoidingObs {
 	}
 
 	public static void main(String[] args) {
-		AvoidingObs robot = new AvoidingObs();
+		String head = "east";
+		AvoidingObs robot = new AvoidingObs(head);
 	}
 }

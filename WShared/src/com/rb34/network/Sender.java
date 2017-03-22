@@ -30,7 +30,18 @@ public class Sender extends Thread
 			if(!messageQueue.isEmpty())
 			{
 				
+				//System.out.println("messageQueue size: " + messageQueue.size());
+				
+				//System.out.println("IS MQ null?: " + (messageQueue == null));
+				
+				if(messageQueue.get(0) == null)
+				{
+					System.out.println("NULLLLLLLLLLLLLLLLLLLLLLLERINO");
+				}
+				
 				byte[] message = messageQueue.get(0).toByteArray();
+				
+				//System.out.println(messageQueue.get(0).toString());
 				
 				try
 				{

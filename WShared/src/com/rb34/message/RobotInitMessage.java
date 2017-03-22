@@ -4,6 +4,12 @@ import com.rb34.util.ArrayUtils;
 
 public class RobotInitMessage implements Message
 {
+	@Override
+	public String toString()
+	{
+		return "RobotInitMessage [type=" + type + ", robotId=" + robotId + ", x=" + x + ", y=" + y + "]";
+	}
+
 	private final byte type = 3;
 	private int robotId;
 
@@ -47,7 +53,7 @@ public class RobotInitMessage implements Message
 	@Override
 	public byte[] toByteArray()
 	{
-		int lengthInBytes = 4;
+		int lengthInBytes = 4 + 4 + 4;
 
 		byte[] output = { type };
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(lengthInBytes));
