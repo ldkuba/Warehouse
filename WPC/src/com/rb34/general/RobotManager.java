@@ -62,6 +62,8 @@ public class RobotManager implements IRobotManager, MessageListener
 	@Override
 	public void recievedRobotStatusMessage(RobotStatusMessage msg)
 	{
+		System.out.println(msg.toString());
+		
 		getRobot(msg.getRobotId()).setXLoc(msg.getX());
 		getRobot(msg.getRobotId()).setYLoc(msg.getY());
 		

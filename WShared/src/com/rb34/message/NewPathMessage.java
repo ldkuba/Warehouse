@@ -1,12 +1,20 @@
 package com.rb34.message;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.rb34.general.PathChoices;
 import com.rb34.util.ArrayUtils;
 
 public class NewPathMessage implements Message
 {
+	@Override
+	public String toString()
+	{
+		return "NewPathMessage [type=" + type + ", robotId=" + robotId + ", commands=" + Arrays.toString(commands)
+				+ "]";
+	}
+
 	private final byte type = 1;
 	private int robotId;
 

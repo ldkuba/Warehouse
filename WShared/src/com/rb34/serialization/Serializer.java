@@ -25,19 +25,24 @@ public class Serializer
 				{
 					if(arrayClazz.equals(Byte.TYPE))
 					{
-						Byte[] bytes = (Byte[]) field.get(object);
+						byte[] bytes = (byte[]) field.get(object);
+						output.addAll(ArrayUtils.arrayToArrayList(bytes));
 					}else if(arrayClazz.equals(Integer.TYPE))
 					{
-						
+						int[] ints = (int[]) field.get(object);
+						output.addAll(ArrayUtils.arrayToArrayList(ArrayUtils.intArrayToBytes(ints)));
 					}else if(arrayClazz.equals(Short.TYPE))
 					{
-						
+						short[] shorts = (short[]) field.get(object);
+						output.addAll(ArrayUtils.arrayToArrayList(ArrayUtils.shortArrayToBytes(shorts)));
 					}else if(arrayClazz.equals(Character.TYPE))
 					{
-						
+						char[] chars = (char[]) field.get(object);
+						output.addAll(ArrayUtils.arrayToArrayList(ArrayUtils.charArrayToBytes(chars)));
 					}else if(arrayClazz.equals(Boolean.TYPE))
 					{
-						
+						boolean[] booleans = (boolean[]) field.get(object);
+						output.addAll(ArrayUtils.arrayToArrayList(ArrayUtils.booleanArrayToBytes(booleans)));
 					}
 				}else
 				{

@@ -28,6 +28,12 @@ public class TestMessage implements Message
 		return robotId;
 	}
 
+	@Override
+	public String toString()
+	{
+		return "TestMessage [type=" + type + ", text=" + text + ", robotId=" + robotId + "]";
+	}
+
 	public void setRobotId(int robotId)
 	{
 		this.robotId = robotId;

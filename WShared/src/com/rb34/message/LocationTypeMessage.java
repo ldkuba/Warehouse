@@ -114,5 +114,12 @@ public class LocationTypeMessage implements Message
 		
 		return msg;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "LocationTypeMessage [type=" + type + ", robotId=" + robotId + ", locationType=" + locationType
+				+ ", itemId=" + itemId + ", itemCount=" + itemCount + "]";
+	}
 
 }

@@ -40,12 +40,16 @@ public class TurnBehavior implements Behavior {
 	private boolean actionDone;
 	private boolean lastAction;
 	private static boolean forceFirstAction;
+	private ShouldMove shouldMove;
 	
 	private String head ;
 	private ArrayList<PathChoices> path;
 
 	public TurnBehavior(LightSensor left, LightSensor right,
-			RobotScreen _screen, LineFollowing followLine, String head) {
+			RobotScreen _screen, LineFollowing followLine, String head, ShouldMove shouldMove) {
+		
+		//actionDone = true;
+		this.shouldMove = shouldMove;
 
 		lightSensorR = right;
 		
@@ -92,7 +96,6 @@ public class TurnBehavior implements Behavior {
 	@Override
 	public boolean takeControl() {
 		if ((rightOnBlack() && leftOnBlack()) || forceFirstAction) {
-			setForceFirstAction(false);
 			return true;
 		} else {
 			return false;
@@ -101,6 +104,7 @@ public class TurnBehavior implements Behavior {
 
 	@Override
 	public void action() {
+		setForceFirstAction(false);
 		
 		//turnDirection = 4;
 		
@@ -134,33 +138,21 @@ public class TurnBehavior implements Behavior {
 			pilot.arc(80.5, 90, true);
 			UpdateDirectionAndCo(0);
 			screen.updateState("Left");
-			if (lastAction) {
-				redirectHead();
-			}
 			break;
 		case 1:
 			pilot.arc(-80.5, -90, true);
 			UpdateDirectionAndCo(1);
 			screen.updateState("Right");
-			if (lastAction) {
-				redirectHead();
-			}
 			break;
 		case 2:
 			pilot.travel(75.0, true);
 			UpdateDirectionAndCo(2);
 			screen.updateState("Forward");
-			if (lastAction) {
-				redirectHead();
-			}
 			break;
 		case 3:
 			pilot.rotate(180, true);
 			UpdateDirectionAndCo(3);
 			screen.updateState("Rotate");
-			if (lastAction) {
-				redirectHead();
-			}
 			break;
 		case 4:
 			try {
@@ -168,10 +160,8 @@ public class TurnBehavior implements Behavior {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			if (lastAction) {
-				redirectHead();
-			}
 		}
+		System.out.println("Heading: "+head);
 
 		
 		
@@ -190,6 +180,19 @@ public class TurnBehavior implements Behavior {
 				System.exit(0);
 			}
 		}
+		
+	/*	if (lastAction) {
+			redirectHead();
+			lastAction = false;
+		}
+		
+		while (!supressed && pilot.isMoving()) {
+
+			if (Button.ESCAPE.isDown()) {
+				System.exit(0);
+			}
+		}*/
+		
 		suppress();
 	}
 
@@ -200,8 +203,10 @@ public class TurnBehavior implements Behavior {
 	
 	public boolean checkIfNoRoute() {
 		if (actionDone && path.isEmpty()) {
+			shouldMove.setShouldMove(false);
 			return true;
 		} else {
+			shouldMove.setShouldMove(true);
 			return false;
 		}
 	}
@@ -209,10 +214,10 @@ public class TurnBehavior implements Behavior {
 	public void redirectHead() { //makes sure that robot faces east every time it gets a new route
 		switch(head) {
 		case "north":
-			pilot.arc(80.5, 90, true);
+			pilot.arc(-80.5, -90, true);
 			break;
 		case "south":
-			pilot.arc(-80.5, -90, true);
+			pilot.arc(80.5, 90, true);
 			break;
 		case "west":
 			pilot.rotate(180, true);
