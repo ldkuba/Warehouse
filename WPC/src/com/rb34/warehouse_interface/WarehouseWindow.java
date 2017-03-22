@@ -94,6 +94,7 @@ public class WarehouseWindow {
 		frame = new JFrame();
 		ImageIcon img = new ImageIcon("res/icon.png");
 		frame.setIconImage(img.getImage());
+		frame.setTitle("Warehouse Interface");
 		frame.getContentPane().setFont(new Font("Dialog", Font.PLAIN, 20));
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 600, 250);
@@ -245,7 +246,7 @@ public class WarehouseWindow {
 		});
 		
 			
-		JButton btnRewardSummary = new JButton("More Information");
+		JButton btnRewardSummary = new JButton("Job Information");
 		GridBagConstraints gbc_btnRewardSummary = new GridBagConstraints();
 		gbc_btnRewardSummary.insets = new Insets(5, 5, 5, 5);
 		gbc_btnRewardSummary.fill = GridBagConstraints.HORIZONTAL;
@@ -479,9 +480,6 @@ public class WarehouseWindow {
 	              setCoords(lblCoords3,2);
 	              
 	              setJob(lblJobid, 0);
-	              /*
-	              Commented out as it throws exception due to no data being returned
-	              setJob(lblJobid, 0);
 	              setJob(lblJobid2,1);
 	              setJob(lblJobid3, 2);
 	              
@@ -489,8 +487,7 @@ public class WarehouseWindow {
 	              setReward(lblReward,0);
 	              setReward(lblReward2, 1);
 	              setReward(lblReward3, 2);
-	              */
-	              setReward(lblReward,0);
+
 	          }
 	      };
 	      new Timer(delay, taskPerformer).start();

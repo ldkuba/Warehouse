@@ -12,28 +12,14 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.border.BevelBorder;
-
 import com.rb34.general.RobotManager;
 import com.rb34.jobInput.Item;
 
-import java.awt.Color;
-import java.awt.Dimension;
-
-import javax.swing.JTextArea;
-import javax.swing.JSlider;
-import javax.swing.ListSelectionModel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.border.SoftBevelBorder;
-import java.awt.SystemColor;
 
 public class RobotInformation {
 
@@ -42,13 +28,14 @@ public class RobotInformation {
 	static RobotManager manager;
 	private JScrollPane scrollPane;
 	private JPanel panel;
-
+	private String lblName;
 	/**
 	 * Launch the application.
 	 */
 	
 	public RobotInformation(RobotManager manager) {
 		this.manager = manager;
+		lblName = "";
 	}  
 	
 	public static void run() {
@@ -78,8 +65,8 @@ public class RobotInformation {
 		frmDetailedRobotBreakdown = new JFrame();
 		ImageIcon img = new ImageIcon("res/icon.png");
 		frmDetailedRobotBreakdown.setIconImage(img.getImage());
-		frmDetailedRobotBreakdown.setTitle("Detailed Robot Breakdown");
-		frmDetailedRobotBreakdown.setBounds(150, 100, 500, 300);
+		frmDetailedRobotBreakdown.setTitle("Detailed Job Breakdown");
+		frmDetailedRobotBreakdown.setBounds(150, 100, 550, 300);
 		frmDetailedRobotBreakdown.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
@@ -157,14 +144,23 @@ public class RobotInformation {
 		float itemWeight = 0;
 		int itemX = 0;
 		int itemY = 0;
-		String lblName = "";
+
 		lblDisplayinfo.setText("Robot " + (robotId + 1) + " Info:");
 		lblDisplayinfo.setVisible(true);
 		panel.removeAll(); 
-		JLabel itemHead = new JLabel("Current Job Items: ");
+		
+		String jobId = manager.getRobot(robotId).getCurrentJob().getJobId();
+		JLabel itemHead = new JLabel("Current Job ID: " + jobId);
+		itemHead.setFont(new Font("Dialog", Font.BOLD, 15));
+		
+		JLabel jobContain = new JLabel("This Job Contains the Following Items: ");
+		jobContain.setFont(new Font("Dialog", Font.BOLD, 15));
+		
 		panel.add(itemHead);
+		panel.add(jobContain);
+		
 		for (Item item : items) {
-			itemReward = itemReward + item.getReward();
+			itemReward = item.getReward();
 			itemName = item.getItemID();
 			itemWeight = item.getWeight();
 			itemX = item.getX();
@@ -174,8 +170,25 @@ public class RobotInformation {
 			panel.add(val1);
 
 		}
+	
+		float reward = 0;
+		
+		for (Item item : items) {
+			reward = reward + item.getReward();
+		}
+		
+		float weight = 0;
+		
+		for (Item item : items) {
+			weight = weight + item.getWeight();
+		}
+		
+		JLabel rewardTot = new JLabel("Total Job Reward: " + reward + "   Total Job Weight: " + weight);
+		rewardTot.setFont(new Font("Dialog", Font.BOLD, 15));
+		panel.add(rewardTot);
 		
 		JLabel destHead = new JLabel("Planned Destinations: ");
+		destHead.setFont(new Font("Dialog", Font.BOLD, 15));
 		panel.add(destHead);
 		
 		ArrayList<String> dests = manager.getRobot(robotId).getDestinations();
