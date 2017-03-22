@@ -3,6 +3,7 @@ package com.rb34.main;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import com.rb34.behaviours.LineFollowing;
+import com.rb34.behaviours.ShouldMove;
 import com.rb34.behaviours.TurnBehavior;
 import com.rb34.behaviours.WaitBehavior;
 import com.rb34.dummy.TrialMainNxt;
@@ -34,27 +35,23 @@ public class JunctionFollower implements MessageListener {
 	private TurnBehavior turnBehavior;
 	private WaitBehavior waitBehavior;
 	private static RobotScreen screen;
+	private String head;
 
 	public JunctionFollower(RobotScreen _screen) {
 
 		System.out.println("test");
 		this.screen = _screen;
+		this.head = head;
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
 		path = new ArrayList<>();
-		//TrialMainNxt.client.addListener(this);
+		TrialMainNxt.client.addListener(this);
 		
-		path1.add(PathChoices.RIGHT);
-		path1.add(PathChoices.FORWARD);
-		path1.add(PathChoices.FORWARD);
-		
+		ShouldMove shouldMove = new ShouldMove();
 
-		followLine = new LineFollowing(lightSensorL, lightSensorR, screen);
+		followLine = new LineFollowing(lightSensorL, lightSensorR, screen, shouldMove);
 		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen,
-				followLine);
-		
-		turnBehavior.setPath(path1);
-		turnBehavior.setForceFirstAction(true);
+				followLine, head, shouldMove);
 		waitBehavior = new WaitBehavior(turnBehavior, screen, RobotId);
 
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };

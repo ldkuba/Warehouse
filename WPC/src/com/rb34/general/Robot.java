@@ -20,8 +20,9 @@ public class Robot implements IRobot
 	private ArrayList<Item> itemList;
 	private ArrayList<String> destinations;
 	private boolean currentlyAtItem;
-	private Item currentItem;
-
+	private Item currentItem;	
+	private String heading;
+	
 	public Robot()
 	{
 		this.xLoc = 0;
@@ -30,10 +31,21 @@ public class Robot implements IRobot
 		this.job = null;
 		this.destinations = new ArrayList<>();
 		this.itemList = new ArrayList<>();
+		heading = "E";
 	}
 
 	public void setCurrentlyGoingToItem(boolean b) {
 		currentlyAtItem = b;
+	}
+	
+	public String getHeading()
+	{
+		return this.heading;
+	}
+	
+	public void setHeading(String heading)
+	{
+		this.heading = heading;
 	}
 	
 	public ArrayList<String> getDestinations()
