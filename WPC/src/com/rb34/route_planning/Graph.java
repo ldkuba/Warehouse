@@ -33,6 +33,7 @@ public class Graph implements IGraph {
 	int[] robotTimeTracker;
 	GridMap gridMap;
 	Graph sampleGraph;
+	boolean testing = false;
 
 	// Constructor with GridMap parameter
 	public Graph(RobotManager robotManager) {
@@ -77,7 +78,7 @@ public class Graph implements IGraph {
 
 		}
 
-		String logMessage = "\nInitially reserved positions:";
+		String logMessage = "Initially reserved positions:";
 		for (String location : reservationTable.keySet()) {
 			logMessage += "\n" + location + " reserved at time "
 					+ reservationTable.get(location).get(0).getReservationTime() + " by "
@@ -112,6 +113,9 @@ public class Graph implements IGraph {
 					addEdge(sourceVertex.getLabel().getName(), targetVertex.getLabel().getName(), 1);
 
 			}
+
+		if (k == 1)
+			testing = true;
 
 	}
 
@@ -226,6 +230,13 @@ public class Graph implements IGraph {
 			closedList.add(currentVertex);
 			if (currentVertex.getLabel().getName().equals(endVertexId))
 				targetInClosedList = true;
+		}
+		if (testing) {
+			String logMessage = "The path from " + startVertexId + " to " + endVertexId + " is: ";
+			for (IVertex vertex : result.getPath().get()) {
+				logMessage += vertex.getLabel().getName() + " ";
+			}
+			logger.debug(logMessage);
 		}
 		return result;
 	}
@@ -358,8 +369,9 @@ public class Graph implements IGraph {
 				ArrayList<ReservationInfo> reservations = new ArrayList<>();
 				reservations.add(reservation);
 				reservationTable.put(vertex.getLabel().getName(), reservations);
-				
-				// reserve the position where it stops for 3 additional units of time
+
+				// reserve the position where it stops for 3 additional units of
+				// time
 				if (i == path.size() - 1) {
 					for (int j = 1; j <= 3; j++) {
 						reservation = new ReservationInfo(robotId, vertex.getLabel().getTimestep() + j);
@@ -371,8 +383,9 @@ public class Graph implements IGraph {
 			} else {
 				reservationTable.get(vertex.getLabel().getName())
 						.add(new ReservationInfo(robotId, vertex.getLabel().getTimestep()));
-				
-				// reserve the position where it stops for 3 additional units of time
+
+				// reserve the position where it stops for 3 additional units of
+				// time
 				if (i == path.size() - 1) {
 					reservationTable.get(vertex.getLabel().getName())
 							.add(new ReservationInfo(robotId, vertex.getLabel().getTimestep() + 1));

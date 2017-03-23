@@ -22,9 +22,7 @@ public class JobAssigner {
 	private ArrayList<Drop> dropLocations;
 	private Graph graph;
 
-	private Master master;
-
-	public JobAssigner(PriorityQueue<Job> jobs, RobotManager rm, ArrayList<Drop> dropLocations, Master master) {
+	public JobAssigner(PriorityQueue<Job> jobs, RobotManager rm, ArrayList<Drop> dropLocations) {
 		logger.debug("Started JobAssigner");
 		this.jobs = jobs;
 		logger.debug("Received jobs");
@@ -33,8 +31,6 @@ public class JobAssigner {
 		this.dropLocations = dropLocations;
 		logger.debug("Received drop locations");
 		graph = new Graph(robotManager);
-
-		this.master = master;
 	}
 
 	public void assignJobs() {
@@ -109,7 +105,6 @@ public class JobAssigner {
 								+ robot.getYLoc() + " to" + destination);
 						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot);
 					} else {
-						// robot.setRobotStatus(Status.IDLE);
 						logger.debug("Robot #" + robot.getRobotId() + " has finished job "
 								+ robot.getCurrentJob().getJobId());
 					}
@@ -118,12 +113,12 @@ public class JobAssigner {
 		}
 		logger.debug("Ran out of jobs and all robots are idle");
 	}
-	
+
 	private boolean areAllIdle(ArrayList<Robot> robots) {
 		boolean areAllIdle = true;
 		for (Robot robot : robots) {
-		if (robot.getRobotStatus() != Status.IDLE) 
-			areAllIdle = false;
+			if (robot.getRobotStatus() != Status.IDLE)
+				areAllIdle = false;
 		}
 		return areAllIdle;
 	}

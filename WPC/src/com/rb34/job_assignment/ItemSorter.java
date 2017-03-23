@@ -53,6 +53,9 @@ public class ItemSorter {
 		int[][] distances = new int[numberOfItems + 1 + numberOfDropLocations][numberOfItems];
 
 		for (int i = 0; i < numberOfItems; i++) {
+			if (graph.aStar(robotX + "|" + robotY, items.get(i).getX() + "|" + items.get(i).getY())
+					 == null)
+				return;
 			distances[numberOfItems][i] = graph
 					.aStar(robotX + "|" + robotY, items.get(i).getX() + "|" + items.get(i).getY()).getPathCost().get();
 			for (int j = 0; j < numberOfDropLocations; j++) {
@@ -128,7 +131,7 @@ public class ItemSorter {
 
 						distance += shortestPitStopDistance;
 						weight = 0f;
-						
+
 						if (i != 0 && initialDrop) {
 							pathCoordinates.add(drops.get(bestDrop).getX() + "|" + drops.get(bestDrop).getY());
 							initialDrop = false;
@@ -136,9 +139,7 @@ public class ItemSorter {
 						pathCoordinates
 								.add(items.get(permutation.get(i)).getX() + "|" + items.get(permutation.get(i)).getY());
 						pathCoordinates.add(drops.get(bestDrop).getX() + "|" + drops.get(bestDrop).getY());
-						
 					}
-
 				}
 			}
 
@@ -173,7 +174,7 @@ public class ItemSorter {
 			}
 		}
 
-		logger.debug("Selected best permutation");
+		logger.debug("Selected best permutation (the distance is " + shortestDistance + ")");
 
 		String logMessage = "The item order is: ";
 		for (int index : bestPermutation) {
@@ -188,10 +189,9 @@ public class ItemSorter {
 			logMessage += coordinates + " ";
 		}
 		logger.debug(logMessage);
-
 	}
 
-	// create every permutation for the order of items (Yay brute force)
+	// create every permutation for the order of items
 	private static void permute(List<Integer> array, int k, ArrayList<ArrayList<Integer>> permutations) {
 		for (int i = k; i < array.size(); i++) {
 			Collections.swap(array, i, k);

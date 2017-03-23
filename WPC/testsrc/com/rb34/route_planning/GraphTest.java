@@ -1,49 +1,42 @@
 package com.rb34.route_planning;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
-import java.util.ArrayList;
-
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
-import com.rb34.route_planning.graph_entities.IVertex;
 
 public class GraphTest {
-	/*
 	@Test
 	public void testCost() {
-		Graph graph = new Graph();	
+		Graph graph = new Graph(1);
 		assertEquals(3, graph.aStar("2|2", "3|4").getPathCost().get(), 0f);
 	}
-	
+
 	@Test
 	public void testCostForSamePosition() {
-		Graph graph = new Graph();
+		Graph graph = new Graph(1);
 		assertEquals(0f, graph.aStar("2|2", "2|2").getPathCost().get(), 0f);
 	}
-	
+
 	@Test
 	public void testCostForLongPath() {
-		Graph graph = new Graph();
+		Graph graph = new Graph(1);
 		assertEquals(14f, graph.aStar("9|6", "0|1").getPathCost().get(), 0f);
 	}
-	
+
 	@Test
 	public void testCostToObstacle() {
-		Graph graph = new Graph();
+		Graph graph = new Graph(1);
 		assertNull(graph.aStar("0|0", "1|1"));
 	}
-	
+
 	@Test
 	public void testCostToInvalidLocation() {
-		Graph graph = new Graph();
+		Graph graph = new Graph(1);
 		assertNull(graph.aStar("0|0", "-1|-5"));
 	}
-	
-	*/
+
 	@Test
 	public void testHCA() {
 		RobotManager rm = new RobotManager();
@@ -62,19 +55,11 @@ public class GraphTest {
 		rm.addRobot(robot0);
 		rm.addRobot(robot1);
 		rm.addRobot(robot2);
-		
-		Graph graph = new Graph(rm);	
-		graph.hCooperativeAStar("0|3", "0|6", 0).getPath();
 
+		Graph graph = new Graph(rm);
+		graph.hCooperativeAStar("0|3", "0|6", 0).getPath();
 		graph.hCooperativeAStar("0|4", "0|2", 1).getPath();
 
-		graph.hCooperativeAStar("0|5", "2|2", 2).getPath();
-		//graph.hCooperativeAStar("5|6", "0|7", 0).getPath();
-		//graph.hCooperativeAStar("11|7", "3|3", 2).getPath();
-		//graph.hCooperativeAStar("2|6", "0|5", 2).getPath().get();
-		//graph.hCooperativeAStar("3|3", "3|0", 2).getPath();
-
-		
+		assertNotNull(graph.hCooperativeAStar("0|5", "2|2", 2).getPath());
 	}
-
 }
