@@ -3,6 +3,7 @@ package com.rb34.route_execution;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.rb34.general.PathChoices;
@@ -12,8 +13,7 @@ import com.rb34.route_planning.graph_entities.IVertex;
 
 public class ConvertToMovement {
 		
-	final static Logger logger = Logger.getLogger(ConvertToMovement.class);
-	int ID;
+	private static final Logger logger = LogManager.getLogger(ConvertToMovement.class.getName());
 	
 	public ArrayList<PathChoices> execute(ArrayList<IVertex> path, Robot robot) {
 		
@@ -48,7 +48,9 @@ public class ConvertToMovement {
 						movement.add(PathChoices.LEFT);
 						robot.setHeading("W");
 					}
-				}		
+				} else if (X == prevX && Y == prevY) {
+					movement.add(PathChoices.STAY);
+				}
 			} else if(robot.getHeading().equals("E")) {
 				if(X == prevX){
 					if(Y > prevY) {
@@ -66,6 +68,8 @@ public class ConvertToMovement {
 						movement.add(PathChoices.ROTATE);					
 						robot.setHeading("W");
 					}
+				} else if (X == prevX && Y == prevY) {
+					movement.add(PathChoices.STAY);
 				}		
 			} else if(robot.getHeading().equals("S")) {
 				if(X == prevX) {
@@ -84,6 +88,8 @@ public class ConvertToMovement {
 						movement.add(PathChoices.RIGHT);
 						robot.setHeading("W");
 					}
+				} else if (X == prevX && Y == prevY) {
+					movement.add(PathChoices.STAY);
 				}	
 			} else if(robot.getHeading().equals("W")) {
 				if(X == prevX) {	
@@ -94,84 +100,18 @@ public class ConvertToMovement {
 						movement.add(PathChoices.LEFT);
 						robot.setHeading("S");
 					}
-					
-				} 
-			} else if(ID==1) {
-				if(RobotHeadings.getHeading2() == Headings.PLUS_Y) {
-					if(X == prevX) {
-						if( Y > prevY) {
-							movement.add(PathChoices.FORWARD);
-							RobotHeadings.setHeading2(Headings.PLUS_Y);
-						} else if(Y < prevY) {
-							movement.add(PathChoices.ROTATE);
-							RobotHeadings.setHeading2(Headings.MINUS_Y);
-						}	
-					} else if (Y == prevY) {
+				} else if(Y == prevY) {
 						if(X > prevX) {
-							movement.add(PathChoices.RIGHT);
-							RobotHeadings.setHeading2(Headings.PLUS_X);
-						} else if(X < prevX) {
-							movement.add(PathChoices.LEFT);
-							RobotHeadings.setHeading2(Headings.MINUS_X);
-						}
-					} else if(X == prevX && Y == prevY)	{
-						movement.add(PathChoices.STAY);
-					}		
-				} else if(RobotHeadings.getHeading2() == Headings.PLUS_X) {
-					if(X == prevX){
-						if(Y > prevY) {
-							movement.add(PathChoices.LEFT);
-							RobotHeadings.setHeading2(Headings.PLUS_Y);
-						} else if(Y < prevY) {
-							movement.add(PathChoices.RIGHT);
-							RobotHeadings.setHeading2(Headings.MINUS_Y);
-						}	
-					} else if(Y == prevY) {
-						if(X > prevX) {
-							movement.add(PathChoices.FORWARD);
-							RobotHeadings.setHeading2(Headings.PLUS_X);
-						} else if(X < prevX) {
-							movement.add(PathChoices.ROTATE);					
-							RobotHeadings.setHeading2(Headings.MINUS_X);
-						}
-					} else if(X == prevX && Y == prevY)	{
-						movement.add(PathChoices.STAY);
-					}		
-				} else if(RobotHeadings.getHeading2() == Headings.MINUS_Y) {
-					if(X == prevX) {
-						if(Y > prevY) {
 							movement.add(PathChoices.ROTATE);
 							robot.setHeading("E");
 						} else if(X < prevX) {
-							movement.add(PathChoices.ROTATE);					
-							RobotHeadings.setHeading3(Headings.MINUS_X);
-						}
-					} else if(X == prevX && Y == prevY)	{
-						movement.add(PathChoices.STAY);
-					}		
-				} else if(RobotHeadings.getHeading3() == Headings.MINUS_Y) {
-					if(X == prevX) {
-						if(Y > prevY) {
-							movement.add(PathChoices.ROTATE);
-							RobotHeadings.setHeading3(Headings.PLUS_Y);
-						} else if(Y < prevY){
 							movement.add(PathChoices.FORWARD);
 							robot.setHeading("W");
 						}
-					} else if(Y == prevY) {
-							if(X > prevX) {
-								movement.add(PathChoices.ROTATE);
-								RobotHeadings.setHeading3(Headings.PLUS_X);
-							} else if(X < prevX) {
-								movement.add(PathChoices.FORWARD);
-								RobotHeadings.setHeading3(Headings.MINUS_X);
-							}
-					} else if(X == prevX && Y == prevY)	{
-						movement.add(PathChoices.STAY);
-					}
-					
-				} 
-			}		
+				} else if (X == prevX && Y == prevY) {
+					movement.add(PathChoices.STAY);
+				}		
+			}
 			prevX = X;
 			prevY = Y;
 			
@@ -180,8 +120,8 @@ public class ConvertToMovement {
 		}
 		
 		
-		
 		return movement;
 	}
-
+	
+	
 }

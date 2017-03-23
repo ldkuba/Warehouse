@@ -12,17 +12,16 @@ import com.rb34.message.NewPathMessage;
 import com.rb34.network.Master;
 import com.rb34.route_planning.graph_entities.IVertex;
 
+
 public class Execute {
 
 	private ArrayList<PathChoices> robotInstructions;
 	private ArrayList<IVertex> vertexPath;
-	private Master master;
 
 	private static final Logger log4j = LogManager.getLogger(Execute.class.getName());
 	
-	
-	public Execute(Master master) {
-		this.master = master;
+	public Execute(){
+		
 	}
 	
 	public void runRoute(ArrayList<IVertex> path, Robot robot) {
@@ -47,13 +46,12 @@ public class Execute {
 		robotInstructions = converter.execute(vertexPath, robot);
 
 		
-		//Replace with method that sends to bluetooth
+
 		log4j.info("Converted Instructions" + robotInstructions);
 		int robotID = robot.getRobotId();
 		NewPathMessage msg = new NewPathMessage();
 		msg.setCommands(robotInstructions);
-		msg.setRobotId(robotID);
 		Start.master.send(msg, robotID);
 	}
 
-}
+}
