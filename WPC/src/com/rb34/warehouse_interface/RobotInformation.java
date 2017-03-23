@@ -8,6 +8,10 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Font;
 import javax.swing.JScrollPane;
+import javax.swing.Timer;
+
+import org.apache.log4j.Logger;
+
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,32 +26,40 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 
 public class RobotInformation {
 
 	private JFrame frmDetailedRobotBreakdown;
-	private JLabel lblDisplayinfo;
 	static RobotManager manager;
 	private JScrollPane scrollPane;
 	private JPanel panel;
 	private String lblName;
 	private JButton btnCancelJob;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboBox;
+	final static Logger log4j = Logger.getLogger(RobotInformation.class);
+	private JButton btnRefresh;
+	private JCheckBox chckbxAutoRefresh;
+	static int robotNum;
 	/**
 	 * Launch the application.
 	 */
 	
-	public RobotInformation(RobotManager manager) {
+	@SuppressWarnings("static-access")
+	public RobotInformation(RobotManager manager,int robotNum) {
 		this.manager = manager;
 		lblName = "";
+		this.robotNum = robotNum;
 	}  
 	
-	public static void run() {
+	public void run() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					RobotInformation window = new RobotInformation();
 					window.frmDetailedRobotBreakdown.setVisible(true);
+					log4j.info("Created Detailed Information Window");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -65,6 +77,7 @@ public class RobotInformation {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initialize() {
 		frmDetailedRobotBreakdown = new JFrame();
 		ImageIcon img = new ImageIcon("res/icon.png");
@@ -74,19 +87,26 @@ public class RobotInformation {
 		frmDetailedRobotBreakdown.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmDetailedRobotBreakdown.pack();
 		frmDetailedRobotBreakdown.setBounds(150, 100, 600, 250);
-		frmDetailedRobotBreakdown.setLocation(700, 100);
+		frmDetailedRobotBreakdown.setLocation(400, 100);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{1.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		frmDetailedRobotBreakdown.getContentPane().setLayout(gridBagLayout);
+		
+		chckbxAutoRefresh = new JCheckBox("Auto Refresh");
+		GridBagConstraints gbc_chckbxAutoRefresh = new GridBagConstraints();
+		gbc_chckbxAutoRefresh.insets = new Insets(5, 5, 5, 5);
+		gbc_chckbxAutoRefresh.gridx = 2;
+		gbc_chckbxAutoRefresh.gridy = 1;
+		frmDetailedRobotBreakdown.getContentPane().add(chckbxAutoRefresh, gbc_chckbxAutoRefresh);
 		
 		JLabel lblRobotSummary = new JLabel("Select Robot:");
 		lblRobotSummary.setFont(new Font("Dialog", Font.BOLD, 20));
 		GridBagConstraints gbc_lblRobotSummary = new GridBagConstraints();
-		gbc_lblRobotSummary.insets = new Insets(0, 0, 5, 5);
-		gbc_lblRobotSummary.gridx = 1;
+		gbc_lblRobotSummary.insets = new Insets(5, 5, 5, 5);
+		gbc_lblRobotSummary.gridx = 4;
 		gbc_lblRobotSummary.gridy = 1;
 		frmDetailedRobotBreakdown.getContentPane().add(lblRobotSummary, gbc_lblRobotSummary);
 		
@@ -101,9 +121,25 @@ public class RobotInformation {
 				if(type.equals("Robot 1")) {
 					setInformation(0);
 				} else if(type.equals("Robot 2")) {
-					setInformation(1);
+					if(robotNum ==2)  
+						setInformation(1);
+					else {
+						panel.removeAll();
+						JLabel lbl = new JLabel("Robot Not Found");
+						panel.add(lbl);
+			            frmDetailedRobotBreakdown.validate();
+			            frmDetailedRobotBreakdown.repaint();
+					}
 				} else if(type.equals("Robot 3")) {
-					setInformation(2);
+					if(robotNum == 3)
+						setInformation(2);
+					else {
+						panel.removeAll();
+						JLabel lbl = new JLabel("Robot Not Found");
+						panel.add(lbl);
+			            frmDetailedRobotBreakdown.validate();
+			            frmDetailedRobotBreakdown.repaint();
+					}
 				} else if(type.equals("")) {
 					panel.removeAll();
 		            frmDetailedRobotBreakdown.validate();
@@ -114,15 +150,15 @@ public class RobotInformation {
 		});
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.anchor = GridBagConstraints.WEST;
-		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox.gridx = 2;
+		gbc_comboBox.insets = new Insets(5, 5, 5, 5);
+		gbc_comboBox.gridx = 5;
 		gbc_comboBox.gridy = 1;
 		frmDetailedRobotBreakdown.getContentPane().add(comboBox, gbc_comboBox);
 		
 		btnCancelJob = new JButton("Cancel Job");
 		GridBagConstraints gbc_btnCancelJob = new GridBagConstraints();
-		gbc_btnCancelJob.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCancelJob.gridx = 3;
+		gbc_btnCancelJob.insets = new Insets(5, 0, 5, 5);
+		gbc_btnCancelJob.gridx = 6;
 		gbc_btnCancelJob.gridy = 1;
 		frmDetailedRobotBreakdown.getContentPane().add(btnCancelJob, gbc_btnCancelJob);
 		
@@ -133,10 +169,29 @@ public class RobotInformation {
 				String type = (String)comboBox.getSelectedItem();
 				if(type.equals("Robot 1")) {
 					manager.getRobot(0).setRobotStatus(Status.IDLE);
+					log4j.info("Cancelled robot 1's current job");
 				} else if(type.equals("Robot 2")) {
-					manager.getRobot(1).setRobotStatus(Status.IDLE);
+					if(robotNum==2) {
+						manager.getRobot(1).setRobotStatus(Status.IDLE);
+						log4j.info("Cancelled robot 2's current job");
+					} else {
+						panel.removeAll();
+						JLabel lbl = new JLabel("Robot Not Found");
+						panel.add(lbl);
+			            frmDetailedRobotBreakdown.validate();
+			            frmDetailedRobotBreakdown.repaint();
+					}
 				} else if(type.equals("Robot 3")) {
-					manager.getRobot(2).setRobotStatus(Status.IDLE);
+					if(robotNum == 3) {
+						manager.getRobot(2).setRobotStatus(Status.IDLE);
+						log4j.info("Cancelled robot 3's current job");
+					} else {
+						panel.removeAll();
+						JLabel lbl = new JLabel("Robot Not Found");
+						panel.add(lbl);
+			            frmDetailedRobotBreakdown.validate();
+			            frmDetailedRobotBreakdown.repaint();
+					}
 				} else if(type.equals("")){
 					JLabel err = new JLabel("No Robot Selected");
 					panel.add(err);
@@ -147,9 +202,52 @@ public class RobotInformation {
 			}
 		});
 		
+		btnRefresh = new JButton("Refresh");
+		GridBagConstraints gbc_btnRefresh = new GridBagConstraints();
+		gbc_btnRefresh.insets = new Insets(5, 5, 5, 5);
+		gbc_btnRefresh.gridx = 7;
+		gbc_btnRefresh.gridy = 1;
+		frmDetailedRobotBreakdown.getContentPane().add(btnRefresh, gbc_btnRefresh);
+		
+		btnRefresh.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String type = (String)comboBox.getSelectedItem();
+				if(type.equals("Robot 1")) {
+					setInformation(0);
+				} else if(type.equals("Robot 2")) {
+					if(robotNum == 2)
+						setInformation(1);
+					else {
+						panel.removeAll();
+						JLabel lbl = new JLabel("Robot Not Found");
+						panel.add(lbl);
+			            frmDetailedRobotBreakdown.validate();
+			            frmDetailedRobotBreakdown.repaint();
+					}
+				} else if(type.equals("Robot 3")) {
+					if(robotNum == 3)
+						setInformation(2);
+					else {
+						panel.removeAll();
+						JLabel lbl = new JLabel("Robot Not Found");
+						panel.add(lbl);
+			            frmDetailedRobotBreakdown.validate();
+			            frmDetailedRobotBreakdown.repaint();
+					}
+				} else if(type.equals("")) {
+					panel.removeAll();
+		            frmDetailedRobotBreakdown.validate();
+		            frmDetailedRobotBreakdown.repaint();
+				}
+				
+			}
+		});
+		
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridwidth = 5;
+		gbc_scrollPane.gridwidth = 9;
 		gbc_scrollPane.insets = new Insets(5, 5, 0, 0);
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
@@ -159,6 +257,19 @@ public class RobotInformation {
 		panel = new JPanel();
 		scrollPane.setColumnHeaderView(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
+		chckbxAutoRefresh.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(chckbxAutoRefresh.isSelected()) {
+					autoUpdate(2000);
+				}
+				
+			}
+		});
+		
+
 
 
 	}
@@ -221,9 +332,63 @@ public class RobotInformation {
 		JLabel dest = new JLabel(destList);
 		panel.add(dest);
 		
+		boolean wasCancelled = manager.getRobot(robotId).getCurrentJob().getCancelled();
+		
+		if(wasCancelled) {
+			String cncl = "WARNING: This job was previously cancelled";
+			JLabel cancel = new JLabel(cncl);
+			panel.add(cancel);
+			
+		}
+		
         frmDetailedRobotBreakdown.validate();
         frmDetailedRobotBreakdown.repaint();
 		
+		
+	}
+	
+	public void autoUpdate(int interval) {
+		
+		int delay = interval;
+		
+		ActionListener refreshData = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String type = (String)comboBox.getSelectedItem();
+				if(type.equals("Robot 1")) {
+					setInformation(0);
+				} else if(type.equals("Robot 2")) {
+					if(robotNum == 2)
+						setInformation(1);
+					else {
+						panel.removeAll();
+						JLabel lbl = new JLabel("Robot Not Found");
+						panel.add(lbl);
+			            frmDetailedRobotBreakdown.validate();
+			            frmDetailedRobotBreakdown.repaint();
+					}
+				} else if(type.equals("Robot 3")) {
+					if(robotNum == 3)
+						setInformation(2);
+					else {
+						panel.removeAll();
+						JLabel lbl = new JLabel("Robot Not Found");
+						panel.add(lbl);
+			            frmDetailedRobotBreakdown.validate();
+			            frmDetailedRobotBreakdown.repaint();
+					}
+				} else if(type.equals("")) {
+					panel.removeAll();
+		            frmDetailedRobotBreakdown.validate();
+		            frmDetailedRobotBreakdown.repaint();
+				}
+				
+			}
+		};
+		new Timer(delay,refreshData).start();
+		
+		log4j.info("Auto refresh enabled with interval " + delay);
 		
 	}
 
