@@ -1,4 +1,4 @@
-package com.rb34.jobInput;
+package com.rb34.job_input;
 
 import java.io.BufferedReader;
 import java.io.File;

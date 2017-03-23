@@ -1,16 +1,17 @@
-package com.rb34.jobSelection;
+package com.rb34.job_selection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
-import org.apache.log4j.*;
+import org.apache.log4j.Logger;
 
-import com.rb34.jobInput.Job;
-import com.rb34.jobInput.Reader;
-import com.rb34.jobInput.interfaces.IItem;
-import com.rb34.jobInput.interfaces.IOrder;
+import com.rb34.jobSelection.JobValueComparator;
+import com.rb34.job_input.Job;
+import com.rb34.job_input.Reader;
+import com.rb34.job_input.interfaces.IItem;
+import com.rb34.job_input.interfaces.IOrder;
 
 public class Selection {
 	

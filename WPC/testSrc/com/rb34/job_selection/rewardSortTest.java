@@ -1,4 +1,4 @@
-package com.rb34.jobSelection.test;
+package com.rb34.job_selection;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -6,10 +6,10 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import com.rb34.jobInput.Reader;
 import com.rb34.jobInput.interfaces.IOrder;
-import com.rb34.jobSelection.Selection;
 import com.rb34.job_input.Job;
+import com.rb34.job_input.Reader;
+import com.rb34.job_selection.Selection;
 
 
 public class rewardSortTest {
@@ -26,7 +26,7 @@ public class rewardSortTest {
 	}
 	
 	
-	//@Test
+	
 	public void printSortedList(){
  		jobList = Selection.rewardSelection(jobList);
 		for (int i = 0; i <= jobList.size() - 1; i++) {
