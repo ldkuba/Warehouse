@@ -6,8 +6,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.rb34.general.PathChoices;
+import com.rb34.general.Robot;
 import com.rb34.message.NewPathMessage;
-import com.rb34.network.Master;
 import com.rb34.route_planning.graph_entities.IVertex;
 
 public class Execute {
@@ -23,9 +23,7 @@ public class Execute {
 		this.master = master;
 	}
 	
-	
-	
-	public void runRoute(ArrayList<IVertex> path, int robotId) {
+	public void runRoute(ArrayList<IVertex> path, Robot robot) {
 		 vertexPath = path;
 		 
 		 if(vertexPath == null) {
@@ -43,14 +41,17 @@ public class Execute {
 		
 		log4j.trace("Receieved Following Path for Conversion: " + choosenPath);
 		
-		robotInstructions = converter.execute(vertexPath,robotId);
+		
+		robotInstructions = converter.execute(vertexPath, robot);
 
 		
-		log4j.info("Converted Instructions for Robot " + robotId + " " + robotInstructions);
-		int robotID = robotId;
+		//Replace with method that sends to bluetooth
+		log4j.info("Converted Instructions" + robotInstructions);
+		int robotID = robot.getRobotId();
 		NewPathMessage msg = new NewPathMessage();
 		msg.setCommands(robotInstructions);
-		master.send(msg, robotID);
+		msg.setRobotId(robotID);
+		Start.master.send(msg, robotID);
 	}
 
 }

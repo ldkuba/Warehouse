@@ -22,9 +22,8 @@ public class JobAssigner
 	private ArrayList<Drop> dropLocations;
 	private Graph graph;
 
-	public JobAssigner(PriorityQueue<Job> jobs, RobotManager rm, ArrayList<Drop> dropLocations)
-	{
-		//System.out.println("HELOOO");
+
+	public JobAssigner(PriorityQueue<Job> jobs, RobotManager rm, ArrayList<Drop> dropLocations) {
 		logger.debug("Started JobAssigner");
 		this.jobs = jobs;
 		logger.debug("Received jobs");
@@ -32,24 +31,27 @@ public class JobAssigner
 		logger.debug("Received robot manager");
 		this.dropLocations = dropLocations;
 		logger.debug("Received drop locations");
-		graph = new Graph();
+		graph = new Graph(robotManager);
 	}
 
-	public void assignJobs() {
+	public void assignJobs()
+	{
 		ArrayList<Robot> robots = robotManager.getRobots();
-		
 		// run while there are jobs in the PriorityQueue
-		while (!jobs.isEmpty()) {
-
+		while (!jobs.isEmpty() || !areAllIdle(robots)) {
+			
 			// iterate through every robot and check the status
 			for (Robot robot : robots) {
-				if (robot.getRobotStatus() == Status.IDLE) {
+				if (!jobs.isEmpty() && robot.getRobotStatus() == Status.IDLE) {
 					// get the first job
 					Job job = jobs.poll();
+
+					logger.debug(robot.getRobotId() + " is not idle!");
 
 					// sort the items from the job so the path has the shortest
 					// distance
 					ItemSorter itemSorter = new ItemSorter(job, robot.getXLoc(), robot.getYLoc(), dropLocations);
+					System.out.println("robot coords " + robot.getYLoc() + "|" + robot.getYLoc());
 					itemSorter.sortItems();
 
 					ArrayList<Item> items = itemSorter.getSortedItems();
@@ -68,55 +70,71 @@ public class JobAssigner
 
 					// get the first item
 					Item item = items.get(0);
-					if (destination.matches(item.getX() + "|" + item.getY())) {
+
+					if (destination.equals(item.getX() + "|" + item.getY())) {
+						robot.setCurrentlyGoingToItem(true);
 						robot.setCurrentItem(item);
 						items.remove(0);
 						robot.setItemsToPick(items);
-					}
+					} else
+						robot.setCurrentlyGoingToItem(false);
 
 					// start route planning
-
-					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot.getRobotId());
-
+					
+					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot);
 					logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
 							+ robot.getYLoc() + " to" + destination);
 
 				}
 
+
 				if (robot.getRobotStatus() == Status.AT_ITEM) {
-					
 					ArrayList<Item> items = robot.getItemsToPick();
 
 					ArrayList<String> destinations = robot.getDestinations();
 
-					// if there are destinations remaining, send the robot to the next one
+					// if there are destinations remaining, send the robot to
+					// the next one
 					if (destinations.size() > 0) {
 						robot.setRobotStatus(Status.RUNNING);
-						
 						String destination = destinations.get(0);
 						destinations.remove(0);
 						robot.setDestinations(destinations);
-
 						if (items.size() > 0) {
 							Item item = items.get(0);
-							if (destination.matches(item.getX() + "|" + item.getY())) {
+							if (destination.equals(item.getX() + "|" + item.getY())) {
+
+								robot.setCurrentlyGoingToItem(true);
 								robot.setCurrentItem(item);
 								items.remove(0);
 								robot.setItemsToPick(items);
-							}
-						}
-						
+							} else
+								robot.setCurrentlyGoingToItem(false);
+						} else
+							robot.setCurrentlyGoingToItem(false);
+
 						logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
 								+ robot.getYLoc() + " to" + destination);
-						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot.getRobotId());
+						if (robot.getRobotId() == 1) System.out.println("started planning for drop\n\n\n\n");
+						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot);
+						
 					} else {
-						robot.setRobotStatus(Status.IDLE);
-						logger.debug(
-								"Robot #" + robot.getRobotId() + " has finished job " + robot.getCurrentJob().getJobId());
+						//logger.debug("Robot #" + robot.getRobotId() + " has finished job "
+						//		+ robot.getCurrentJob().getJobId());
 					}
 				}
 			}
 		}
-		logger.debug("Ran out of jobs");
+		logger.debug("Ran out of jobs and all robots are idle");
+	}
+
+	private boolean areAllIdle(ArrayList<Robot> robots) {
+		boolean areAllIdle = true;
+		for (Robot robot : robots) {
+			if (robot.getRobotStatus() != Status.IDLE) 
+				areAllIdle = false;
+		}
+		if (areAllIdle) System.out.println("all idle");
+		return areAllIdle;
 	}
 }

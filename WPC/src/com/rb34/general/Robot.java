@@ -20,8 +20,9 @@ public class Robot implements IRobot
 	private ArrayList<Item> itemList;
 	private ArrayList<String> destinations;
 	private boolean currentlyAtItem;
-	private Item currentItem;
-
+	private Item currentItem;	
+	private String heading;
+	
 	public Robot()
 	{
 		this.xLoc = 0;
@@ -29,14 +30,26 @@ public class Robot implements IRobot
 		this.state = Status.IDLE;
 		this.job = null;
 		this.destinations = new ArrayList<>();
+		this.itemList = new ArrayList<>();
+		heading = "E";
 	}
 
+	public void setCurrentlyGoingToItem(boolean b) {
+		currentlyAtItem = b;
+	}
+	
+	public String getHeading()
+	{
+		return this.heading;
+	}
+	
+	public void setHeading(String heading)
+	{
+		this.heading = heading;
+	}
+	
 	public ArrayList<String> getDestinations()
 	{
-		if (!destinations.isEmpty() && !itemList.isEmpty() && destinations.get(0).matches(itemList.get(0).getItemID())) {
-			currentlyAtItem = true;
-		}
-		else currentlyAtItem = false;
 		return destinations;
 	}
 	
@@ -47,7 +60,9 @@ public class Robot implements IRobot
 
 	public void setDestinations(ArrayList<String> destinations)
 	{
-		this.destinations = destinations;
+		System.out.println("destinations set");
+		this.destinations.clear();
+		this.destinations = new ArrayList<>(destinations);
 	}
 
 	public void recievedMessge()
@@ -136,7 +151,10 @@ public class Robot implements IRobot
 	@Override
 	public void setItemsToPick(ArrayList<Item> itemsToPick)
 	{
-		this.itemList = itemsToPick;
+		System.out.println("items set");
+		this.itemList.clear();
+		this.itemList = new ArrayList<>(itemsToPick);
+		
 	}
 
 	public int getRobotId()
@@ -155,14 +173,17 @@ public class Robot implements IRobot
 		
 		if(this.currentlyAtItem)
 		{
-			msg.setLocationType((byte) 0);
-			
+			msg.setLocationType(0);
 			msg.setItemId(currentItem.getItemID());
 			msg.setItemCount(job.getOrderList().get(currentItem.getItemID()).getCount());
 		}else
 		{
-			msg.setLocationType((byte) 1);
+			msg.setLocationType(1);
+			msg.setItemId("");
+			msg.setItemCount(0);
 		}
+		
+		System.out.println("ITEM: " + currentlyAtItem);
 		
 		Start.master.send(msg, robotId);
 	}
