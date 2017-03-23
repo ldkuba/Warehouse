@@ -1,4 +1,4 @@
-package com.rb34.jobInput;
+package com.rb34.job_input;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+
+import com.rb34.jobInput.Drop;
+import com.rb34.jobInput.Item;
+import com.rb34.jobInput.Job;
+import com.rb34.jobInput.Order;
 
 public class Reader {
 

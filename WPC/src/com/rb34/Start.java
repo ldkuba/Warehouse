@@ -4,8 +4,8 @@ import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
 import com.rb34.jobInput.Drop;
 import com.rb34.jobInput.Job;
-import com.rb34.jobInput.Reader;
 import com.rb34.job_assignment.JobAssigner;
+import com.rb34.job_input.Reader;
 import com.rb34.network.Master;
 
 import java.util.ArrayList;

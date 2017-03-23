@@ -1,4 +1,4 @@
-package com.rb34.jobSelection;
+package com.rb34.job_selection;
 import java.util.ArrayList;
 import java.util.Collections;
 
