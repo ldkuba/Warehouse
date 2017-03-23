@@ -74,15 +74,9 @@ public class FindMyLocation {
 		DistanceFromJunction distanceFromJunction = new DistanceFromJunction (x, y, currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y);
 		listOfPreviousLocations.add(distanceFromJunction);
 		
-		System.out.println (currentPLUS_X + "");
-		System.out.println (currentMINUS_Y + "");
-		System.out.println (currentMINUS_X + "");
-		System.out.println (currentPLUS_Y + "");
-		
 		// If measurements are correct, set heading to PLUS_Y
 		if (currentPLUS_X <= 3 || currentPLUS_Y <= 3 || currentMINUS_X <= 3 || currentMINUS_Y <= 3) {
 			difficulty = levelOfDifficulty(currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
-			System.out.println (difficulty);
 			setHeading(Heading.PLUS_Y);
 		}
 		
@@ -107,12 +101,6 @@ public class FindMyLocation {
 					turnToDistanceAdvanced(pilot, 3f, distanceFromJunction, currentHeading);
 					if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
 						performARegularScan (ranger, pilot);
-						LCD.clear();
-						System.out.println (currentPLUS_X + "");
-						System.out.println (currentMINUS_Y + "");
-						System.out.println (currentMINUS_X + "");
-						System.out.println (currentPLUS_Y + "");
-						// System.out.println (compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap).size());
 						distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y);
 						listOfPreviousLocations.add (0, distanceFromJunction);
 						switch (compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap).size()) {
@@ -301,8 +289,6 @@ public class FindMyLocation {
 							case 10: // Done
 								for (int i = 1; i <= 4; i++) {
 									if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
-										System.out.println (i + "");
-										// performARegularScan (ranger, pilot);
 										pilot.stop();
 									}
 								}
@@ -318,7 +304,6 @@ public class FindMyLocation {
 					break;
 				case 5: // Done. Fully tested
 					turnToDistanceAdvanced(pilot, 3f, distanceFromJunction, currentHeading);
-					System.out.println ("Turn");
 					if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
 						performARegularScan (ranger, pilot);
 						listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
@@ -500,6 +485,7 @@ public class FindMyLocation {
 							x = listOfPossibleLocations.get(0).getX();
 							y = listOfPossibleLocations.get(0).getY();
 							foundLocation = true;
+							turnToDistanceAdvanced (pilot, 2f, distanceFromJunction, currentHeading);
 							break;
 						case 4:
 							turnToDistanceAdvanced (pilot, 3f, distanceFromJunction, currentHeading);
@@ -513,6 +499,7 @@ public class FindMyLocation {
 							x = listOfPossibleLocations.get(0).getX();
 							y = listOfPossibleLocations.get(0).getY();
 							foundLocation = true;
+							turnToDistanceAdvanced (pilot, 2f, distanceFromJunction, currentHeading);
 							break;
 						case 12: // Done. NOT TESTED
 							switch (currentHeading) {
@@ -806,11 +793,11 @@ public class FindMyLocation {
 										listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
 										
 										if (listOfPossibleLocations.size() == 1) {
-											System.out.println ("Should stop");
 											x = listOfPossibleLocations.get(0).getX();
 											y = listOfPossibleLocations.get(0).getY();
 											find1 = true;
 											foundLocation = true;
+											turnToDistanceAdvanced (pilot, 2f, distanceFromJunction, currentHeading);
 										}
 									}
 								}
@@ -834,11 +821,11 @@ public class FindMyLocation {
 										listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
 										
 										if (listOfPossibleLocations.size() == 1) {
-											System.out.println ("Should stop");
 											x = listOfPossibleLocations.get(0).getX();
 											y = listOfPossibleLocations.get(0).getY();
 											find1 = true;
 											foundLocation = true;
+											turnToDistanceAdvanced (pilot, 2f, distanceFromJunction, currentHeading);
 										}
 									}
 								}
@@ -870,6 +857,7 @@ public class FindMyLocation {
 										y = listOfPossibleLocations.get(0).getY();
 										find1 = true;
 										foundLocation = true;
+										turnToDistanceAdvanced (pilot, 2f, distanceFromJunction, currentHeading);
 									}
 								}
 							}
@@ -899,6 +887,7 @@ public class FindMyLocation {
 										y = listOfPossibleLocations.get(0).getY();
 										find1 = true;
 										foundLocation = true;
+										turnToDistanceAdvanced (pilot, 2f, distanceFromJunction, currentHeading);
 									}
 								}
 							}
@@ -925,6 +914,7 @@ public class FindMyLocation {
 										y = listOfPossibleLocations.get(0).getY();
 										foundLocation = true;
 										find1 = true;
+										turnToDistanceAdvanced (pilot, 2f, distanceFromJunction, currentHeading);
 									}
 								}
 							}
@@ -969,6 +959,7 @@ public class FindMyLocation {
 												y = listOfPossibleLocations.get(0).getY();
 												find1 = true;
 												foundLocation = true;
+												turnToDistanceAdvanced (pilot, 2f, distanceFromJunction, currentHeading);
 											}
 										}
 									}
@@ -984,11 +975,11 @@ public class FindMyLocation {
 											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
 											
 											if (listOfPossibleLocations.size() == 1) {
-												System.out.println ("I am at 1");
 												x = listOfPossibleLocations.get(0).getX();
 												y = listOfPossibleLocations.get(0).getY();
 												find1 = true;
 												foundLocation = true;
+												turnToDistanceAdvanced (pilot, 2f, distanceFromJunction, currentHeading);
 											}
 										}
 									}
@@ -1000,6 +991,7 @@ public class FindMyLocation {
 					break;
 			}
 		}
+		pilot.rotate (90);
 		// Should not return -1, -1 if it returns -1, -1 something is wrong.
 		return new Result (x, y);
 	}
