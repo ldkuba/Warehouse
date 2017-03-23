@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.rb34.jobInput.Job;
 import com.rb34.job_input.*;
 
-public class jobListTest {
+public class JobListTest {
 
 	@Test
 	public void JobIDChecks() {
