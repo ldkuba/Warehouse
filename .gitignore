@@ -10,10 +10,12 @@
 !/WNXT/src/
 !/WNXT/testsrc/
 
+
 /WPC/*
 !/WPC
 !/WPC/src/
 !/WPC/testsrc/
+#!/WPC/res/
 
 /WShared/*
 !/WShared
