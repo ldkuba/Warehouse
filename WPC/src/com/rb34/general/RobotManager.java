@@ -36,6 +36,7 @@ public class RobotManager implements IRobotManager, MessageListener
 		msg.setRobotId(newRobot.getRobotId());
 		msg.setX(newRobot.getXLoc());
 		msg.setY(newRobot.getYLoc());
+		msg.setHeading(newRobot.getHeading());
 		Start.master.send(msg, newRobot.getRobotId());
 	}
 
@@ -48,10 +49,6 @@ public class RobotManager implements IRobotManager, MessageListener
 	@Override
 	public void recievedTestMessage(TestMessage msg)
 	{
-		System.out.println(msg.getText());
-		System.out.println(msg.getText());
-		System.out.println(msg.getText());
-		System.out.println(msg.getText());
 		System.out.println(msg.getText());
 	}
 

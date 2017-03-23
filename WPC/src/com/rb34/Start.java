@@ -27,21 +27,21 @@ public class Start
 		Job job = new Job("1");
 
 		Item p1 = new Item("p1", 0f, 0f);
-		p1.setX(5);
-		p1.setY(6);
+		p1.setX(11);
+		p1.setY(1);
 
 		job.addItem("p1", new Order(p1, 1));
 
 		Job job2 = new Job("2");
 
 		Item p2 = new Item("p2", 0f, 0f);
-		p2.setX(3);
-		p2.setY(7);
+		p2.setX(9);
+		p2.setY(2);
 
 		job2.addItem("p2", new Order(p2, 1));		
 		
 		ArrayList<Drop> drops = new ArrayList<>();
-		drops.add(new Drop(0, 7));
+		drops.add(new Drop(9, 0));
 
 		PriorityQueue<Job> orderedJobs = new PriorityQueue<>();
 
@@ -54,20 +54,24 @@ public class Start
 		master.start();
 		
 		Robot robot = new Robot();
-		robot.setXLoc(0);
-		robot.setYLoc(4);
+		robot.setXLoc(9);
+		robot.setYLoc(0);
+		robot.setHeading("S");
 		robot.setRobotId(0);
-/*		
+
 		Robot robot2 = new Robot();
 		robot2.setXLoc(0);
 		robot2.setYLoc(4);
+		robot2.setHeading("S");
 		robot2.setRobotId(1);
-
+		
+		/*
 		Robot robot3 = new Robot();
 		robot3.setXLoc(1);
 		robot3.setYLoc(0);
 		robot3.setRobotId(2);
 		*/
+		
 		System.out.println("3");
 
 		while(!master.areAllConnected())
@@ -77,7 +81,7 @@ public class Start
 		
 		RobotManager rm = new RobotManager();
 		rm.addRobot(robot);
-		//rm.addRobot(robot2);
+		rm.addRobot(robot2);
 //		rm.addRobot(robot3);
 
 		System.out.println("4");

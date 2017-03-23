@@ -1,7 +1,7 @@
 package com.rb34.main;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
+
 import com.rb34.behaviours.LineFollowing;
 import com.rb34.behaviours.ShouldMove;
 import com.rb34.behaviours.TurnBehavior;
@@ -14,13 +14,10 @@ import com.rb34.message.NewPathMessage;
 import com.rb34.message.RobotInitMessage;
 import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
-import com.rb34.network.Client;
 import com.rb34.robot_interface.RobotScreen;
-import lejos.nxt.Button;
+
 import lejos.nxt.LightSensor;
 import lejos.nxt.SensorPort;
-import lejos.nxt.Sound;
-import lejos.nxt.comm.RConsole;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
@@ -41,22 +38,26 @@ public class JunctionFollower implements MessageListener {
 
 		System.out.println("test");
 		this.screen = _screen;
-		this.head = head;
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
 		path = new ArrayList<>();
 		TrialMainNxt.client.addListener(this);
 		
 		ShouldMove shouldMove = new ShouldMove();
+		
+		head = new String();
 
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen, shouldMove);
 		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen,
 				followLine, head, shouldMove);
 		waitBehavior = new WaitBehavior(turnBehavior, screen, RobotId);
+		waitBehavior.setFocingBehav(true);
 
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
 		arbitrator = new Arbitrator(behaviors);
 		arbitrator.start();
+
+		
 	}
 
 	@Override
@@ -87,8 +88,23 @@ public class JunctionFollower implements MessageListener {
 		RobotId = msg.getRobotId();
 		turnBehavior.setAbsoluteX(msg.getX());
 		turnBehavior.setAbsoluteY(msg.getY());
+		if(msg.getHeading().equals("N"))
+		{
+			this.head = "north";
+		}else if(msg.getHeading().equals("S"))
+		{
+			this.head = "south";
+		}else if(msg.getHeading().equals("E"))
+		{
+			this.head = "east";
+		}else if(msg.getHeading().equals("W"))
+		{
+			this.head = "west";
+		}
+		waitBehavior.setFocingBehav(false);
 	}
-
+	
+	
 	@Override
 	public void recievedLocationTypeMessage(LocationTypeMessage msg) {
 

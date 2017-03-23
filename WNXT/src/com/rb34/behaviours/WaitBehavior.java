@@ -33,27 +33,30 @@ public class WaitBehavior implements Behavior
 	private boolean atDropoff;
 	private String pickingState;
 	private boolean dropDone;
+	private boolean forcingBehav;
 	
 	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen, int RobotId)
 	{
-	
 		this.behavior = _behavior;
 		this.screen = _screen;
 		this.robotId = RobotId;
-		robotConfig = new WheeledRobotConfiguration (0.059f, 0.115f, 0.17f, Motor.A, Motor.C);
-		pilot = new WheeledRobotSystem (robotConfig).getPilot();
+		robotConfig = new WheeledRobotConfiguration(0.059f, 0.115f, 0.17f, Motor.C, Motor.A);
+		pilot = new WheeledRobotSystem(robotConfig).getPilot();
 
-		pilot.setTravelSpeed((pilot.getMaxTravelSpeed()/10)*2);
-		pilot.setRotateSpeed((pilot.getRotateMaxSpeed()/10)*2);
+		pilot.setTravelSpeed((pilot.getMaxTravelSpeed() / 10) * 2);
+		pilot.setRotateSpeed((pilot.getRotateMaxSpeed() / 10) * 2);
 
+		
 		itemCounter = 0;
 		itemCount = 0;
 		atPickup = false;
 		atDropoff = false;
+		forcingBehav = true;
 
 	}
-	
-	public void resetAllCounters() {
+
+	public void resetAllCounters()
+	{
 		itemCount = 0;
 		itemCounter = 0;
 		releaseCounter = 0;
@@ -63,8 +66,19 @@ public class WaitBehavior implements Behavior
 	@Override
 	public boolean takeControl()
 	{
+		
+		if (behavior.checkIfNoRoute() || forcingBehav)
+		{
+			return true;
+		} else
+		{
+			return false;
+		}
+	}
 
-		return behavior.checkIfNoRoute();
+	public void setFocingBehav(boolean b)
+	{
+		forcingBehav = b;
 	}
 
 	@Override
@@ -183,7 +197,7 @@ public class WaitBehavior implements Behavior
 				screen.updateItemPickUpDecrease();
 				screen.printPickingState();
 			}
-			
+
 			if (Button.ESCAPE.isDown())
 			{
 				Delay.msDelay(750);

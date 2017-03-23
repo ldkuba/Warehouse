@@ -62,16 +62,18 @@ public class TurnBehavior implements Behavior
 
 		this.screen = _screen;
 		this.followLine = followLine;
-		this.head = "east";
 
 		path = new ArrayList<>();
 		path.clear();
 
 		forceFirstAction = false;
 		lastAction = false;
+		
+		this.head = head;
 
-		robotConfig = new WheeledRobotConfiguration(0.059f, 0.115f, 0.17f, Motor.A, Motor.C);
+		robotConfig = new WheeledRobotConfiguration(0.059f, 0.115f, 0.17f, Motor.C, Motor.A);
 		pilot = new WheeledRobotSystem(robotConfig).getPilot();
+		
 		pilot.setTravelSpeed((pilot.getMaxTravelSpeed() / 10) * 2);
 		pilot.setRotateSpeed((pilot.getRotateMaxSpeed() / 10) * 2);
 	}
@@ -324,7 +326,7 @@ public class TurnBehavior implements Behavior
 			return false;
 		}
 	}
-
+	
 	public void setX(int i)
 	{
 		x += i;
