@@ -7,7 +7,6 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import com.rb34.jobInput.Job;
 import com.rb34.job_input.*;
 
 public class JobListTest {

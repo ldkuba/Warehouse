@@ -3,6 +3,7 @@ package com.rb34.jobInput.test;
 import static org.junit.Assert.assertEquals;
 
 import com.rb34.jobInput.*;
+import com.rb34.job_input.Drop;
 
 import java.util.ArrayList;
 

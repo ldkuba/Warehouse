@@ -6,8 +6,8 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import com.rb34.jobInput.Job;
 import com.rb34.jobInput.interfaces.IOrder;
+import com.rb34.job_input.Job;
 import com.rb34.job_input.Reader;
 import com.rb34.job_selection.Selection;
 

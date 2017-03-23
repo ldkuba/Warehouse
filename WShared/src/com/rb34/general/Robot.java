@@ -1,10 +1,8 @@
 package com.rb34.general;
 
 import com.rb34.general.interfaces.IRobot;
-import com.rb34.jobInput.Item;
-
-import com.rb34.jobInput.Job;
-
+import com.rb34.job_input.Item;
+import com.rb34.job_input.Job;
 
 import java.util.ArrayList;
 

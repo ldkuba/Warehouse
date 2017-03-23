@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.apache.log4j.*;
 
-import com.rb34.jobInput.Item;
-import com.rb34.jobInput.Job;
 import com.rb34.jobInput.interfaces.IOrder;
+import com.rb34.job_input.Item;
+import com.rb34.job_input.Job;
 
 public class ItemSorter {
 	final static Logger logger = Logger.getLogger(ItemSorter.class);

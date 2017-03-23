@@ -3,13 +3,12 @@ package com.rb34.jobInput.test;
 import static org.junit.Assert.*;
 
 import com.rb34.jobInput.*;
+import com.rb34.job_input.Job;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.junit.Test;
-
-import com.rb34.jobInput.Job;
 
 public class jobListTest {
 

@@ -8,9 +8,9 @@ import org.apache.log4j.*;
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
 import com.rb34.general.interfaces.IRobot.Status;
-import com.rb34.jobInput.Drop;
-import com.rb34.jobInput.Item;
-import com.rb34.jobInput.Job;
+import com.rb34.job_input.Drop;
+import com.rb34.job_input.Item;
+import com.rb34.job_input.Job;
 import com.rb34.route_planning.Graph;
 
 public class JobAssigner {

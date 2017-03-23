@@ -8,11 +8,6 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import com.rb34.jobInput.Drop;
-import com.rb34.jobInput.Item;
-import com.rb34.jobInput.Job;
-import com.rb34.jobInput.Order;
-
 public class Reader {
 
 	static Logger logger = Logger.getLogger(Reader.class);

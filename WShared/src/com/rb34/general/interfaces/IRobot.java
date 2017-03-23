@@ -1,10 +1,10 @@
 package com.rb34.general.interfaces;
 
-import com.rb34.jobInput.Job;
 import java.util.ArrayList;
 
-import com.rb34.jobInput.Item;
 import com.rb34.jobInput.interfaces.IItem;
+import com.rb34.job_input.Item;
+import com.rb34.job_input.Job;
 
 public interface IRobot {
 	//Sets the status of the robot(Idle, Running, Stuck...)

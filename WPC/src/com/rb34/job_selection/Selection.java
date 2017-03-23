@@ -4,7 +4,7 @@ import java.util.Collections;
 
 import org.apache.log4j.*;
 
-import com.rb34.jobInput.Job;
+import com.rb34.job_input.Job;
 
 public class Selection {
 	

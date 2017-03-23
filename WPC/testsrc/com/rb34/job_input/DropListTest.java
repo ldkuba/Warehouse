@@ -1,15 +1,16 @@
 package com.rb34.job_input;
 
-import com.rb34.jobInput.Drop;
+import static org.junit.Assert.assertEquals;
+
 import com.rb34.job_input.*;
-import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
-public class DropListTest{
-
+public class DropListTest {
+	
+	
 	public void DropTest(){
 		System.out.println("----------Drop Location Test ----------");
 		Reader.setFilePath("myDocs/");
@@ -20,9 +21,8 @@ public class DropListTest{
 			System.out.println("-----------------");
 		}
 	}
-
 	@Test
-	public void sizeOfDropList(){
+	public void sizeOfDropList() {
 		Reader.setFilePath("myDocs/");
 		ArrayList<Drop> dropList = Reader.createDropList();
 		assertEquals("Number of jobs in list should be 2", 2, dropList.size());
