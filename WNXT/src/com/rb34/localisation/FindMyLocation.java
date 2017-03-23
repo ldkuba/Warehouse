@@ -60,10 +60,10 @@ public class FindMyLocation {
 		// A value from the floor (white)
 		int referenceValue = getReferenceValue (rightSensor, leftSensor);
 		int error = 7;
-		float pilotSpeed = 0.1f;
+		float pilotSpeed = 20f;
 		
 		// Sets travel speed
-		pilot.setTravelSpeed(pilotSpeed);
+		pilot.setTravelSpeed(pilot.getMaxTravelSpeed() / 100f * pilotSpeed);
 		
 		//
 		if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
@@ -789,8 +789,10 @@ public class FindMyLocation {
 					turnToYAxisAndDistance (pilot, distanceFromJunction, gridMap, 3f);
 					
 					if (putMeInJunction (pilot, rightSensor, leftSensor, referenceValue)) {
+						performARegularScan (ranger, pilot);
 						listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
 					}
+					
 					distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
 						switch (listOfPossibleLocations.size()) {
 							case 6: // Done. NOT TESTED
@@ -804,6 +806,7 @@ public class FindMyLocation {
 										listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
 										
 										if (listOfPossibleLocations.size() == 1) {
+											System.out.println ("Should stop");
 											x = listOfPossibleLocations.get(0).getX();
 											y = listOfPossibleLocations.get(0).getY();
 											find1 = true;
@@ -818,6 +821,9 @@ public class FindMyLocation {
 										pilot.stop();
 									}
 								}
+								
+								performARegularScan (ranger, pilot);
+								distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
 								turnToXAxis (pilot, distanceFromJunction, currentHeading, gridMap);
 								find1 = false;
 								
@@ -828,6 +834,7 @@ public class FindMyLocation {
 										listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
 										
 										if (listOfPossibleLocations.size() == 1) {
+											System.out.println ("Should stop");
 											x = listOfPossibleLocations.get(0).getX();
 											y = listOfPossibleLocations.get(0).getY();
 											find1 = true;
@@ -837,6 +844,7 @@ public class FindMyLocation {
 								}
 								break;
 						}
+						break;
 				case 28: // Done. NOT TESTED
 					distanceFromJunction = new DistanceFromJunction (x, y,currentPLUS_X , currentMINUS_X , currentPLUS_Y , currentMINUS_Y);
 					turnToDistanceAdvanced (pilot, 3f, distanceFromJunction, currentHeading);
@@ -861,6 +869,7 @@ public class FindMyLocation {
 										x = listOfPossibleLocations.get(0).getX();
 										y = listOfPossibleLocations.get(0).getY();
 										find1 = true;
+										foundLocation = true;
 									}
 								}
 							}
@@ -889,6 +898,7 @@ public class FindMyLocation {
 										x = listOfPossibleLocations.get(0).getX();
 										y = listOfPossibleLocations.get(0).getY();
 										find1 = true;
+										foundLocation = true;
 									}
 								}
 							}
@@ -913,6 +923,7 @@ public class FindMyLocation {
 									if (listOfPossibleLocations.size() == 1) {
 										x = listOfPossibleLocations.get(0).getX();
 										y = listOfPossibleLocations.get(0).getY();
+										foundLocation = true;
 										find1 = true;
 									}
 								}
@@ -973,6 +984,7 @@ public class FindMyLocation {
 											listOfPossibleLocations = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
 											
 											if (listOfPossibleLocations.size() == 1) {
+												System.out.println ("I am at 1");
 												x = listOfPossibleLocations.get(0).getX();
 												y = listOfPossibleLocations.get(0).getY();
 												find1 = true;
@@ -1156,23 +1168,6 @@ public class FindMyLocation {
 		return matches;
 	}
 	
-	// Puts to the screen all locations with a number of similar locations
-	public void putPossiblePositionsToTheScreen (GridMap gridMap) {
-
-		ArrayList <DistanceFromJunction> arrayList = new ArrayList <DistanceFromJunction> ();
-		arrayList = distanceFromJunction (gridMap);
-		
-		int arraySize = arrayList.size();
-		
-		for (int i = 0; i < arraySize; i++) {
-			if (gridMap.isObstructed(arrayList.get(i).getX(), arrayList.get(i).getY())) {
-				System.out.println (arrayList.get(i).getX() + ":" + arrayList.get(i).getY() + " " + " x");
-			} else {
-				System.out.println (arrayList.get(i).getX() + ":" + arrayList.get(i).getY() + " " + compareDistancesInt (arrayList.get(i).getPlusX(), arrayList.get(i).getMinusX(), arrayList.get(i).getPlusY(), arrayList.get(i).getMinusY(), gridMap) + " " + ifPossibleToDetermineXYAxis(arrayList.get(i).getPlusX(), arrayList.get(i).getMinusX(), arrayList.get(i).getPlusY(), arrayList.get(i).getMinusY(), gridMap ));
-			}
-		}
-	}
-	
 	// Checks if possible to determine xy axis
 	public static boolean ifPossibleToDetermineXYAxis (float PLUS_X, float MINUS_X, float PLUS_Y, float MINUS_Y, GridMap gridMap) {
 		
@@ -1216,11 +1211,10 @@ public class FindMyLocation {
 		pilot.forward();
 		
 		while (!onJunction) {
-			pilot.setTravelSpeed(pilot.getMaxTravelSpeed() / 5);
+			// pilot.setTravelSpeed(pilot.getMaxTravelSpeed() / 5);
 			
 			int rightValue = rightSensor.readValue();
 			int leftValue = leftSensor.readValue();
-			// System.out.println (rightValue + " " + leftValue + " " + referenceValue + " " + (referenceValue - rightValue) + " " + (referenceValue - leftValue));
 			
 			if (Math.abs(referenceValue - rightValue) > error && Math.abs(referenceValue - leftValue) > error) {
 				onJunction = true;
@@ -1550,67 +1544,91 @@ public class FindMyLocation {
 	
 	// Turns robot to the y axis with a desired distance
 	public static void turnToYAxisAndDistance (DifferentialPilot pilot, DistanceFromJunction distanceFromJunction, GridMap gridMap, float distance) {
-		
+		Heading compareHeading = currentHeading;
 		if (ifPossibleToDetermineXYAxis (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap)) {
 			ArrayList <DistanceFromJunction> compareDistance = compareDistances (currentPLUS_X, currentMINUS_X, currentPLUS_Y, currentMINUS_Y, gridMap);
 			switch (currentHeading) {
 				case PLUS_X:
-					if ((currentPLUS_X != compareDistance.get(0).getPlusY() || currentMINUS_X != compareDistance.get(0).getMinusY()) ||
-						(currentMINUS_X != compareDistance.get(0).getPlusY() || currentPLUS_X != compareDistance.get(0).getMinusY())) {
-						pilot.rotate(90);
-						setHeading (Heading.MINUS_Y);
+					if ((currentPLUS_X == compareDistance.get(0).getPlusY() && currentMINUS_X == compareDistance.get(0).getMinusY()) ||
+						(currentMINUS_X == compareDistance.get(0).getPlusY() && currentPLUS_X == compareDistance.get(0).getMinusY())) {
+						if (currentPLUS_X == distance) {
+							// Do nothing
+						} else {
+							pilot.rotate(180);
+							setHeading (Heading.MINUS_X);
+						}
+					} else if ((currentPLUS_Y == compareDistance.get(0).getPlusY() && currentMINUS_Y == compareDistance.get(0).getPlusY()) ||
+							   (currentMINUS_Y == compareDistance.get(0).getPlusY() && currentPLUS_Y == compareDistance.get(0).getMinusY())) {
+						if (currentPLUS_Y == distance) {
+							pilot.rotate(-90);
+							setHeading (Heading.PLUS_Y);
+						} else {
+							pilot.rotate(90);
+							setHeading (Heading.MINUS_Y);
+						}
+						
 					}
 					break;
 				case MINUS_X:
-					if ((currentMINUS_X != compareDistance.get(0).getPlusY() || currentPLUS_X != compareDistance.get(0).getMinusY()) ||
-						(currentPLUS_X != compareDistance.get(0).getPlusY() || currentMINUS_X != compareDistance.get(0).getMinusY())) {
-						pilot.rotate(90);
-						setHeading (Heading.PLUS_Y);
-					}
+					if ((currentPLUS_X == compareDistance.get(0).getPlusY() && currentMINUS_X == compareDistance.get(0).getMinusY()) ||
+							(currentMINUS_X == compareDistance.get(0).getPlusY() && currentPLUS_X == compareDistance.get(0).getMinusY())) {
+							if (currentPLUS_X == distance) {
+								pilot.rotate(180);
+								setHeading (Heading.PLUS_X);
+							} else {
+								// Do nothing
+							}
+						} else if ((currentPLUS_Y == compareDistance.get(0).getPlusY() && currentMINUS_Y == compareDistance.get(0).getPlusY()) ||
+								   (currentMINUS_Y == compareDistance.get(0).getPlusY() && currentPLUS_Y == compareDistance.get(0).getMinusY())) {
+							if (currentPLUS_Y == distance) {
+								pilot.rotate(90);
+								setHeading (Heading.PLUS_Y);
+							} else {
+								pilot.rotate(-90);
+								setHeading (Heading.MINUS_Y);
+							}
+						}
 					break;
 				case PLUS_Y:
-					if ((currentPLUS_Y != compareDistance.get(0).getPlusY() || currentMINUS_Y != compareDistance.get(0).getMinusY()) ||
-						(currentMINUS_Y != compareDistance.get(0).getPlusY() || currentPLUS_Y != compareDistance.get(0).getMinusY())) {
-						pilot.rotate(90);
-						setHeading (Heading.PLUS_X);
-					}
+					if ((currentPLUS_X == compareDistance.get(0).getPlusY() && currentMINUS_X == compareDistance.get(0).getMinusY()) ||
+							(currentMINUS_X == compareDistance.get(0).getPlusY() && currentPLUS_X == compareDistance.get(0).getMinusY())) {
+							if (currentPLUS_X == distance) {
+								pilot.rotate(90);
+								setHeading (Heading.PLUS_X);
+							} else {
+								pilot.rotate(-90);
+								setHeading (Heading.MINUS_X);
+							}
+						} else if ((currentPLUS_Y == compareDistance.get(0).getPlusY() && currentMINUS_Y == compareDistance.get(0).getPlusY()) ||
+								   (currentMINUS_Y == compareDistance.get(0).getPlusY() && currentPLUS_Y == compareDistance.get(0).getMinusY())) {
+							if (currentPLUS_Y == distance) {
+								// Do nothing
+							} else {
+								pilot.rotate(180);
+								setHeading (Heading.MINUS_Y);
+							}
+						}
 					break;
 				case MINUS_Y:
-					if ((currentMINUS_Y != compareDistance.get(0).getPlusY() || currentPLUS_Y != compareDistance.get(0).getMinusY()) ||
-						(currentPLUS_Y != compareDistance.get(0).getPlusY() || currentMINUS_Y != compareDistance.get(0).getMinusY())) {
-						pilot.rotate(90);
-						setHeading (Heading.MINUS_X);
-					}
-			}
-			
-			switch (currentHeading) {
-			case PLUS_X:
-				if (currentPLUS_X != distance) {
-					pilot.rotate(180);
-					setHeading (Heading.MINUS_X);
-				}
-				break;
-			case MINUS_X:
-				if (currentMINUS_X != distance) {
-					pilot.rotate(180);
-					setHeading (Heading.PLUS_X);
-				}
-				break;
-			case PLUS_Y:
-				if (currentPLUS_Y != distance) {
-					pilot.rotate(180);
-					setHeading (Heading.MINUS_Y);
-				}
-				break;
-			case MINUS_Y:
-				if (currentMINUS_Y != distance) {
-					pilot.rotate(180);
-					setHeading (Heading.PLUS_Y);
-					break;
-				}
+					if ((currentPLUS_X == compareDistance.get(0).getPlusY() && currentMINUS_X == compareDistance.get(0).getMinusY()) ||
+							(currentMINUS_X == compareDistance.get(0).getPlusY() && currentPLUS_X == compareDistance.get(0).getMinusY())) {
+							if (currentPLUS_X == distance) {
+								pilot.rotate(-90);
+								setHeading (Heading.PLUS_X);
+							} else {
+								pilot.rotate(90);
+								setHeading (Heading.MINUS_X);
+							}
+						} else if ((currentPLUS_Y == compareDistance.get(0).getPlusY() && currentMINUS_Y == compareDistance.get(0).getPlusY()) ||
+								   (currentMINUS_Y == compareDistance.get(0).getPlusY() && currentPLUS_Y == compareDistance.get(0).getMinusY())) {
+							if (currentPLUS_Y == distance) {
+								pilot.rotate(180);
+								setHeading (Heading.PLUS_Y);
+							} else {
+								// Do nothing
+							}
+						}
 			}
 		}
 	}
-	
-	
 }
