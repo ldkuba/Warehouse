@@ -2,8 +2,6 @@ package com.rb34.job_input;
 
 import static org.junit.Assert.assertEquals;
 
-import com.rb34.job_input.*;
-
 import java.util.ArrayList;
 
 import org.junit.Test;

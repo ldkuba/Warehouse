@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.log4j.*;
-import org.jfree.util.Log;
+import org.apache.log4j.Logger;
 
-import com.rb34.jobInput.Drop;
-import com.rb34.jobInput.Item;
-import com.rb34.jobInput.Job;
-import com.rb34.jobInput.interfaces.IOrder;
+import com.rb34.job_input.Drop;
+import com.rb34.job_input.Item;
+import com.rb34.job_input.Job;
+import com.rb34.job_input.interfaces.IOrder;
 import com.rb34.route_planning.Graph;
 
 public class ItemSorter {

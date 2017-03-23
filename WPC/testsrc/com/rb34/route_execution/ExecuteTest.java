@@ -1,10 +1,12 @@
 package com.rb34.route_execution;
 
-import com.rb34.general.PathChoices;
-import com.rb34.route_planning.graph_entities.IVertex;
 import java.util.ArrayList;
 
-import org.apache.log4j.*;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import com.rb34.general.PathChoices;
+import com.rb34.route_planning.graph_entities.IVertex;
 
 public class ExecuteTest {
 

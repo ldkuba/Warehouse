@@ -1,15 +1,16 @@
 package com.rb34.job_assignment;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 
 import org.junit.Test;
 
-import com.rb34.jobInput.Drop;
-import com.rb34.jobInput.Item;
-import com.rb34.jobInput.Job;
-import com.rb34.jobInput.Order;
+import com.rb34.job_input.Drop;
+import com.rb34.job_input.Item;
+import com.rb34.job_input.Job;
+import com.rb34.job_input.Order;
 
 public class ItemSorterTest {
 

@@ -1,10 +1,12 @@
 package com.rb34.localisation;
+
 import java.util.ArrayList;
 
 import lejos.geom.Line;
 import lejos.geom.Rectangle;
 import rp.robotics.mapping.GridMap;
 import rp.robotics.mapping.LineMap;
+
 public class Map {
 
 	public GridMap createGridMap () {

@@ -2,7 +2,6 @@ package com.rb34.general.interfaces;
 
 import java.util.ArrayList;
 
-import com.rb34.jobInput.interfaces.IItem;
 import com.rb34.job_input.Item;
 import com.rb34.job_input.Job;
 

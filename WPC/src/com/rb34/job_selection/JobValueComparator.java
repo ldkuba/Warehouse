@@ -1,8 +1,8 @@
-package com.rb34.jobSelection;
+package com.rb34.job_selection;
 
 import java.util.Comparator;
 
-import com.rb34.jobInput.Job;
+import com.rb34.job_input.Job;
 
 public class JobValueComparator implements Comparator<Job> {
 

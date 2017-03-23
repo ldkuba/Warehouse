@@ -1,13 +1,11 @@
 package com.rb34.job_input;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.junit.Test;
-
-import com.rb34.job_input.*;
 
 public class JobListTest {
 

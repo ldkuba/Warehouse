@@ -1,6 +1,6 @@
 package com.rb34.job_input;
 
-import com.rb34.jobInput.interfaces.IDrop;
+import com.rb34.job_input.interfaces.IDrop;
 
 public class Drop implements IDrop {
 

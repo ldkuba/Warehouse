@@ -3,7 +3,9 @@ package com.rb34.route_execution;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.*;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.rb34.route_planning.graph_entities.IVertex;
 
 

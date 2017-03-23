@@ -7,7 +7,6 @@ import java.util.PriorityQueue;
 
 import org.apache.log4j.Logger;
 
-import com.rb34.jobSelection.JobValueComparator;
 import com.rb34.job_input.Job;
 import com.rb34.job_input.Reader;
 import com.rb34.job_input.interfaces.IItem;

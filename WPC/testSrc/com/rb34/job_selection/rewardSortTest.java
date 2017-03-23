@@ -6,10 +6,9 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import com.rb34.jobInput.interfaces.IOrder;
 import com.rb34.job_input.Job;
 import com.rb34.job_input.Reader;
-import com.rb34.job_selection.Selection;
+import com.rb34.job_input.interfaces.IOrder;
 
 
 public class rewardSortTest {

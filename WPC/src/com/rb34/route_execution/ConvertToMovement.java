@@ -2,7 +2,8 @@ package com.rb34.route_execution;
 
 
 import java.util.ArrayList;
-import org.apache.log4j.*;
+
+import org.apache.log4j.Logger;
 
 import com.rb34.general.PathChoices;
 import com.rb34.general.Robot;
@@ -174,8 +175,8 @@ public class ConvertToMovement {
 			prevX = X;
 			prevY = Y;
 			
-			log4j.trace("Current Position: " + "(" + prevX + "," + prevY + ")" );
-			log4j.trace("Current Heading: " + robot.getHeading());
+			logger.trace("Current Position: " + "(" + prevX + "," + prevY + ")" );
+			logger.trace("Current Heading: " + robot.getHeading());
 		}
 		
 		

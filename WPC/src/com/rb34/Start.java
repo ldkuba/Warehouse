@@ -1,5 +1,8 @@
 package com.rb34;
 
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
 import com.rb34.job_assignment.JobAssigner;
@@ -8,9 +11,6 @@ import com.rb34.job_input.Item;
 import com.rb34.job_input.Job;
 import com.rb34.job_input.Order;
 import com.rb34.network.Master;
-
-import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 public class Start
 {

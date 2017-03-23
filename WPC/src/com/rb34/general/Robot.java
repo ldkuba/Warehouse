@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.rb34.Start;
 import com.rb34.general.interfaces.IRobot;
-import com.rb34.jobInput.Item;
-import com.rb34.jobInput.Job;
+import com.rb34.job_input.Item;
+import com.rb34.job_input.Job;
 import com.rb34.message.LocationTypeMessage;
 
 public class Robot implements IRobot
