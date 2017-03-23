@@ -1,4 +1,4 @@
-package com.rb34.jobInput;
+package com.rb34.job_input;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,6 +12,7 @@ public class Job implements IJob,  Comparable<Job> {
 	private String jobId;
 	private HashMap<String, IOrder> orderList;
 	private boolean wasCancelled;
+	private float jobValue;
 	
 	public Job(String jobId){
 		this.jobId = jobId;
@@ -47,26 +48,11 @@ public class Job implements IJob,  Comparable<Job> {
 		this.wasCancelled  = wasCancelled;
 	}
 
-	public float getTotalReward(){
-		float netReward = 0;
-		
-		Iterator<IOrder> itr = getOrderList().values().iterator();
-		while (itr.hasNext()) {
-			IOrder element = itr.next();
-			netReward += element.getItem().getReward() * element.getCount();
-		}
-		return netReward;
+	public float getJobValue() {
+		return jobValue;
 	}
 	
-	// Compares based on net reward of job!
-	@Override
-	public int compareTo(Job o) {
-		if(getTotalReward() > o.getTotalReward()){
-			return 1;
-		}
-		else if(getTotalReward() < o.getTotalReward()){
-			return -1;
-		}
-		return 0;
+	public void setJobValue(float jobValue) {
+		this.jobValue = jobValue;
 	}
 }

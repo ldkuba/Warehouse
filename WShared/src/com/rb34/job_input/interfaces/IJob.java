@@ -1,4 +1,4 @@
-package com.rb34.jobInput.interfaces;
+package com.rb34.job_input.interfaces;
 import java.util.Collection;
 import java.util.HashMap;
 
