@@ -27,8 +27,8 @@ public class Start
 		Job job = new Job("1");
 
 		Item p1 = new Item("p1", 0f, 0f);
-		p1.setX(11);
-		p1.setY(1);
+		p1.setX(10);
+		p1.setY(0);
 
 		job.addItem("p1", new Order(p1, 1));
 
@@ -54,15 +54,15 @@ public class Start
 		master.start();
 		
 		Robot robot = new Robot();
-		robot.setXLoc(9);
-		robot.setYLoc(0);
+		robot.setXLoc(11);
+		robot.setYLoc(1);
 		robot.setHeading("S");
 		robot.setRobotId(0);
 
 		Robot robot2 = new Robot();
-		robot2.setXLoc(0);
-		robot2.setYLoc(4);
-		robot2.setHeading("S");
+		robot2.setXLoc(9);
+		robot2.setYLoc(0);
+		robot2.setHeading("W");
 		robot2.setRobotId(1);
 		
 		/*

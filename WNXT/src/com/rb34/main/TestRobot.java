@@ -51,7 +51,7 @@ public class TestRobot {
 		
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen, shouldMove);
 		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen,
-				followLine, head, shouldMove);
+				followLine, shouldMove);
 		
 		Behavior[] behaviors = { followLine, turnBehavior };
 		arbitrator = new Arbitrator(behaviors);

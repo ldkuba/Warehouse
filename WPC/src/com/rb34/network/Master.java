@@ -26,19 +26,19 @@ public class Master extends Thread
 	{
 		try
 		{
-			/*
+			
 			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "NiXTy", "001653157A48"));
 			connections.add(connection1);
 			connection1.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
-			*/
+			
 			BluetoothConnection connection2 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "Red Riding Hood", "0016531AFBBB"));
 			connections.add(connection2);
 			connection2.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
-			
+			/*
 			BluetoothConnection connection3 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "WALL-E", "001653115A7E"));
 			connections.add(connection3);
 			connection3.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
-			
+			*/
 			
 			System.out.println("ALL CONNECTED !!!!!!!");
 			

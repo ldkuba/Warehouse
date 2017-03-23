@@ -107,11 +107,12 @@ public class Receiver extends Thread
 					inputStream.read(bytes);
 					
 					RobotInitMessage msg = RobotInitMessage.fromByteArray(bytes);
-					
+				
 					for (int i = 0; i < listeners.size(); i++)
 					{
 						listeners.get(i).recievedRobotInitMessage(msg);
 					}
+					
 				} else if(type == 4)
 				{
 					//System
@@ -124,8 +125,6 @@ public class Receiver extends Thread
 					byte[] bytes = new byte[length];
 
 					inputStream.read(bytes);
-					
-					
 					
 					LocationTypeMessage msg = LocationTypeMessage.fromByteArray(bytes);
 					

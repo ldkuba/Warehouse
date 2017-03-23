@@ -49,8 +49,8 @@ public class JunctionFollower implements MessageListener {
 
 		followLine = new LineFollowing(lightSensorL, lightSensorR, screen, shouldMove);
 		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen,
-				followLine, head, shouldMove);
-		waitBehavior = new WaitBehavior(turnBehavior, screen, RobotId);
+				followLine, shouldMove);
+		waitBehavior = new WaitBehavior(turnBehavior, screen);
 		waitBehavior.setFocingBehav(true);
 
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
@@ -88,6 +88,7 @@ public class JunctionFollower implements MessageListener {
 		RobotId = msg.getRobotId();
 		turnBehavior.setAbsoluteX(msg.getX());
 		turnBehavior.setAbsoluteY(msg.getY());
+		
 		if(msg.getHeading().equals("N"))
 		{
 			this.head = "north";
@@ -100,8 +101,14 @@ public class JunctionFollower implements MessageListener {
 		}else if(msg.getHeading().equals("W"))
 		{
 			this.head = "west";
+		}else
+		{
+			this.head = "HAHAHAAH";
 		}
+		turnBehavior.setHeading(this.head);
 		waitBehavior.setFocingBehav(false);
+		
+		System.out.println("Init head: " + this.head);
 	}
 	
 	

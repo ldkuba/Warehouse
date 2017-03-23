@@ -27,9 +27,9 @@ public class RobotInitMessage implements Message
 		return heading;
 	}
 
-	public void setHeading(String string)
+	public void setHeading(String heading)
 	{
-		this.heading = string;
+		this.heading = heading;
 	}
 
 	public int getRobotId()
@@ -80,7 +80,7 @@ public class RobotInitMessage implements Message
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(y));
 		
 		// HEADING
-		output = ArrayUtils.concat(output,  ArrayUtils.intToBytes(heading.length()));
+		output = ArrayUtils.concat(output,  ArrayUtils.intToBytes(heading.length() * 2));
 		output = ArrayUtils.concat(output, ArrayUtils.stringToBytes(heading));
 
 		return output;

@@ -50,6 +50,7 @@ public class Execute {
 		int robotID = robot.getRobotId();
 		NewPathMessage msg = new NewPathMessage();
 		msg.setCommands(robotInstructions);
+		msg.setRobotId(robotID);
 		Start.master.send(msg, robotID);
 	}
 

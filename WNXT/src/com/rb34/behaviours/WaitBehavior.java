@@ -6,6 +6,7 @@ import rp.config.WheeledRobotConfiguration;
 import rp.systems.WheeledRobotSystem;
 
 import com.rb34.dummy.TrialMainNxt;
+import com.rb34.main.JunctionFollower;
 import com.rb34.message.RobotStatusMessage;
 import com.rb34.robot_interface.RobotScreen;
 
@@ -28,18 +29,16 @@ public class WaitBehavior implements Behavior
 	private int releaseCounter;
 	private int toRelease;
 	private int itemCounter;
-	private int robotId;
 	private boolean atPickup;
 	private boolean atDropoff;
 	private String pickingState;
 	private boolean dropDone;
 	private boolean forcingBehav;
 	
-	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen, int RobotId)
+	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen)
 	{
 		this.behavior = _behavior;
 		this.screen = _screen;
-		this.robotId = RobotId;
 		robotConfig = new WheeledRobotConfiguration(0.059f, 0.115f, 0.17f, Motor.C, Motor.A);
 		pilot = new WheeledRobotSystem(robotConfig).getPilot();
 
@@ -86,14 +85,16 @@ public class WaitBehavior implements Behavior
 	{
 		supressed = false;
 
+		System.out.println("RUNNING WAIT BEHAVIOR");
+		
 		while (!supressed)
 		{
-
+			
 			// System.out.println("Running " + supressed);
 
 			pilot.stop();
 
-			if (Button.ENTER.isDown())
+			if (Button.RIGHT.isDown())
 			{ // multiple times for pick up, just
 				// once for drop off
 				Delay.msDelay(750);
@@ -110,8 +111,9 @@ public class WaitBehavior implements Behavior
 					msg2.setY(behavior.getY());
 					msg2.setOnJob(false);
 					msg2.setOnRoute(false);
+					msg2.setHeading(behavior.getHeading());
 					msg2.setWaitingForNewPath(true);
-					msg2.setRobotId(robotId);
+					msg2.setRobotId(JunctionFollower.RobotId);
 					TrialMainNxt.client.send(msg2);
 					setPickingState("done");
 					atDropoff = false;
@@ -120,7 +122,7 @@ public class WaitBehavior implements Behavior
 				}
 			}
 
-			if (Button.RIGHT.isDown() && atPickup)
+			if (Button.ENTER.isDown() && atPickup)
 			{ // right button should be
 				// pressed when
 				// picking/dropping is
@@ -138,8 +140,9 @@ public class WaitBehavior implements Behavior
 						msg2.setY(behavior.getY());
 						msg2.setOnJob(true);
 						msg2.setOnRoute(false);
+						msg2.setHeading(behavior.getHeading());
 						msg2.setWaitingForNewPath(true);
-						msg2.setRobotId(robotId);
+						msg2.setRobotId(JunctionFollower.RobotId);
 						TrialMainNxt.client.send(msg2);
 						setAtPickup(false);
 						setPickingState("done");
@@ -165,8 +168,9 @@ public class WaitBehavior implements Behavior
 						msg2.setY(behavior.getY());
 						msg2.setOnJob(true);
 						msg2.setOnRoute(false);
+						msg2.setHeading(behavior.getHeading());
 						msg2.setWaitingForNewPath(true);
-						msg2.setRobotId(robotId);
+						msg2.setRobotId(JunctionFollower.RobotId);
 						TrialMainNxt.client.send(msg2);
 						setAtPickup(false);
 						setPickingState("done");
@@ -195,7 +199,7 @@ public class WaitBehavior implements Behavior
 				Delay.msDelay(750);
 				releaseCounter += 1;
 				screen.updateItemPickUpDecrease();
-				screen.printPickingState();
+				screen.printPickingState();  // 175:7 75:41
 			}
 
 			if (Button.ESCAPE.isDown())

@@ -12,6 +12,7 @@ import java.util.function.BiFunction;
 import org.apache.log4j.Logger;
 
 import com.rb34.general.Robot;
+import com.rb34.general.RobotManager;
 import com.rb34.route_execution.Execute;
 import com.rb34.route_planning.graph_entities.Heuristic;
 import com.rb34.route_planning.graph_entities.IEdge;
@@ -31,10 +32,10 @@ public class Graph implements IGraph {
 	int[] robotTimeTracker;
 	GridMap gridMap;
 	Graph sampleGraph;
-	int step = 0;
+	boolean testing = false;
 
 	// Constructor with GridMap parameter
-	public Graph() {
+	public Graph(RobotManager robotManager) {
 		vertices = new HashMap<>();
 		reservationTable = new HashMap<>();
 
@@ -63,6 +64,27 @@ public class Graph implements IGraph {
 		for (int i = 0; i < robotTimeTracker.length; i++)
 			robotTimeTracker[i] = 0;
 
+		for (Robot robot : robotManager.getRobots()) {
+			if (!reservationTable.containsKey(robot.getXLoc() + "|" + robot.getYLoc())) {
+				ReservationInfo reservation = new ReservationInfo(robot.getRobotId(), 0);
+				ArrayList<ReservationInfo> reservations = new ArrayList<>();
+				reservations.add(reservation);
+				reservationTable.put(robot.getXLoc() + "|" + robot.getYLoc(), reservations);
+			} else {
+				reservationTable.get(robot.getXLoc() + "|" + robot.getYLoc())
+						.add(new ReservationInfo(robot.getRobotId(), 0));
+			}
+
+		}
+
+		String logMessage = "Initially reserved positions:";
+		for (String location : reservationTable.keySet()) {
+			logMessage += "\n" + location + " reserved at time "
+					+ reservationTable.get(location).get(0).getReservationTime() + " by "
+					+ reservationTable.get(location).get(0).getRobotId();
+		}
+		logger.debug(logMessage);
+
 		sampleGraph = new Graph(0);
 	}
 
@@ -90,6 +112,9 @@ public class Graph implements IGraph {
 					addEdge(sourceVertex.getLabel().getName(), targetVertex.getLabel().getName(), 1);
 
 			}
+
+		if (k == 1)
+			testing = true;
 
 	}
 
@@ -186,7 +211,6 @@ public class Graph implements IGraph {
 				result.setVisitedVertices(closedList);
 				result.setPath(path);
 				result.setPathCost(pathCost);
-				// logger.debug("Found path");
 				break;
 			}
 			for (IEdge edge : currentVertex.getSuccessors()) {
@@ -205,6 +229,13 @@ public class Graph implements IGraph {
 			closedList.add(currentVertex);
 			if (currentVertex.getLabel().getName().equals(endVertexId))
 				targetInClosedList = true;
+		}
+		if (testing) {
+			String logMessage = "The path from " + startVertexId + " to " + endVertexId + " is: ";
+			for (IVertex vertex : result.getPath().get()) {
+				logMessage += vertex.getLabel().getName() + " ";
+			}
+			logger.debug(logMessage);
 		}
 		return result;
 	}
@@ -234,9 +265,9 @@ public class Graph implements IGraph {
 			vertex.getLabel().setCost(Integer.MAX_VALUE);
 		}
 
-		int time = robotTimeTracker[robotId];
+		int virtualTime = robotTimeTracker[robotId];
 		getVertex(startVertexId).getLabel().setCost(0);
-		getVertex(startVertexId).getLabel().setTimestep(time);
+		getVertex(startVertexId).getLabel().setTimestep(virtualTime);
 
 		openList.offer(getVertex(startVertexId));
 		boolean targetInClosedList = false;
@@ -253,8 +284,9 @@ public class Graph implements IGraph {
 									+ currentVertex.getLabel().getTimestep() + " by " + resInfo.getRobotId());
 							closedList.add(currentVertex);
 							occupiedNode = true;
-							if (!openList.isEmpty()) time = openList.peek().getLabel().getTimestep();
-							else break;
+
+							if (!openList.isEmpty())
+								virtualTime = openList.peek().getLabel().getTimestep();
 						}
 					}
 				}
@@ -275,7 +307,7 @@ public class Graph implements IGraph {
 				result.setVisitedVertices(closedList);
 				result.setPath(path);
 				result.setPathCost(pathCost);
-				logger.debug("Found path");
+				logger.debug("Found path for robot " + robotId);
 				break;
 			}
 
@@ -298,7 +330,7 @@ public class Graph implements IGraph {
 			if (currentVertex.getLabel().getName().equals(endVertexId))
 				targetInClosedList = true;
 
-			time++;
+			virtualTime++;
 
 		}
 
@@ -309,7 +341,7 @@ public class Graph implements IGraph {
 	public Result hCooperativeAStar(String startVertexId, String endVertexId, int robotId) {
 		Result result = this.aStar(startVertexId, endVertexId, robotId);
 		ArrayList<IVertex> path = new ArrayList<>();
-		String logMessage = "Path for robot #" + robotId;
+		String logMessage = "\nPath for robot #" + robotId;
 		int stationaryFor = 0;
 
 		while (!result.getPath().isPresent()) {
@@ -337,14 +369,38 @@ public class Graph implements IGraph {
 				ArrayList<ReservationInfo> reservations = new ArrayList<>();
 				reservations.add(reservation);
 				reservationTable.put(vertex.getLabel().getName(), reservations);
+
+				// reserve the position where it stops for 3 additional units of
+				// time
+				if (i == path.size() - 1) {
+					for (int j = 1; j <= 3; j++) {
+						reservation = new ReservationInfo(robotId, vertex.getLabel().getTimestep() + j);
+						reservations = new ArrayList<>();
+						reservations.add(reservation);
+						reservationTable.put(vertex.getLabel().getName(), reservations);
+					}
+				}
 			} else {
 				reservationTable.get(vertex.getLabel().getName())
 						.add(new ReservationInfo(robotId, vertex.getLabel().getTimestep()));
+
+				// reserve the position where it stops for 3 additional units of
+				// time
+				if (i == path.size() - 1) {
+					reservationTable.get(vertex.getLabel().getName())
+							.add(new ReservationInfo(robotId, vertex.getLabel().getTimestep() + 1));
+					reservationTable.get(vertex.getLabel().getName())
+							.add(new ReservationInfo(robotId, vertex.getLabel().getTimestep() + 2));
+					reservationTable.get(vertex.getLabel().getName())
+							.add(new ReservationInfo(robotId, vertex.getLabel().getTimestep() + 3));
+				}
 			}
 		}
+
 		logger.debug(logMessage);
 		robotTimeTracker[robotId] += path.size();
 
 		return result;
 	}
+
 }

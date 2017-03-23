@@ -50,8 +50,7 @@ public class TurnBehavior implements Behavior
 	private String head;
 	private ArrayList<PathChoices> path;
 
-	public TurnBehavior(LightSensor left, LightSensor right, RobotScreen _screen, LineFollowing followLine, String head,
-			ShouldMove shouldMove)
+	public TurnBehavior(LightSensor left, LightSensor right, RobotScreen _screen, LineFollowing followLine, ShouldMove shouldMove)
 	{
 
 		this.shouldMove = shouldMove;
@@ -68,12 +67,10 @@ public class TurnBehavior implements Behavior
 
 		forceFirstAction = false;
 		lastAction = false;
-		
-		this.head = head;
 
 		robotConfig = new WheeledRobotConfiguration(0.059f, 0.115f, 0.17f, Motor.C, Motor.A);
 		pilot = new WheeledRobotSystem(robotConfig).getPilot();
-		
+
 		pilot.setTravelSpeed((pilot.getMaxTravelSpeed() / 10) * 2);
 		pilot.setRotateSpeed((pilot.getRotateMaxSpeed() / 10) * 2);
 	}
@@ -88,6 +85,11 @@ public class TurnBehavior implements Behavior
 		return this.path;
 	}
 
+	public String getHeading()
+	{
+		return this.head;
+	}
+	
 	public boolean rightOnBlack()
 	{
 		if (lightSensorR.getLightValue() <= THRESHOLD)
@@ -120,6 +122,11 @@ public class TurnBehavior implements Behavior
 		{
 			return false;
 		}
+	}
+
+	public void setHeading(String heading)
+	{
+		this.head = heading;
 	}
 
 	@Override
@@ -160,7 +167,11 @@ public class TurnBehavior implements Behavior
 		switch (turnDirection)
 		{
 		case 0:
-			if (!forceFirstAction) {
+			
+			System.out.println("TURNING LEFT");
+			
+			if (!forceFirstAction)
+			{
 				pilot.travel(0.05, true);
 
 				while (!supressed && pilot.isMoving())
@@ -173,9 +184,10 @@ public class TurnBehavior implements Behavior
 				}
 
 				pilot.rotate(90, true);
-			} else {
+			} else
+			{
 				pilot.rotateLeft();
-				
+
 				while (!leftOnBlack())
 				{
 					if (Button.ESCAPE.isDown())
@@ -189,8 +201,8 @@ public class TurnBehavior implements Behavior
 				}
 				pilot.stop();
 			}
-	
-			if (!forceFirstAction && !lastAction)
+
+			if (!lastAction)
 			{
 				updateCo(0);
 			}
@@ -198,6 +210,9 @@ public class TurnBehavior implements Behavior
 			screen.updateState("Left");
 			break;
 		case 1:
+			
+			System.out.println("TURNING RIGHT");
+			
 			if (!forceFirstAction)
 			{
 				pilot.travel(0.05, true);
@@ -214,8 +229,8 @@ public class TurnBehavior implements Behavior
 				pilot.rotate(-90, true);
 			} else
 			{
-				pilot.rotateLeft();
-				
+				pilot.rotateRight();
+
 				while (!rightOnBlack())
 				{
 
@@ -228,11 +243,11 @@ public class TurnBehavior implements Behavior
 					}
 					Delay.msDelay(20);
 				}
-				
+
 				pilot.stop();
 			}
 
-			if (!forceFirstAction && !lastAction)
+			if (!lastAction)
 			{
 				updateCo(1);
 			}
@@ -240,8 +255,11 @@ public class TurnBehavior implements Behavior
 			screen.updateState("Right");
 			break;
 		case 2:
+			
+			System.out.println("FORWARD");
+			
 			pilot.travel(0.05, true);
-			if (!forceFirstAction && !lastAction)
+			if (!lastAction)
 			{
 				updateCo(2);
 			}
@@ -249,6 +267,9 @@ public class TurnBehavior implements Behavior
 			screen.updateState("Forward");
 			break;
 		case 3:
+			
+			System.out.println("180");
+			
 			pilot.travel(0.05, true);
 
 			while (!supressed && pilot.isMoving())
@@ -261,7 +282,7 @@ public class TurnBehavior implements Behavior
 			}
 
 			pilot.rotate(180, true);
-			if (!forceFirstAction && !lastAction)
+			if (!lastAction)
 			{
 				updateCo(3);
 			}
@@ -283,6 +304,7 @@ public class TurnBehavior implements Behavior
 		msg.setRobotId(JunctionFollower.RobotId);
 		msg.setX(x);
 		msg.setY(y);
+		msg.setHeading(this.head);
 		msg.setOnJob(true);
 		msg.setOnRoute(!actionDone);
 		msg.setWaitingForNewPath(false);
@@ -326,7 +348,7 @@ public class TurnBehavior implements Behavior
 			return false;
 		}
 	}
-	
+
 	public void setX(int i)
 	{
 		x += i;
@@ -468,7 +490,7 @@ public class TurnBehavior implements Behavior
 				setY(-1);
 			} else if (head.equals("south"))
 			{
-				setX(1);
+				setX(-1);
 			} else
 			{
 				setY(1);

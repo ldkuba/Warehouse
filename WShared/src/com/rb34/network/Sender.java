@@ -39,6 +39,8 @@ public class Sender extends Thread
 					System.out.println("NULLLLLLLLLLLLLLLLLLLLLLLERINO");
 				}
 				
+				
+				
 				byte[] message = messageQueue.get(0).toByteArray();
 				
 				//System.out.println(messageQueue.get(0).toString());
