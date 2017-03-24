@@ -1,8 +1,12 @@
-package localisation;
+package com.rb34.localisation;
+
 import java.util.ArrayList;
+
 import lejos.geom.Line;
 import lejos.geom.Rectangle;
-import rp.robotics.mapping.*;
+import rp.robotics.mapping.GridMap;
+import rp.robotics.mapping.LineMap;
+
 public class Map {
 
 	public GridMap createGridMap () {
@@ -26,7 +30,7 @@ public class Map {
 		lines.add (new Line (0f  , yMap, 0f  , 0f));
 		
 		float boxWidth      = xMap / 12f, boxHeight     = yMap * 5f / 8f;
-		float distanceFromX = 1f / gridWidth  , distanceFromY = 1f / gridHeight;		
+		float distanceFromX = 1f / gridWidth  , distanceFromY = 1f / gridHeight;
 		
 		// 1st box			 0.63f, 0.57f, 0.63f, 0.57f + 1.255f
 		lines.add (new Line (xMap * distanceFromX           , distanceFromY * yMap            , xMap * distanceFromX           , distanceFromY * yMap + boxHeight));

@@ -1,4 +1,4 @@
-package localisation;
+package com.rb34.localisation;
 
 import java.util.ArrayList;
 

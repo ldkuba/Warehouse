@@ -1,5 +1,5 @@
 package com.rb34.general;
 
 public enum PathChoices {
-	LEFT, RIGHT, FORWARD, ROTATE
+	LEFT, RIGHT, FORWARD, ROTATE, STAY
 }

@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import com.rb34.message.Message;
 import com.rb34.message.MessageListener;
-import com.rb34.message.TestMessage;
 import com.rb34.network.Receiver;
 import com.rb34.network.Sender;
 

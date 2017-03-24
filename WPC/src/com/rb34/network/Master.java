@@ -1,6 +1,7 @@
 package com.rb34.network;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.rb34.connection.BluetoothConnection;
 import com.rb34.connection.Connection;
@@ -16,22 +17,37 @@ public class Master extends Thread
 	private ArrayList<Connection> connections;
 
 	private boolean running = true;
+	private HashMap<String, String> robotIds;
 
 	public Master()
 	{
-
+		connections = new ArrayList<Connection>();
+		robotIds = new HashMap<>();
+		robotIds.put("NiXTy", "001653157A48");
+		robotIds.put("Red Riding Hood", "0016531AFBBB");
+		robotIds.put("WALL-E", "001653115A7E");
 	}
 
 	public void run()
 	{
-		connections = new ArrayList<Connection>();
-
 		try
 		{
+			
 			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "NiXTy", "001653157A48"));
 			connections.add(connection1);
 			connection1.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
-
+			
+			/*BluetoothConnection connection2 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "Red Riding Hood", "0016531AFBBB"));
+			connections.add(connection2);
+			connection2.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
+			/*
+			BluetoothConnection connection3 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "WALL-E", "001653115A7E"));
+			connections.add(connection3);
+			connection3.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
+			*/
+			
+			System.out.println("ALL CONNECTED !!!!!!!");
+			
 			ArrayList<Thread> threads = new ArrayList<>(connections.size());
 
 			for (Connection connection : connections)
@@ -57,7 +73,7 @@ public class Master extends Thread
 
 		} catch (NXTCommException e)
 		{
-			e.printStackTrace();
+			System.out.println("FAILED TO CONNECT TO ROBOT");
 		}
 	}
 
@@ -81,9 +97,9 @@ public class Master extends Thread
 	
 	public void addListener(MessageListener listener)
 	{
-		while(areAllConnected())
+		while(!areAllConnected())
 		{
-			System.out.println("ASBASFASDAFASCAVDASC");
+			System.out.println("Waiting for conneection");
 		}
 		
 		while(connections == null)
@@ -99,6 +115,8 @@ public class Master extends Thread
 
 	public void send(Message msg, int robotId)
 	{
+		System.out.println("Sending message to robot: " + robotId + "\nMessage:\n" + msg.toString());
+		
 		if(connections.size() > robotId)
 		{
 			if(connections.get(robotId) != null)

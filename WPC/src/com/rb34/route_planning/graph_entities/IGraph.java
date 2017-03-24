@@ -1,7 +1,6 @@
 package com.rb34.route_planning.graph_entities;
 
 import java.util.Collection;
-import java.util.function.BiFunction;
 
 public interface IGraph {
 	void addVertex(String vertexId, IVertex vertex);

@@ -7,6 +7,7 @@ public class TestMessage implements Message
 	private final byte type = 0;
 
 	private String text;
+	private int robotId;
 
 	public TestMessage()
 	{
@@ -22,14 +23,33 @@ public class TestMessage implements Message
 		return this.text;
 	}
 
+	public int getRobotId()
+	{
+		return robotId;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "TestMessage [type=" + type + ", text=" + text + ", robotId=" + robotId + "]";
+	}
+
+	public void setRobotId(int robotId)
+	{
+		this.robotId = robotId;
+	}
+
 	public byte[] toByteArray()
 	{
-		int lengthInBytes = 4 + 2 * text.length();
+		int lengthInBytes = 4 + 4 + 2 * text.length();
 
 		// GENERAL MESSAGE PARAMS
 		byte[] output = { type };
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(lengthInBytes));
 
+		//ROBOT ID
+		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(robotId));
+		
 		// TEXT
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(2 * text.length()));
 		output = ArrayUtils.concat(output, ArrayUtils.stringToBytes(text));
@@ -48,6 +68,11 @@ public class TestMessage implements Message
 		TestMessage msg = new TestMessage();
 		int index = 0;
 
+		// ROBOT ID
+		int robotId = ArrayUtils.bytesToInt(bytes, index);
+		index += 4;
+		msg.setRobotId(robotId);
+		
 		// TEXT
 		int textLength = ArrayUtils.bytesToInt(bytes, index);
 		index += 4;
