@@ -18,22 +18,18 @@ public class LineFollowing implements Behavior {
 	private boolean doFirstAction = false;
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
-	private WheeledRobotConfiguration robotConfig;
 	private DifferentialPilot pilot;
 	private RobotScreen screen;
 	private ShouldMove shouldMove;
 
 	public LineFollowing(LightSensor left, LightSensor right,
-			RobotScreen _screen, ShouldMove shouldMove) {
+			RobotScreen _screen, ShouldMove shouldMove, DifferentialPilot pilot) {
 		this.screen = _screen;
 		lightSensorR = right;
 		lightSensorL = left;
 
 		this.shouldMove = shouldMove;
-
-		robotConfig = new WheeledRobotConfiguration(0.059f, 0.115f, 0.17f,
-				Motor.C, Motor.A);
-		pilot = new WheeledRobotSystem(robotConfig).getPilot();
+		this.pilot = pilot;
 		pilot.setTravelSpeed((pilot.getMaxTravelSpeed() / 10)*2);
 		pilot.setRotateSpeed((pilot.getRotateMaxSpeed() / 10)*2);
 

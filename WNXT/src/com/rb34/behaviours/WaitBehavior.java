@@ -15,7 +15,6 @@ import rp.systems.WheeledRobotSystem;
 
 //This behaviour is used whenever the robot needs to wait.
 public class WaitBehavior implements Behavior {
-	private WheeledRobotConfiguration robotConfig;
 	private DifferentialPilot pilot;
 	private TurnBehavior behavior;
 	private RobotScreen screen;
@@ -30,11 +29,10 @@ public class WaitBehavior implements Behavior {
 	private int toRelease;
 	private int itemCounter;
 	
-	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen) {
+	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen, DifferentialPilot pilot) {
 		this.behavior = _behavior;
 		this.screen = _screen;
-		robotConfig = new WheeledRobotConfiguration(0.059f, 0.115f, 0.17f, Motor.C, Motor.A);
-		pilot = new WheeledRobotSystem(robotConfig).getPilot();
+		this.pilot = pilot;
 
 		pilot.setTravelSpeed((pilot.getMaxTravelSpeed() / 10) * 2);
 		pilot.setRotateSpeed((pilot.getRotateMaxSpeed() / 10) * 2);

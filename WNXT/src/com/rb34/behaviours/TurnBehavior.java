@@ -23,7 +23,6 @@ import lejos.util.Delay;
 public class TurnBehavior implements Behavior {
 	private LightSensor lightSensorR;
 	private LightSensor lightSensorL;
-	private WheeledRobotConfiguration robotConfig;
 	private DifferentialPilot pilot;
 	private RobotScreen screen;
 	private LineFollowing followLine;
@@ -50,7 +49,7 @@ public class TurnBehavior implements Behavior {
 	private ArrayList<PathChoices> path;
 
 	public TurnBehavior(LightSensor left, LightSensor right,
-			RobotScreen _screen, LineFollowing followLine, ShouldMove shouldMove) {
+			RobotScreen _screen, LineFollowing followLine, ShouldMove shouldMove, DifferentialPilot pilot) {
 
 		this.shouldMove = shouldMove;
 		lightSensorR = right;
@@ -64,9 +63,7 @@ public class TurnBehavior implements Behavior {
 		forceFirstAction = false;
 		lastAction = false;
 
-		robotConfig = new WheeledRobotConfiguration(0.059f, 0.115f, 0.17f,
-				Motor.C, Motor.A);
-		pilot = new WheeledRobotSystem(robotConfig).getPilot();
+		this.pilot = pilot;
 
 		pilot.setTravelSpeed((pilot.getMaxTravelSpeed() / 10) * 2);
 		pilot.setRotateSpeed((pilot.getRotateMaxSpeed() / 10) * 2);
