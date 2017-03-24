@@ -2,41 +2,30 @@ package com.rb34.warehouse_interface;
 
 import java.awt.Component;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.GridBagConstraints;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
-import com.rb34.general.interfaces.IRobot.Status;
-import com.rb34.jobInput.Item;
-import com.rb34.jobInput.Job;
-import com.rb34.jobInput.Reader;
-
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import java.awt.FlowLayout;
+import com.rb34.job_input.Reader;
 
 public class StartScreen {
 
@@ -56,27 +45,13 @@ public class StartScreen {
 	private String pathName;
 	JOptionPane opt;
 	final static Logger log4j = Logger.getLogger(StartScreen.class);
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StartScreen window = new StartScreen();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
 	 */
 	public StartScreen() {
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**

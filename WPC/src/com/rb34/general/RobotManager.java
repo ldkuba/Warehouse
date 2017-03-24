@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.rb34.Start;
 import com.rb34.general.interfaces.IRobot.Status;
-import com.rb34.general.interfaces.IRobotManager;
+import com.rb34.job_input.Drop;
 import com.rb34.message.LocationTypeMessage;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
@@ -12,24 +12,24 @@ import com.rb34.message.RobotInitMessage;
 import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 
-public class RobotManager implements IRobotManager, MessageListener
+public class RobotManager implements MessageListener
 {
 
-	private ArrayList<Robot> robotList;
+	private static ArrayList<Robot> robotList;
+	private static ArrayList<Drop> dropoffList;
 
 	public RobotManager()
 	{
 		robotList = new ArrayList<>();
+		dropoffList = new ArrayList<>();
 	}
 
-	@Override
-	public Robot getRobot(int robotId)
+	public static Robot getRobot(int robotId)
 	{
 		return robotList.get(robotId);
 	}
 
-	@Override
-	public void addRobot(Robot newRobot)
+	public static void addRobot(Robot newRobot)
 	{
 		robotList.add(newRobot);
 		RobotInitMessage msg = new RobotInitMessage();
@@ -40,12 +40,20 @@ public class RobotManager implements IRobotManager, MessageListener
 		Start.master.send(msg, newRobot.getRobotId());
 	}
 
-	@Override
-	public ArrayList<Robot> getRobots()
+	public static ArrayList<Robot> getRobots()
 	{
 		return robotList;
 	}
 
+	public static void addDropoff(int x, int y){
+		dropoffList.add(new Drop(x,  y));
+	}
+	
+	public static ArrayList<Drop> getDropoffList(){
+		return dropoffList;
+	}
+	
+	
 	@Override
 	public void recievedTestMessage(TestMessage msg)
 	{

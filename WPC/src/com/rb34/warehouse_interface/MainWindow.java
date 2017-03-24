@@ -11,7 +11,7 @@ import javax.swing.Timer;
 import org.apache.log4j.Logger;
 
 import com.rb34.general.RobotManager;
-import com.rb34.jobInput.Item;
+import com.rb34.job_input.Item;
 
 import javax.swing.JLabel;
 import java.awt.GridBagLayout;
@@ -27,7 +27,7 @@ public class MainWindow {
 	private JFrame frame;
 	static RobotManager manager;
 	static int robotNum;
-	final static Logger log4j = Logger.getLogger(WarehouseWindow.class);
+	final static Logger log4j = Logger.getLogger(MainWindow.class);
 
 	/**
 	 * Launch the application.
