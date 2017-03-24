@@ -158,6 +158,6 @@ public class JunctionFollower implements MessageListener {
 			this.screen.printDropOffState();
 		}
 		
-		 
+		
 	}
 }

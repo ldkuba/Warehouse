@@ -117,6 +117,7 @@ public class RobotManager implements MessageListener {
 
 	public static boolean getRewardBoolean()
 	{
+		// TODO Auto-generated method stub
 		return rewardBoolean;
 	}
 

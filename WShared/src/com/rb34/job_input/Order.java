@@ -1,6 +1,7 @@
 package com.rb34.job_input;
 
-import com.rb34.job_input.interfaces.*;
+import com.rb34.job_input.interfaces.IItem;
+import com.rb34.job_input.interfaces.IOrder;
 
 public class Order implements IOrder {
 
