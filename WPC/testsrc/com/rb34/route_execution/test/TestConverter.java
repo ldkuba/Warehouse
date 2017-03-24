@@ -2,45 +2,40 @@ package com.rb34.route_execution.test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
+import com.rb34.general.PathChoices;
+import com.rb34.general.Robot;
 import com.rb34.network.Master;
 import com.rb34.route_execution.Execute;
 import com.rb34.route_execution.Headings;
 import com.rb34.route_execution.RobotHeadings;
+import com.rb34.route_planning.Graph;
+import com.rb34.route_planning.graph_entities.IVertex;
 
 public class TestConverter {
-	Master master = new Master();
 
 	@Test
 	public void testgetHeadings() {
-		
-		assertTrue(RobotHeadings.getHeading1() instanceof Headings);
-		assertTrue(RobotHeadings.getHeading2() instanceof Headings);
-		assertTrue(RobotHeadings.getHeading3() instanceof Headings);
+		Robot rb = new Robot();
+		assertTrue(rb.getHeading() instanceof String);
 	}
 	
 	@Test
 	public void testsetHeadings() {
-		RobotHeadings.setHeading1(Headings.MINUS_Y);
-		Headings val = RobotHeadings.getHeading1();
-		assertEquals(val,Headings.MINUS_Y);
+		Robot rb1 = new Robot();
+		rb1.setHeading("S");
 		
-		RobotHeadings.setHeading2(Headings.MINUS_X);
-		Headings val2 = RobotHeadings.getHeading2();
-		assertEquals(val2,Headings.MINUS_X);
-		
-		RobotHeadings.setHeading3(Headings.PLUS_X);
-		Headings val3 = RobotHeadings.getHeading3();
-		assertEquals(val3,Headings.PLUS_X);
-		
-
+		assertEquals(rb1.getHeading(),"S");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testEmptyPath() {
-		Execute exec = new Execute(master);
-		exec.runRoute(null,0);
+		Robot rb1 = new Robot();
+		Execute exec = new Execute();
+		exec.runRoute(null,rb1);
 		
 	}
 	
@@ -52,7 +47,10 @@ public class TestConverter {
 
 	@Test
 	public void testObjectCreation() {
-		Execute exec = new Execute(master);
+		Execute exec = new Execute();
+		
+		
+		
 		assertTrue(exec instanceof Execute);
 	}
 	
