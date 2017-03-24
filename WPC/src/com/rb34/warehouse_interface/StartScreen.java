@@ -183,6 +183,7 @@ public class StartScreen {
 				int val = Integer.parseInt(type);
 				for (int i = 0; i < val; i++) {
 					Robot robot = new Robot();
+					robot.setRobotId(i);
 					RobotManager.addRobot(robot);
 					System.err.println(RobotManager.getRobots().size());
 
@@ -323,8 +324,10 @@ public class StartScreen {
 
 					if (shouldRun == true) {
 						Start.master.start();
-						while (Start.master.areAllConnected()) {
+						while (!Start.master.areAllConnected(val)) {
+							
 						}
+						
 						RobotManager.setDropoffs(new Reader().createDropList());
 						RobotManager.initRobots();
 
@@ -334,10 +337,21 @@ public class StartScreen {
 						JobAssigner assigner = new JobAssigner(Selection.sortJobs());
 						assigner.start();
 
-						// while(RobotManager.getRobot(0).getCurrentJob() ==
-						// null){}
-
-						new MainWindow(val).start();
+						System.err.println("A");
+						MainWindow window = new MainWindow(val);
+						window.start();
+						System.err.println("B");
+						
+						try
+						{
+							//Start.master.join();
+							window.join();
+						
+						} catch (InterruptedException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 
 				} else if (type2.equals("Localisation")) {

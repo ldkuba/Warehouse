@@ -8,49 +8,43 @@ import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.network.Client;
 
-public class DummyMainNXT
-{
-	public DummyMainNXT()
-	{
+//Inital test class when trying to integrate robot motion and networking
+public class DummyMainNXT {
+	
+	public DummyMainNXT() {
 		Client client = new Client();
 		client.start();
 
-		client.addListener(new MessageListener()
-		{
-			public void receivedTestMessage(TestMessage msg)
-			{
+		client.addListener(new MessageListener() {
+			
+			public void receivedTestMessage(TestMessage msg) {
 				System.out.println(msg.getText());
 			}
 
 			@Override
-			public void recievedNewPathMessage(NewPathMessage msg)
-			{
+			public void recievedNewPathMessage(NewPathMessage msg) {
 				System.out.println(msg.getCommands().size());
 			}
 
 			@Override
-			public void recievedRobotStatusMessage(RobotStatusMessage msg)
-			{
+			public void recievedRobotStatusMessage(RobotStatusMessage msg) {
 				
 			}
 
 			@Override
-			public void recievedTestMessage(TestMessage msg)
-			{
+			public void recievedTestMessage(TestMessage msg) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void recievedRobotInitMessage(RobotInitMessage msg)
-			{
+			public void recievedRobotInitMessage(RobotInitMessage msg) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void recievedLocationTypeMessage(LocationTypeMessage msg)
-			{
+			public void recievedLocationTypeMessage(LocationTypeMessage msg) {
 				// TODO Auto-generated method stub
 				
 			}
@@ -60,17 +54,14 @@ public class DummyMainNXT
 		msg1.setText("HELLO MASTER");
 		client.send(msg1);
 		
-		try
-		{
+		try {
 			client.join();
-		} catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		DummyMainNXT dummy = new DummyMainNXT();
 	}
 }

@@ -67,24 +67,24 @@ public class RobotScreen {
 		LCD.clear();
 		LCD.drawString("Pick these items", 0, 0);
 		LCD.drawString(itemsToPickUp + "", 0, 1);
-		LCD.drawString("Items picked up:", 0, 2);
-		LCD.drawString (itemsPickedUp + "", 0, 3);
+		LCD.drawString("Items picked up:", 0, 3);
+		LCD.drawString (itemsPickedUp + "", 0, 4);
 		
 		if (itemsPickedUp > itemsToPickUp) {
-			LCD.drawString("Too many items picked up", 0, 5);
+			LCD.drawString("Too muchp", 0, 5);
 			LCD.drawString("Remove "+Math.abs(itemsToPickUp - itemsPickedUp)+" items", 0, 6);
 		} else if (itemsPickedUp < itemsToPickUp) {
 			LCD.drawString("Too few items picked up", 0, 5);
 			LCD.drawString("Pick up "+(itemsToPickUp - itemsPickedUp)+" items", 0, 6);
 		} else {
 			LCD.drawString("Picking complete", 0, 5);
-			LCD.drawString("Proceeding to drop off point", 0, 6);
+			LCD.drawString("Going to drop", 0, 6);
 		}
 	}
 	
 	public void printDropOffState() {
 		LCD.clear();
 		LCD.drawString("At Drop off location", 0, 0);
-		LCD.drawString("Press enter button", 0, 1);
+		LCD.drawString("Press right button", 0, 1);
 	}
 }
