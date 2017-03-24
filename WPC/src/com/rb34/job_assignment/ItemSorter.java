@@ -13,26 +13,32 @@ import com.rb34.job_input.interfaces.IOrder;
 import com.rb34.route_planning.Graph;
 
 public class ItemSorter {
+	
 	final static Logger logger = Logger.getLogger(ItemSorter.class);
+	
 	private ArrayList<Item> items;
 	private ArrayList<Integer> orderCount;
 	private ArrayList<Drop> drops;
 	private ArrayList<Item> sortedItems;
 	private ArrayList<String> bestPathCoordinates;
+	
 	private int robotX;
 	private int robotY;
 
 	public ItemSorter(Job job, int rX, int rY, ArrayList<Drop> drops) {
 		logger.debug("Started ItemSorter");
+		
 		items = new ArrayList<>();
 		orderCount = new ArrayList<>();
+		this.drops = new ArrayList<>(drops);
+		robotX = rX;
+		robotY = rY;
+
 		for (IOrder order : job.getOrderList().values()) {
 			items.add((Item) order.getItem());
 			orderCount.add(order.getCount());
 		}
-		this.drops = new ArrayList<>(drops);
-		robotX = rX;
-		robotY = rY;
+
 		logger.debug("Job id: " + job.getJobId());
 	}
 
@@ -54,8 +60,7 @@ public class ItemSorter {
 		int[][] distances = new int[numberOfItems + 1 + numberOfDropLocations][numberOfItems];
 
 		for (int i = 0; i < numberOfItems; i++) {
-			if (graph.aStar(robotX + "|" + robotY, items.get(i).getX() + "|" + items.get(i).getY())
-					 == null)
+			if (graph.aStar(robotX + "|" + robotY, items.get(i).getX() + "|" + items.get(i).getY()) == null)
 				return;
 			distances[numberOfItems][i] = graph
 					.aStar(robotX + "|" + robotY, items.get(i).getX() + "|" + items.get(i).getY()).getPathCost().get();
@@ -180,7 +185,7 @@ public class ItemSorter {
 		String logMessage = "The item order is: ";
 		for (int index : bestPermutation) {
 			sortedItems.add(items.get(index));
-			//logger.debug("index: " + index);
+			// logger.debug("index: " + index);
 			logMessage += items.get(index).getItemID() + " ";
 		}
 
@@ -192,7 +197,7 @@ public class ItemSorter {
 		logger.debug(logMessage);
 	}
 
-	// create every permutation for the order of items
+	// Create every permutation for the order of items
 	private static void permute(List<Integer> array, int k, ArrayList<ArrayList<Integer>> permutations) {
 		for (int i = k; i < array.size(); i++) {
 			Collections.swap(array, i, k);

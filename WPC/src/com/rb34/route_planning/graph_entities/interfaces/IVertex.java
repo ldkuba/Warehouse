@@ -1,6 +1,8 @@
-package com.rb34.route_planning.graph_entities;
+package com.rb34.route_planning.graph_entities.interfaces;
 
 import java.util.Collection;
+
+import com.rb34.route_planning.graph_entities.Label;
 
 // Vertices are comparable according to their corresponding *current*
 // cost stored in their labels

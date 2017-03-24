@@ -1,7 +1,6 @@
 package com.rb34.warehouse_interface;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -21,15 +20,6 @@ import org.apache.log4j.Logger;
 import com.rb34.general.RobotManager;
 import com.rb34.job_input.Item;
 
-import javax.swing.JLabel;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import javax.swing.JButton;
-
 public class MainWindow extends Thread {
 
 	private JFrame frame;
@@ -42,28 +32,17 @@ public class MainWindow extends Thread {
 	public MainWindow(int robotNum) {
 		this.robotNum = robotNum;
 		frame = new JFrame();
-		System.out.println("Cons");
 	}
 
 	@Override
 	public void run() {
-		System.err.println("MW");
-		JFrame f = new JFrame();
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setTitle("test");
-		f.add(new JLabel("aesf"));
-		f.setVisible(true);
-		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Warehouse Interface");
-		//frame.setFont(new Font("Dialog", Font.PLAIN, 20));
+		frame.setFont(new Font("Dialog", Font.PLAIN, 20));
 		frame.setLayout(null);
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 350, 600);
-
-		frame.add(new JLabel("WTF Dude"));
-		// initialize();
-		frame.pack();
+		initialize();
 		frame.setVisible(true);
 	}
 
@@ -308,7 +287,7 @@ public class MainWindow extends Thread {
 		btnJobInformation.setBounds(46, 51, 222, 25);
 		frame.add(btnJobInformation);
 
-		int delay = 2000; // milliseconds
+		int delay = 1000; // milliseconds
 		ActionListener uiUpdate = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 

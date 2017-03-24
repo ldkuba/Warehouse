@@ -16,16 +16,15 @@ import javax.swing.JLabel;
 
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
-import com.rb34.general.interfaces.IRobot.Status;
 
 class PathFrame extends Thread{
 
 	/* Col , Row // X, Y
-			 r . . . . . . .  11,7
-			 ^ 				  .
-			 |				  .
-			 0,0 -> c . . . . 11,0
-	*/
+	 r . . . . . . .  11,7
+	 ^ 				  .
+	 |				  .
+	 0,0 -> c . . . . 11,0
+	 */
 
 	private JFrame frame;
 
@@ -40,7 +39,6 @@ class PathFrame extends Thread{
 	private ImageIcon groundImage;
 	private ImageIcon dropoffImage;
 	private ArrayList<ImageIcon> robotImage;
-	private ArrayList<ImageIcon> robotWaitImage;
 	private ArrayList<ImageIcon> robotGoalImage;
 
 	PathFrame(){
@@ -48,7 +46,6 @@ class PathFrame extends Thread{
 		grid = new HashMap<>();
 		robotImage = new ArrayList<>();
 		robotGoalImage = new ArrayList<>();
-		robotWaitImage = new ArrayList<>();
 
 		isRunning = true;
 		COLUMNS = 12;
@@ -137,7 +134,7 @@ class PathFrame extends Thread{
 		while(isRunning){
 			updateTiles();
 			try{
-				Thread.sleep(1000);
+				Thread.sleep(600);
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}
@@ -150,7 +147,7 @@ class PathFrame extends Thread{
 	private void setElements(){
 		for(int r = 0; r < ROWS; r++){
 			for(int c = 0; c < COLUMNS; c++){
-				grid.put(r + "," + c, new JLabel());
+				grid.put(c + "," + r, new JLabel());
 			}
 		}
 
@@ -168,13 +165,6 @@ class PathFrame extends Thread{
 									.getImage()
 									.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH))
 			);
-
-			robotWaitImage.add(
-					new ImageIcon(
-							new ImageIcon("resources/Robot" + (i + 1) + "Waiting.png")
-									.getImage()
-									.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH))
-			);
 		}
 
 		updateTiles();
@@ -187,7 +177,7 @@ class PathFrame extends Thread{
 		String key;
 		for(int r = 0; r < ROWS; r++){
 			for(int c = 0; c < COLUMNS; c++){
-				key = (ROWS - r - 1) + "," + c;
+				key = c + "," + (ROWS - r - 1);
 				frame.add(grid.get(key));
 			}
 		}
@@ -206,7 +196,7 @@ class PathFrame extends Thread{
 		// Ground
 		for(int r = 0; r < ROWS; r++){
 			for(int c = 0; c < COLUMNS; c++){
-				key = r + "," + c;
+				key = c + "," + r;
 				grid.get(key).setIcon(groundImage);
 			}
 		}
@@ -214,7 +204,7 @@ class PathFrame extends Thread{
 		// Walls
 		for(int r = 1; r != 6; r++){
 			for(int c = 1; c < 11; c += 3){
-				key = r + "," + c;
+				key = c + "," + r;
 				grid.get(key).setIcon(wallImage);
 			}
 
@@ -231,11 +221,8 @@ class PathFrame extends Thread{
 			grid.get(key).setIcon(robotGoalImage.get(robot.getRobotId()));
 
 			key = robot.getXLoc() + "," + robot.getYLoc();
-			if(robot.getRobotStatus() == Status.AT_ITEM){
-				grid.get(key).setIcon(robotWaitImage.get(robot.getRobotId()));
-			}else{
-				grid.get(key).setIcon(robotImage.get(robot.getRobotId()));
-			}
+
+			grid.get(key).setIcon(robotImage.get(robot.getRobotId()));
 		}
 	}
 
@@ -271,14 +258,6 @@ class PathFrame extends Thread{
 			robotGoalImage.add(
 					new ImageIcon(
 							new ImageIcon("resources/Robot" + i + "Goal.png")
-									.getImage()
-									.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH))
-			);
-
-			robotWaitImage.remove(i);
-			robotWaitImage.add(
-					new ImageIcon(
-							new ImageIcon("resources/Robot" + i + "Waiting.png")
 									.getImage()
 									.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH))
 			);

@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.lejos.nxt.ldt.LEJOS_LIBRARY_CONTAINER/nxt"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rp-shared"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WShared"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rp-utils"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
