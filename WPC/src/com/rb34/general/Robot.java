@@ -22,6 +22,7 @@ public class Robot implements IRobot
 	private boolean currentlyAtItem;
 	private Item currentItem;	
 	private String heading;
+	private String destination;
 	
 	public Robot()
 	{
@@ -64,11 +65,11 @@ public class Robot implements IRobot
 	}
 	
 	public int getXDes(){
-		return Integer.parseInt(destinations.get(0).split("|")[0]);
+		return Integer.parseInt(destination.split("\\|")[0]);
 	}
 	
 	public int getYDes(){
-		return Integer.parseInt(destinations.get(0).split("|")[1]);
+		return Integer.parseInt(destination.split("\\|")[1]);
 	}
 
 	public void recievedMessge()
@@ -192,5 +193,13 @@ public class Robot implements IRobot
 		System.out.println("ITEM: " + currentlyAtItem);
 		
 		Start.master.send(msg, robotId);
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
 	}
 }

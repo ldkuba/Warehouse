@@ -13,7 +13,7 @@ import com.rb34.job_input.Item;
 import com.rb34.job_input.Job;
 import com.rb34.route_planning.Graph;
 
-public class JobAssigner
+public class JobAssigner extends Thread
 {
 	final static Logger logger = Logger.getLogger(JobAssigner.class);
 
@@ -21,8 +21,12 @@ public class JobAssigner
 	private ArrayList<Drop> dropLocations;
 	private Graph graph;
 
+	@Override
+	public void run(){
+		assignJobs();
+	}
 
-	public JobAssigner(PriorityQueue<Job> jobs) {
+	public JobAssigner(PriorityQueue<Job> jobs){
 		logger.debug("Started JobAssigner");
 		this.jobs = jobs;
 		logger.debug("Received jobs");
@@ -57,12 +61,11 @@ public class JobAssigner
 
 					// update the robot data
 					robot.setCurrentJob(job);
-					robot.setRobotStatus(Status.RUNNING);
 					logger.debug("Gave job " + job.getJobId() + " to robot #" + robots.indexOf(robot));
 
 					// Get coordinates for the first destination
 					String destination = destinations.get(0);
-					logger.debug("destination 0 " + destination);
+					robot.setDestination(destination);
 					destinations.remove(0);
 					robot.setDestinations(destinations);
 
@@ -83,10 +86,10 @@ public class JobAssigner
 					logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
 							+ robot.getYLoc() + " to" + destination);
 
+					robot.setRobotStatus(Status.RUNNING);
 				}
 
 				if (robot.getRobotStatus() == Status.AT_ITEM) {
-					robot.setRobotStatus(Status.RUNNING);
 					logger.debug("Robot at item");
 					
 					ArrayList<Item> items = robot.getItemsToPick();
@@ -97,13 +100,14 @@ public class JobAssigner
 					// the next one
 					if (destinations.size() > 0) {
 						String destination = destinations.get(0);
+						robot.setDestination(destination);
 						destinations.remove(0);
-						logger.debug("Destinations size after removal " + destinations.size());
 						robot.setDestinations(destinations);
 						if (items.size() > 0) {
 							Item item = items.get(0);
+							
 							if (destination.equals(item.getX() + "|" + item.getY())) {
-
+								
 								robot.setCurrentlyGoingToItem(true);
 								robot.setCurrentItem(item);
 								items.remove(0);
@@ -117,6 +121,7 @@ public class JobAssigner
 								+ robot.getYLoc() + " to" + destination);
 						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot);
 						
+						robot.setRobotStatus(Status.RUNNING);
 					} else {
 						//logger.debug("Robot #" + robot.getRobotId() + " has finished job "
 						//		+ robot.getCurrentJob().getJobId());

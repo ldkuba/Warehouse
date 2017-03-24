@@ -328,22 +328,15 @@ public class StartScreen{
 					}
 
 					Reader.setFilePath(pathName);
-					// ADD CODE FOR RUNNING JOBS
 
 					RobotManager.initRobots();
 					
 					if (shouldRun == true) {
-						System.err.println("A");
 						RobotManager.addDropoff(0, 0);
-						System.err.println("B");
-						//new MainWindow(val).start();
-						//new PathFrame().start();
-						//new Thread(new MainWindow(val)).start();
-						System.err.println("C");
-					
+						new MainWindow(val).start();
 						frame.dispose();
-						System.err.println("D");
-						new JobAssigner(Selection.sortJobs()).assignJobs();
+						JobAssigner assigner = new JobAssigner(Selection.sortJobs());
+						assigner.start();
 					}
 
 				} else if (type2.equals("Localisation")) {
