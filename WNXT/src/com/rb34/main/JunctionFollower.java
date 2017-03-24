@@ -79,7 +79,7 @@ public class JunctionFollower implements MessageListener {
 		waitBehavior.setFocingBehav(true);
 		localise = new LocaliseMe(gridMap, pilot, lightSensorR, lightSensorL, ranger);
 
-		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
+		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior, localise};
 		arbitrator = new Arbitrator(behaviors);
 
 		arbitrator.start();	
