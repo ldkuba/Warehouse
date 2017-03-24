@@ -94,6 +94,7 @@ public class RobotManager implements MessageListener
 				if (getRobot(msg.getRobotId()).getDestinations().isEmpty()) 
 				{
 					getRobot(msg.getRobotId()).setRobotStatus(Status.IDLE);
+					
 				}else
 				{
 					getRobot(msg.getRobotId()).setRobotStatus(Status.AT_ITEM);
