@@ -13,10 +13,10 @@ public class Reader {
 	static Logger logger = Logger.getLogger(Reader.class);
 	private static String FILE_PATH = "NO_PATH_SET";
 
-	public static void setFilePath(String filePath){
+	public static void setFilePath(String filePath) {
 		FILE_PATH = filePath;
 	}
-	
+
 	public static ArrayList<Drop> createDropList() {
 		BufferedReader reader = null;
 		ArrayList<Drop> dropList = new ArrayList<Drop>();
@@ -26,8 +26,7 @@ public class Reader {
 			reader = new BufferedReader(new FileReader(fileDrop));
 
 			String dropLoc;
-			while ((dropLoc = reader.readLine()) != null
-					&& dropLoc.length() > 0) {
+			while ((dropLoc = reader.readLine()) != null && dropLoc.length() > 0) {
 				String[] dropInfo = dropLoc.split(",");
 				int xLoc = Integer.parseInt(dropInfo[0]);
 				int yLoc = Integer.parseInt(dropInfo[1]);
@@ -60,11 +59,11 @@ public class Reader {
 				float weight = Float.valueOf(itemInfo[2]);
 				Item newItem = new Item(itemID, reward, weight);
 				itemList.add(newItem);
-				
+
 			}
 			reader.close();
 			return itemList;
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -79,8 +78,7 @@ public class Reader {
 
 			String location;
 			int i = 0;
-			while ((location = reader.readLine()) != null
-					&& location.length() > 0) {
+			while ((location = reader.readLine()) != null && location.length() > 0) {
 				String[] locInfo = location.split(",");
 				int xLoc = Integer.parseInt(locInfo[0]);
 				int yLoc = Integer.parseInt(locInfo[1]);
@@ -120,8 +118,7 @@ public class Reader {
 					for (int j = 0; j <= itemList.size() - 1; j++) {
 						if (itemList.get(j).getItemID().equals(itemID)) {
 							itemIndex = j;
-							Order newOrder = new Order(itemList.get(itemIndex),
-									count);
+							Order newOrder = new Order(itemList.get(itemIndex), count);
 							newJob.addItem(itemID, newOrder);
 							break;
 						}
@@ -131,8 +128,7 @@ public class Reader {
 			}
 			reader.close();
 			return jobList;
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -168,32 +164,32 @@ public class Reader {
 	}
 
 	public static ArrayList<Job> createJobList() {
-		ArrayList <Item> itemList = readItemList();
+		ArrayList<Item> itemList = readItemList();
 		logger.debug("Read item.csv - created item List");
-		
+
 		readLocations(itemList);
 		logger.debug("Read locations.csv - set locations");
-		
-		ArrayList <Job> jobList = readJobs(itemList, "jobs.csv");
+
+		ArrayList<Job> jobList = readJobs(itemList, "jobs.csv");
 		logger.debug("Read job.csv - created job List");
-		
+
 		readCancellations(jobList);
 		logger.debug("Read cancelations.csv - set cancelations boolean");
 		logger.debug("job list complete");
 		return jobList;
 	}
-	
-	public static ArrayList<Job> createSampleJobList(){
-		ArrayList <Item> itemList = readItemList();
+
+	public static ArrayList<Job> createSampleJobList() {
+		ArrayList<Item> itemList = readItemList();
 		logger.debug("Read item.csv - created item List");
-		
+
 		readLocations(itemList);
 		logger.debug("Read locations.csv - set locations");
-		
-		ArrayList <Job> jobList = readJobs(itemList, "customJobs.csv");
+
+		ArrayList<Job> jobList = readJobs(itemList, "customJobs.csv");
 		logger.debug("Read customJobs.csv - created job List");
-		
-		for(Job job: jobList){
+
+		for (Job job : jobList) {
 			job.setCancelled(false);
 		}
 		logger.debug("set cancelations boolean");

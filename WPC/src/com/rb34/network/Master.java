@@ -1,11 +1,13 @@
 package com.rb34.network;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.rb34.connection.BluetoothConnection;
 import com.rb34.connection.Connection;
+import com.rb34.general.RobotManager;
+import com.rb34.message.Message;
 import com.rb34.message.MessageListener;
-import com.rb34.message.TestMessage;
 
 import lejos.pc.comm.NXTCommException;
 import lejos.pc.comm.NXTCommFactory;
@@ -19,19 +21,53 @@ public class Master extends Thread
 
 	public Master()
 	{
-
+		connections = new ArrayList<Connection>();
 	}
 
-/*	public void run()
+	@Override
+	public void run()
 	{
-		connections = new ArrayList<Connection>();
-
 		try
 		{
-			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "AntMar", "0016530A61AF"));
-			connections.add(connection1);
-			connection1.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
-
+			
+			BluetoothConnection connection1, connection2, connection3;
+			switch(RobotManager.getRobots().size()){
+				case 3:
+					connection3 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "WALL-E", "001653115A7E"));
+					connections.add(connection3);
+					connection3.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
+					
+					connection2 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "Red Riding Hood", "0016531AFBBB"));
+					connections.add(connection2);
+					connection2.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
+					
+					connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "NiXTy", "001653157A48"));
+					connections.add(connection1);
+					connection1.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
+					break;
+				case 2:
+					connection3 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "WALL-E", "001653115A7E"));
+					connections.add(connection3);
+					connection3.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
+					
+					connection2 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "Red Riding Hood", "0016531AFBBB"));
+					connections.add(connection2);
+					connection2.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
+				
+					break;
+				case 1:
+					/*connection3 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "WALL-E", "001653115A7E"));
+					connections.add(connection3);
+					connection3.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));*/
+					
+					connection2 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "Red Riding Hood", "0016531AFBBB"));
+					connections.add(connection2);
+					connection2.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
+					break;
+			}
+			
+			System.out.println("ALL CONNECTED !!!!!!!");
+			
 			ArrayList<Thread> threads = new ArrayList<>(connections.size());
 
 			for (Connection connection : connections)
@@ -57,7 +93,7 @@ public class Master extends Thread
 
 		} catch (NXTCommException e)
 		{
-			e.printStackTrace();
+			System.out.println("FAILED TO CONNECT TO ROBOT");
 		}
 	}
 
@@ -81,9 +117,8 @@ public class Master extends Thread
 	
 	public void addListener(MessageListener listener)
 	{
-		while(areAllConnected())
+		while(!areAllConnected())
 		{
-			
 		}
 		
 		while(connections == null)
@@ -95,10 +130,12 @@ public class Master extends Thread
 		{
 			connection.addListener(listener);
 		}
-	}*/
+	}
 
-	public void send(TestMessage msg, int robotId)
+	public void send(Message msg, int robotId)
 	{
+		System.out.println("Sending message to robot: " + robotId + "\nMessage:\n" + msg.toString());
+		
 		if(connections.size() > robotId)
 		{
 			if(connections.get(robotId) != null)

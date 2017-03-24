@@ -1,45 +1,25 @@
 package com.rb34;
 
-import java.util.ArrayList;
-import java.util.PriorityQueue;
-
-import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
-import com.rb34.job_input.Drop;
-import com.rb34.job_input.Job;
-import com.rb34.job_assignment.JobAssigner;
-import com.rb34.job_input.Reader;
+
+import com.rb34.network.Master;
+import com.rb34.warehouse_interface.StartScreen;
 
 public class Start {
+	
+	public static Master master;
 
 	public static void main(String[] args) {
-		ArrayList<Job> jobs = Reader.createSampleJobList();	// Runs Job_Input
-		PriorityQueue<Job> orderedJobs = new PriorityQueue<>(jobs);
-		ArrayList<Drop> drops = Reader.createDropList();	// Runs Job_Selection
-
-	//	Master master = new Master();
-	//	master.start();
+		master = new Master();
 		
-		Robot robot = new Robot();
-		robot.setXLoc(0);
-		robot.setYLoc(7);
-		robot.setRobotId(1);
-		
+		System.out.println("A");
+		new StartScreen();
+		System.out.println("B");
 	
-		RobotManager rm = new RobotManager();
-		rm.addRobot(robot);
-		
-		//master.addListener(rm);
-	
-		JobAssigner jobAssigner = new JobAssigner(orderedJobs, rm, drops);
-		jobAssigner.assignJobs();	// Runs Job_Assignment
-		/*try {
+		try {
 			master.join();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
-		// Run Warehouse_Interface
+		}
 	}
-
 }

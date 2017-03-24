@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import com.rb34.message.Message;
 import com.rb34.message.MessageListener;
-import com.rb34.message.TestMessage;
 import com.rb34.network.Receiver;
 import com.rb34.network.Sender;
 
@@ -47,10 +46,10 @@ public class BluetoothConnection implements Connection
 		
 		try
 		{
-			inputStream.close();
-			outputStream.close();
 			receiver.join();
 			sender.join();
+			inputStream.close();
+			outputStream.close();
 		} catch (InterruptedException e)
 		{
 			e.printStackTrace();

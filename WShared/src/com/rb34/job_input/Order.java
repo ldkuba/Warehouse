@@ -6,12 +6,12 @@ public class Order implements IOrder {
 
 	private IItem item;
 	private int count;
-	
-	public Order(IItem item, int count){
+
+	public Order(IItem item, int count) {
 		this.item = item;
 		this.count = count;
 	}
-	
+
 	@Override
 	public IItem getItem() {
 		return item;

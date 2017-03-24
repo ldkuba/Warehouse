@@ -1,7 +1,10 @@
 package com.rb34.dummy;
 
+import com.rb34.message.LocationTypeMessage;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
+import com.rb34.message.RobotInitMessage;
+import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.network.Client;
 
@@ -22,18 +25,41 @@ public class DummyMainNXT
 			@Override
 			public void recievedNewPathMessage(NewPathMessage msg)
 			{
+				System.out.println(msg.getCommands().size());
+			}
+
+			@Override
+			public void recievedRobotStatusMessage(RobotStatusMessage msg)
+			{
+				
+			}
+
+			@Override
+			public void recievedTestMessage(TestMessage msg)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void recievedRobotInitMessage(RobotInitMessage msg)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void recievedLocationTypeMessage(LocationTypeMessage msg)
+			{
+				// TODO Auto-generated method stub
 				
 			}
 		});
 		
 		TestMessage msg1 = new TestMessage();
-		msg1.setText("HELLO M");
+		msg1.setText("HELLO MASTER");
+		client.send(msg1);
 		
-		for(int i = 0; i < 1; i++)
-		{
-			client.send(msg1);
-		}
-
 		try
 		{
 			client.join();
