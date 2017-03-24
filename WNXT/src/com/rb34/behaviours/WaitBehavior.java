@@ -1,10 +1,5 @@
 package com.rb34.behaviours;
 
-import java.io.PrintStream;
-
-import rp.config.WheeledRobotConfiguration;
-import rp.systems.WheeledRobotSystem;
-
 import com.rb34.dummy.TrialMainNxt;
 import com.rb34.main.JunctionFollower;
 import com.rb34.message.RobotStatusMessage;
@@ -12,11 +7,11 @@ import com.rb34.robot_interface.RobotScreen;
 
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
-import lejos.nxt.Sound;
-import lejos.nxt.comm.RConsole;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
+import rp.config.WheeledRobotConfiguration;
+import rp.systems.WheeledRobotSystem;
 
 public class WaitBehavior implements Behavior
 {
@@ -65,7 +60,7 @@ public class WaitBehavior implements Behavior
 	@Override
 	public boolean takeControl()
 	{
-		
+		//System.out.println(forcingBehav);
 		if (behavior.checkIfNoRoute() || forcingBehav)
 		{
 			return true;
@@ -83,13 +78,14 @@ public class WaitBehavior implements Behavior
 	@Override
 	public void action()
 	{
+		System.out.println("WAIT BEHAV");
+		
 		supressed = false;
 
-		System.out.println("RUNNING WAIT BEHAVIOR");
+	//	System.out.println("RUNNING WAIT BEHAVIOR");
 		
 		while (!supressed)
 		{
-			
 			// System.out.println("Running " + supressed);
 
 			pilot.stop();

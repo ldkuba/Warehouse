@@ -42,7 +42,6 @@ public class GraphTest {
 
 	@Test
 	public void testHCA() {
-		RobotManager rm = new RobotManager();
 		Robot robot0 = new Robot();
 		robot0.setRobotId(0);
 		robot0.setXLoc(0);
@@ -55,11 +54,11 @@ public class GraphTest {
 		robot2.setRobotId(2);
 		robot2.setXLoc(0);
 		robot2.setYLoc(5);
-		rm.addRobot(robot0);
-		rm.addRobot(robot1);
-		rm.addRobot(robot2);
+		RobotManager.addRobot(robot0);
+		RobotManager.addRobot(robot1);
+		RobotManager.addRobot(robot2);
 
-		Graph graph = new Graph(rm);
+		Graph graph = new Graph();
 		graph.hCooperativeAStar("0|3", "0|6", 0).getPath();
 		graph.hCooperativeAStar("0|4", "0|2", 1).getPath();
 

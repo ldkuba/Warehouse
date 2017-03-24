@@ -30,7 +30,7 @@ public class Selection {
 		Iterator<Job> it = jobs.iterator();
 		int count = 0;
 		while (it.hasNext()) {
-			jobValue = 0.0f;
+			//jobValue = 0.0f;
 			// Extract the next job.
 			// Jobs contain a list of orders.
 			Job job = (Job) it.next();

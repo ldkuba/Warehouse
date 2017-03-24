@@ -50,7 +50,8 @@ public class TurnBehavior implements Behavior
 	private String head;
 	private ArrayList<PathChoices> path;
 
-	public TurnBehavior(LightSensor left, LightSensor right, RobotScreen _screen, LineFollowing followLine, ShouldMove shouldMove)
+	public TurnBehavior(LightSensor left, LightSensor right, RobotScreen _screen, LineFollowing followLine,
+			ShouldMove shouldMove)
 	{
 
 		this.shouldMove = shouldMove;
@@ -71,7 +72,7 @@ public class TurnBehavior implements Behavior
 		robotConfig = new WheeledRobotConfiguration(0.059f, 0.115f, 0.17f, Motor.C, Motor.A);
 		pilot = new WheeledRobotSystem(robotConfig).getPilot();
 
-		pilot.setTravelSpeed((pilot.getMaxTravelSpeed() / 10) * 6);
+		pilot.setTravelSpeed((pilot.getMaxTravelSpeed() / 10) * 2);
 		pilot.setRotateSpeed((pilot.getRotateMaxSpeed() / 10) * 2);
 	}
 
@@ -89,7 +90,7 @@ public class TurnBehavior implements Behavior
 	{
 		return this.head;
 	}
-	
+
 	public boolean rightOnBlack()
 	{
 		if (lightSensorR.getLightValue() <= THRESHOLD)
@@ -167,9 +168,9 @@ public class TurnBehavior implements Behavior
 		switch (turnDirection)
 		{
 		case 0:
-			
+
 			System.out.println("TURNING LEFT");
-			
+
 			if (!forceFirstAction)
 			{
 				pilot.travel(0.05, true);
@@ -186,6 +187,17 @@ public class TurnBehavior implements Behavior
 				pilot.rotate(90, true);
 			} else
 			{
+				pilot.travel(0.05, true);
+
+				while (!supressed && pilot.isMoving())
+				{
+
+					if (Button.ESCAPE.isDown())
+					{
+						System.exit(0);
+					}
+				}
+
 				pilot.rotateLeft();
 
 				while (!leftOnBlack())
@@ -205,14 +217,15 @@ public class TurnBehavior implements Behavior
 			if (!lastAction)
 			{
 				updateCo(0);
+				updateDirection(0);
 			}
-			updateDirection(0);
+
 			screen.updateState("Left");
 			break;
 		case 1:
-			
+
 			System.out.println("TURNING RIGHT");
-			
+
 			if (!forceFirstAction)
 			{
 				pilot.travel(0.05, true);
@@ -229,6 +242,17 @@ public class TurnBehavior implements Behavior
 				pilot.rotate(-90, true);
 			} else
 			{
+				pilot.travel(0.05, true);
+
+				while (!supressed && pilot.isMoving())
+				{
+
+					if (Button.ESCAPE.isDown())
+					{
+						System.exit(0);
+					}
+				}
+
 				pilot.rotateRight();
 
 				while (!rightOnBlack())
@@ -250,27 +274,33 @@ public class TurnBehavior implements Behavior
 			if (!lastAction)
 			{
 				updateCo(1);
+				updateDirection(1);
 			}
-			updateDirection(1);
+
 			screen.updateState("Right");
 			break;
 		case 2:
-			
+
 			System.out.println("FORWARD");
-			
+
 			pilot.travel(0.05, true);
+
 			if (!lastAction)
 			{
 				updateCo(2);
+				updateDirection(2);
 			}
-			updateDirection(2);
+
 			screen.updateState("Forward");
 			break;
 		case 3:
-			
+
 			System.out.println("180");
-			
-			pilot.travel(0.05, true);
+
+			if (!forceFirstAction)
+			{
+				pilot.travel(0.05, true);
+			}
 
 			while (!supressed && pilot.isMoving())
 			{
@@ -281,12 +311,14 @@ public class TurnBehavior implements Behavior
 				}
 			}
 
-			pilot.rotate(180, true);
+			pilot.rotate(195, true);
+
 			if (!lastAction)
 			{
 				updateCo(3);
+				updateDirection(3);
 			}
-			updateDirection(3);
+
 			screen.updateState("Rotate");
 			break;
 		case 4:

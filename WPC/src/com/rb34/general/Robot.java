@@ -60,9 +60,15 @@ public class Robot implements IRobot
 
 	public void setDestinations(ArrayList<String> destinations)
 	{
-		System.out.println("destinations set");
-		this.destinations.clear();
-		this.destinations = new ArrayList<>(destinations);
+		this.destinations = destinations;
+	}
+	
+	public int getXDes(){
+		return Integer.parseInt(destinations.get(0).split("|")[0]);
+	}
+	
+	public int getYDes(){
+		return Integer.parseInt(destinations.get(0).split("|")[1]);
 	}
 
 	public void recievedMessge()

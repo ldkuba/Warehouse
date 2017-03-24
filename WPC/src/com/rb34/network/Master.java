@@ -1,6 +1,7 @@
 package com.rb34.network;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.rb34.connection.BluetoothConnection;
 import com.rb34.connection.Connection;
@@ -16,10 +17,15 @@ public class Master extends Thread
 	private ArrayList<Connection> connections;
 
 	private boolean running = true;
+	private HashMap<String, String> robotIds;
 
 	public Master()
 	{
 		connections = new ArrayList<Connection>();
+		robotIds = new HashMap<>();
+		robotIds.put("NiXTy", "001653157A48");
+		robotIds.put("Red Riding Hood", "0016531AFBBB");
+		robotIds.put("WALL-E", "001653115A7E");
 	}
 
 	public void run()
@@ -93,7 +99,6 @@ public class Master extends Thread
 	{
 		while(!areAllConnected())
 		{
-			System.out.println("Waiting for conneection");
 		}
 		
 		while(connections == null)

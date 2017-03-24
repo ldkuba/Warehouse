@@ -18,25 +18,23 @@ public class JobAssigner
 	final static Logger logger = Logger.getLogger(JobAssigner.class);
 
 	private PriorityQueue<Job> jobs;
-	private RobotManager robotManager;
 	private ArrayList<Drop> dropLocations;
 	private Graph graph;
 
 
-	public JobAssigner(PriorityQueue<Job> jobs, RobotManager rm, ArrayList<Drop> dropLocations) {
+	public JobAssigner(PriorityQueue<Job> jobs) {
 		logger.debug("Started JobAssigner");
 		this.jobs = jobs;
 		logger.debug("Received jobs");
-		robotManager = rm;
 		logger.debug("Received robot manager");
-		this.dropLocations = dropLocations;
+		this.dropLocations = RobotManager.getDropoffList();
 		logger.debug("Received drop locations");
-		graph = new Graph(robotManager);
+		graph = new Graph();
 	}
 
 	public void assignJobs()
 	{
-		ArrayList<Robot> robots = robotManager.getRobots();
+		ArrayList<Robot> robots = RobotManager.getRobots();
 		// run while there are jobs in the PriorityQueue
 		while (!jobs.isEmpty() || !areAllIdle(robots)) {
 			
@@ -87,18 +85,20 @@ public class JobAssigner
 
 				}
 
-
 				if (robot.getRobotStatus() == Status.AT_ITEM) {
+					robot.setRobotStatus(Status.RUNNING);
+					logger.debug("Robot at item");
+					
 					ArrayList<Item> items = robot.getItemsToPick();
 
 					ArrayList<String> destinations = robot.getDestinations();
-
+					logger.debug(destinations.size());
 					// if there are destinations remaining, send the robot to
 					// the next one
 					if (destinations.size() > 0) {
-						robot.setRobotStatus(Status.RUNNING);
 						String destination = destinations.get(0);
 						destinations.remove(0);
+						logger.debug("Destinations size after removal " + destinations.size());
 						robot.setDestinations(destinations);
 						if (items.size() > 0) {
 							Item item = items.get(0);
@@ -115,7 +115,6 @@ public class JobAssigner
 
 						logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
 								+ robot.getYLoc() + " to" + destination);
-						if (robot.getRobotId() == 1) System.out.println("started planning for drop\n\n\n\n");
 						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot);
 						
 					} else {
