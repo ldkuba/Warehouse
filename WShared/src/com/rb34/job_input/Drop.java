@@ -6,12 +6,12 @@ public class Drop implements IDrop {
 
 	private int xLoc;
 	private int yLoc;
-	
-	public Drop(int xLoc, int yLoc){
+
+	public Drop(int xLoc, int yLoc) {
 		this.xLoc = xLoc;
 		this.yLoc = yLoc;
 	}
-	
+
 	@Override
 	public int getX() {
 		return xLoc;

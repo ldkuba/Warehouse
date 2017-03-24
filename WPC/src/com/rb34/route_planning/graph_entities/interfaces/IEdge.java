@@ -1,4 +1,4 @@
-package com.rb34.route_planning.graph_entities;
+package com.rb34.route_planning.graph_entities.interfaces;
 
 // An edge has a target vertex (Tgt) and a cost. 
 

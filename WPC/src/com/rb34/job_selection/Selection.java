@@ -1,4 +1,5 @@
 package com.rb34.job_selection;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,10 +14,10 @@ import com.rb34.job_input.interfaces.IItem;
 import com.rb34.job_input.interfaces.IOrder;
 
 public class Selection {
-	
+
 	// For testing.
 	final static Logger logger = Logger.getLogger(Selection.class);
-	
+
 	public static PriorityQueue<Job> sortJobs() {
 		// Create an empty queue to contain the sorted jobs.
 		PriorityQueue<Job> queue = new PriorityQueue<Job>(10, new JobValueComparator());
@@ -51,7 +52,8 @@ public class Selection {
 				float weight = item.getWeight();
 				int itemCount = order.getCount();
 				// Calculate an arbitrary item value.
-				// This formula takes the reward and applies a weight, based on the item weight.
+				// This formula takes the reward and applies a weight, based on
+				// the item weight.
 				// The lighter the item, the greater the weight.
 				// We then multiply by the item count.
 				// TO IMPROVE:
@@ -60,7 +62,8 @@ public class Selection {
 				// Add this to the total job value.
 				jobValue += orderValue;
 			}
-			// Set the job value, add it to the queue and move onto the next job.
+			// Set the job value, add it to the queue and move onto the next
+			// job.
 			job.setJobValue(jobValue);
 			queue.offer(job);
 			count++;

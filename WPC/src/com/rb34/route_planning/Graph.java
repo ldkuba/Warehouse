@@ -15,11 +15,11 @@ import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
 import com.rb34.route_execution.Execute;
 import com.rb34.route_planning.graph_entities.Heuristic;
-import com.rb34.route_planning.graph_entities.IEdge;
-import com.rb34.route_planning.graph_entities.IGraph;
-import com.rb34.route_planning.graph_entities.IVertex;
 import com.rb34.route_planning.graph_entities.ReservationInfo;
 import com.rb34.route_planning.graph_entities.Result;
+import com.rb34.route_planning.graph_entities.interfaces.IEdge;
+import com.rb34.route_planning.graph_entities.interfaces.IGraph;
+import com.rb34.route_planning.graph_entities.interfaces.IVertex;
 
 import rp.robotics.mapping.GridMap;
 import rp.robotics.mapping.MapUtils;
@@ -355,7 +355,7 @@ public class Graph implements IGraph {
 		for (IVertex pathV : result.getPath().get()) {
 			path.add(pathV);
 		}
-		
+
 		result.setPath(path);
 
 		for (int i = 0; i < path.size(); i++) {

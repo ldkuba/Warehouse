@@ -2,8 +2,7 @@ package com.rb34.message;
 
 import com.rb34.util.ArrayUtils;
 
-public class RobotStatusMessage implements Message
-{
+public class RobotStatusMessage implements Message {
 	private final byte type = 2;
 	private int robotId;
 
@@ -11,84 +10,68 @@ public class RobotStatusMessage implements Message
 	private String heading = "";
 	private boolean isOnRoute, isOnJob, isWaitingForNewPath;
 
-	public RobotStatusMessage()
-	{
+	public RobotStatusMessage() {
 
 	}
 
-	public boolean isWaitingForNewPath()
-	{
+	public boolean isWaitingForNewPath() {
 		return isWaitingForNewPath;
 	}
 
-	public void setWaitingForNewPath(boolean isWaitingForNewPath)
-	{
+	public void setWaitingForNewPath(boolean isWaitingForNewPath) {
 		this.isWaitingForNewPath = isWaitingForNewPath;
 	}
 
-	public String getHeading()
-	{
+	public String getHeading() {
 		return heading;
 	}
 
-	public void setHeading(String heading)
-	{
+	public void setHeading(String heading) {
 		this.heading = heading;
 	}
 
-	public int getRobotId()
-	{
+	public int getRobotId() {
 		return robotId;
 	}
 
-	public void setRobotId(int robotId)
-	{
+	public void setRobotId(int robotId) {
 		this.robotId = robotId;
 	}
 
-	public int getX()
-	{
+	public int getX() {
 		return x;
 	}
 
-	public void setX(int x)
-	{
+	public void setX(int x) {
 		this.x = x;
 	}
 
-	public int getY()
-	{
+	public int getY() {
 		return y;
 	}
 
-	public void setY(int y)
-	{
+	public void setY(int y) {
 		this.y = y;
 	}
 
-	public boolean isOnRoute()
-	{
+	public boolean isOnRoute() {
 		return isOnRoute;
 	}
 
-	public void setOnRoute(boolean isOnRoute)
-	{
+	public void setOnRoute(boolean isOnRoute) {
 		this.isOnRoute = isOnRoute;
 	}
 
-	public boolean isOnJob()
-	{
+	public boolean isOnJob() {
 		return isOnJob;
 	}
 
-	public void setOnJob(boolean isOnJob)
-	{
+	public void setOnJob(boolean isOnJob) {
 		this.isOnJob = isOnJob;
 	}
 
 	@Override
-	public byte[] toByteArray()
-	{
+	public byte[] toByteArray() {
 		int lengthInBytes = 4 + 4 + 4 + 1 + 4 + 2 * heading.length();
 
 		byte[] output = { type };
@@ -112,8 +95,7 @@ public class RobotStatusMessage implements Message
 		return output;
 	}
 
-	public static RobotStatusMessage fromByteArray(byte[] bytes)
-	{
+	public static RobotStatusMessage fromByteArray(byte[] bytes) {
 		RobotStatusMessage msg = new RobotStatusMessage();
 		int index = 0;
 
@@ -144,27 +126,21 @@ public class RobotStatusMessage implements Message
 		byte flags = bytes[index];
 		index++;
 
-		if ((flags & 1) == 1)
-		{
+		if ((flags & 1) == 1) {
 			msg.setOnJob(true);
-		} else
-		{
+		} else {
 			msg.setOnJob(false);
 		}
 
-		if (((flags >> 1) & 1) == 1)
-		{
+		if (((flags >> 1) & 1) == 1) {
 			msg.setOnRoute(true);
-		} else
-		{
+		} else {
 			msg.setOnRoute(false);
 		}
 
-		if (((flags >> 2) & 1) == 1)
-		{
+		if (((flags >> 2) & 1) == 1) {
 			msg.setWaitingForNewPath(true);
-		} else
-		{
+		} else {
 			msg.setWaitingForNewPath(false);
 		}
 
@@ -172,8 +148,7 @@ public class RobotStatusMessage implements Message
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "RobotStatusMessage [type=" + type + ", robotId=" + robotId + ", x=" + x + ", y=" + y + ", heading="
 				+ heading + ", isOnRoute=" + isOnRoute + ", isOnJob=" + isOnJob + ", isWaitingForNewPath="
 				+ isWaitingForNewPath + "]";
