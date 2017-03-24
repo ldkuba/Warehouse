@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import com.rb34.jobInput.interfaces.*;
+import com.rb34.job_input.interfaces.*;
 
 
 public class Job implements IJob,  Comparable<Job> {
