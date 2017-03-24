@@ -106,4 +106,9 @@ public class RobotManager implements MessageListener {
 
 	}
 
+	public static void setDropoffs(ArrayList<Drop> createDropList) {
+		dropoffList = createDropList;
+		
+	}
+
 }
