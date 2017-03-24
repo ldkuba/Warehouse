@@ -88,6 +88,7 @@ public class Serializer
 					}
 				}
 			}
+
 		}
 
 		return output;
@@ -106,4 +107,3 @@ public class Serializer
 		return false;
 	}
 }
-

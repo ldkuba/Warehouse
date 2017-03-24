@@ -28,12 +28,11 @@ public class Master extends Thread
 	public void run()
 	{
 		try
-		{
-			
+		{	
 			BluetoothConnection connection1, connection2, connection3;
 			switch(RobotManager.getRobots().size()){
 				case 3:
-					connection3 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "WALL-E", "001653115A7E"));
+					connection3 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "manfred", "00165308E53D"));
 					connections.add(connection3);
 					connection3.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
 					
@@ -97,9 +96,9 @@ public class Master extends Thread
 		}
 	}
 
-	public boolean areAllConnected()
-	{
-		if(connections == null)
+	public boolean areAllConnected(int val)
+	{		
+		if(connections.size() < val)
 		{
 			return false;
 		}
@@ -117,7 +116,7 @@ public class Master extends Thread
 	
 	public void addListener(MessageListener listener)
 	{
-		while(!areAllConnected())
+		while(!areAllConnected(connections.size()))
 		{
 		}
 		

@@ -2,6 +2,10 @@ package com.rb34.main;
 
 import java.util.ArrayList;
 
+import rp.config.WheeledRobotConfiguration;
+import rp.robotics.mapping.GridMap;
+import rp.systems.WheeledRobotSystem;
+
 import com.rb34.behaviours.LineFollowing;
 import com.rb34.behaviours.LocaliseMe;
 import com.rb34.behaviours.ShouldMove;
@@ -9,14 +13,13 @@ import com.rb34.behaviours.TurnBehavior;
 import com.rb34.behaviours.WaitBehavior;
 import com.rb34.dummy.TrialMainNxt;
 import com.rb34.general.PathChoices;
+import com.rb34.localisation.FindMyLocation;
 import com.rb34.localisation.Map;
-import com.rb34.message.LocalisationResultMessage;
 import com.rb34.message.LocationTypeMessage;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
 import com.rb34.message.RobotInitMessage;
 import com.rb34.message.RobotStatusMessage;
-import com.rb34.message.StartLocalisationMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.robot_interface.RobotScreen;
 
@@ -27,9 +30,6 @@ import lejos.nxt.addon.OpticalDistanceSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
-import rp.config.WheeledRobotConfiguration;
-import rp.robotics.mapping.GridMap;
-import rp.systems.WheeledRobotSystem;
 
 //This is the class where all the robot behaviours are brought together. The class implements MessageListner, which allows networking to work with robot motion
 public class JunctionFollower implements MessageListener {
@@ -77,7 +77,7 @@ public class JunctionFollower implements MessageListener {
 				followLine, shouldMove, pilot);
 		waitBehavior = new WaitBehavior(turnBehavior, screen, pilot);
 		waitBehavior.setFocingBehav(true);
-		localise = new LocaliseMe(gridMap, pilot, lightSensorR, lightSensorL, ranger);
+		//localise = new LocaliseMe(gridMap, pilot, lightSensorR, lightSensorL, ranger);
 
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior};
 		arbitrator = new Arbitrator(behaviors);
@@ -158,20 +158,6 @@ public class JunctionFollower implements MessageListener {
 			this.screen.printDropOffState();
 		}
 		
-		
-	}
-
-	@Override
-	public void recieveedStartLocalisationMessage(StartLocalisationMessage msg)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void recieveedLocalisationResultMessage(LocalisationResultMessage msg)
-	{
-		// TODO Auto-generated method stub
-		
+		 
 	}
 }
