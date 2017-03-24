@@ -9,6 +9,8 @@ import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
+//This can behaviour can be used so that whenever the escape button is pressed the robot stops.
+
 public class StopBehaviour implements Behavior {
 	private WheeledRobotConfiguration robotConfig;
 	private DifferentialPilot pilot;
@@ -34,8 +36,8 @@ public class StopBehaviour implements Behavior {
 	@Override
 	public void action() {
 		supressed = false;
-			System.exit(0);
-			suppress();
+		System.exit(0);
+		suppress();
 	}
 
 	@Override

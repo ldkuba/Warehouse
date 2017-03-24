@@ -1,6 +1,11 @@
 package com.rb34.main;
 
+
+
 import java.util.ArrayList;
+
+import rp.config.WheeledRobotConfiguration;
+import rp.systems.WheeledRobotSystem;
 
 import com.rb34.behaviours.DistanceKeeping;
 import com.rb34.behaviours.LineFollowing;
@@ -9,11 +14,14 @@ import com.rb34.general.PathChoices;
 import com.rb34.robot_interface.RobotScreen;
 
 import lejos.nxt.LightSensor;
+import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.addon.OpticalDistanceSensor;
+import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
+//This is the test class putting together lineFollowing, turning at junctions and keeping a particular distance from obstacles
 public class AvoidingObs {
 	private Arbitrator arbitrator;
 	private OpticalDistanceSensor irSensor;
@@ -27,6 +35,9 @@ public class AvoidingObs {
 	private DistanceKeeping keepDistance;
 	private RobotScreen screen;
 	private String head;
+	private WheeledRobotConfiguration ROBOT_CONFIG;
+	private DifferentialPilot pilot;
+	
 
 	private ArrayList<PathChoices> path1;
 
@@ -34,6 +45,8 @@ public class AvoidingObs {
 		lightSensorR = new LightSensor(SensorPort.S1);
 		lightSensorL = new LightSensor(SensorPort.S4);
 		irSensor = new OpticalDistanceSensor(SensorPort.S2);
+		ROBOT_CONFIG = new WheeledRobotConfiguration (0.056f, 0.115f, 0.17f, Motor.A, Motor.C);
+		pilot = new WheeledRobotSystem(ROBOT_CONFIG).getPilot();
 		
 		this.head = head;
 
@@ -46,11 +59,8 @@ public class AvoidingObs {
 		path1.add(PathChoices.FORWARD);
 		path1.add(PathChoices.LEFT);
 
-		int whiteInitL = lightSensorL.getLightValue();
-		int whiteInitR = lightSensorR.getLightValue();
-
-		followLine = new LineFollowing(lightSensorL, lightSensorR, screen, null);
-		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen, followLine, null);
+		followLine = new LineFollowing(lightSensorL, lightSensorR, screen, null, pilot);
+		turnBehavior = new TurnBehavior(lightSensorL, lightSensorR, screen, followLine, null, pilot);
 		keepDistance = new DistanceKeeping(MAX_DISTANCE, irSensor);
 
 		Behavior[] behaviors = { followLine, turnBehavior, keepDistance };
