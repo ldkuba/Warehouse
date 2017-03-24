@@ -69,10 +69,10 @@ public class JunctionFollower implements MessageListener {
 	public void recievedNewPathMessage(NewPathMessage msg) {
 		// System.exit(-1);
 		
-		System.out.println("Got path");
-		
+		System.out.println("Got path " + msg.getCommands().size());
 		turnBehavior.setPathFromMessage(msg.getCommands());
 		turnBehavior.setForceFirstAction(true);
+		waitBehavior.setFocingBehav(false);
 		waitBehavior.suppress();
 
 		// screen.updateState("Path size2: "+msg.getCommands().size());

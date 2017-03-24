@@ -1,13 +1,16 @@
 package com.rb34.serialization;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import com.rb34.util.ArrayUtils;
 
-public class Serializer {
-	public static ArrayList<Byte> serializeObject(Object object)
-			throws IllegalArgumentException, IllegalAccessException {
+public class Serializer
+{
+	public static ArrayList<Byte> serializeObject(Object object) throws IllegalArgumentException, IllegalAccessException, NotSerializableException
+	{
 		ArrayList<Byte> output = new ArrayList<>();
 
 		Field[] fields = object.getClass().getDeclaredFields();
@@ -34,9 +37,20 @@ public class Serializer {
 					} else if (arrayClazz.equals(Boolean.TYPE)) {
 						boolean[] booleans = (boolean[]) field.get(object);
 						output.addAll(ArrayUtils.arrayToArrayList(ArrayUtils.booleanArrayToBytes(booleans)));
+					}else if(arrayClazz.equals(Long.TYPE))
+					{
+						long[] longs = (long[]) field.get(object);
+						output.addAll(ArrayUtils.arrayToArrayList(ArrayUtils.longArrayToBytes(longs)));
 					}
-				} else {
-
+				}else
+				{
+					if(isSerializable(arrayClazz))
+					{
+						
+					}else
+					{
+						
+					}
 				}
 			} else {
 				if (field.getType().isPrimitive()) {
@@ -56,17 +70,21 @@ public class Serializer {
 						output.addAll(bytes);
 					} else if (clazz.equals(Boolean.TYPE)) {
 						boolean value = field.getBoolean(object);
-						output.add(new Byte((byte) (value ? 1 : 0)));
+						output.add(new Byte((byte) (value?1:0)));
+					}else if(clazz.equals(Long.TYPE))
+					{
+						long value = field.getLong(object);
+						ArrayList<Byte> bytes = ArrayUtils.arrayToArrayList(ArrayUtils.longToBytes(value));
+						output.addAll(bytes);
 					}
-				} else {
-					if (clazz.equals(String.class)) {
-						String text = (String) field.get(object);
-						ArrayList<Byte> lengthBytes = ArrayUtils.arrayToArrayList(ArrayUtils.intToBytes(text.length()));
-						output.addAll(lengthBytes);
-						ArrayList<Byte> textBytes = ArrayUtils.arrayToArrayList(ArrayUtils.stringToBytes(text));
-						output.addAll(textBytes);
-					} else {
+				}else
+				{
+					if(isSerializable(clazz))
+					{
 						output.addAll(serializeObject(field));
+					}else
+					{
+						throw new NotSerializableException();
 					}
 				}
 			}
@@ -75,5 +93,19 @@ public class Serializer {
 
 		return output;
 	}
+	
+	private static boolean isSerializable(Class<?> clazz)
+	{
+		for(Class<?> i : clazz.getInterfaces())
+		{
+			if(clazz.equals(Serializable.class))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+}
 
 }

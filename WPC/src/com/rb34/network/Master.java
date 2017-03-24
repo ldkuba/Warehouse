@@ -32,12 +32,12 @@ public class Master extends Thread
 	{
 		try
 		{
-			
+			/*
 			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "NiXTy", "001653157A48"));
 			connections.add(connection1);
 			connection1.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
-			
-			/*BluetoothConnection connection2 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "Red Riding Hood", "0016531AFBBB"));
+			*/
+			BluetoothConnection connection2 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "Red Riding Hood", "0016531AFBBB"));
 			connections.add(connection2);
 			connection2.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
 			/*
@@ -99,7 +99,6 @@ public class Master extends Thread
 	{
 		while(!areAllConnected())
 		{
-			System.out.println("Waiting for conneection");
 		}
 		
 		while(connections == null)

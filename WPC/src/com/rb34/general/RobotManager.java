@@ -69,22 +69,31 @@ public class RobotManager implements MessageListener {
 
 		getRobot(msg.getRobotId()).setXLoc(msg.getX());
 		getRobot(msg.getRobotId()).setYLoc(msg.getY());
-
-		if (msg.isOnRoute()) {
+		
+		
+		if(msg.isOnRoute())
+		{
 			getRobot(msg.getRobotId()).setRobotStatus(Status.RUNNING);
-		} else {
-			if (msg.isWaitingForNewPath()) {
-				getRobot(msg.getRobotId()).setRobotStatus(Status.AT_ITEM);
+		}else
+		{			
+			if(msg.isWaitingForNewPath())
+			{
 				System.out.println("WAITING FOR NEW PATH");
-
-			} else {
+				
+				if (getRobot(msg.getRobotId()).getDestinations().isEmpty()) 
+				{
+					getRobot(msg.getRobotId()).setRobotStatus(Status.IDLE);
+				}else
+				{
+					getRobot(msg.getRobotId()).setRobotStatus(Status.AT_ITEM);
+				}
+			}else
+			{
 				System.out.println("NOOOOOOOOOOT WAITING FOR NEW PATH");
 				getRobot(msg.getRobotId()).notifyOfLocation();
 			}
-		}
-		if (!msg.isOnJob()) {
-			getRobot(msg.getRobotId()).setRobotStatus(Status.IDLE);
-		}
+		} 	
+		
 	}
 
 	@Override

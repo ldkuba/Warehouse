@@ -30,7 +30,8 @@ public class Selection {
 		// Iterate through the jobs.
 		Iterator<Job> it = jobs.iterator();
 		int count = 0;
-		while (it.hasNext() && count < 5) {
+		while (it.hasNext()) {
+			//jobValue = 0.0f;
 			// Extract the next job.
 			// Jobs contain a list of orders.
 			Job job = (Job) it.next();
@@ -64,7 +65,7 @@ public class Selection {
 			// Set the job value, add it to the queue and move onto the next
 			// job.
 			job.setJobValue(jobValue);
-			queue.add(job);
+			queue.offer(job);
 			count++;
 			logger.debug("Job number " + count + " has been added to the queue.");
 		}

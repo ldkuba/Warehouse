@@ -456,7 +456,8 @@ public class StartScreen {
 						}
 					}
 
-					Reader.setFilePath(pathName);
+					Reader.setFilePath(pathName + "\\");
+					// ADD CODE FOR RUNNING JOBS
 
 					RobotManager.initRobots();
 

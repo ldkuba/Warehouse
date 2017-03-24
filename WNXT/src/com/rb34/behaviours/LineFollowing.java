@@ -39,7 +39,7 @@ public class LineFollowing implements Behavior
 
 		robotConfig = new WheeledRobotConfiguration (0.059f, 0.115f, 0.17f, Motor.C, Motor.A);
 		pilot = new WheeledRobotSystem (robotConfig).getPilot();
-		pilot.setTravelSpeed((pilot.getMaxTravelSpeed()/10)*2);
+		pilot.setTravelSpeed((pilot.getMaxTravelSpeed()/10)*2); //change back to times 6 if this is too fast..
 		pilot.setRotateSpeed((pilot.getRotateMaxSpeed()/10)*2);
 
 	}
@@ -111,9 +111,6 @@ public class LineFollowing implements Behavior
 	public void action()
 	{
 		supressed = false;
-
-		System.out.println("RUNNING LINE BEHAVIOR");
-		
 		pilot.stop();
 		while (!supressed)
 		{

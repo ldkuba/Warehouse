@@ -1,6 +1,7 @@
 package com.rb34;
 
 import com.rb34.general.RobotManager;
+
 import com.rb34.network.Master;
 import com.rb34.warehouse_interface.StartScreen;
 
@@ -17,7 +18,7 @@ public class Start {
 		System.out.println("A");
 		new StartScreen();
 		System.out.println("B");
-
+	
 		try {
 			master.join();
 		} catch (InterruptedException e) {

@@ -78,13 +78,14 @@ public class WaitBehavior implements Behavior
 	@Override
 	public void action()
 	{
+		System.out.println("WAIT BEHAV");
+		
 		supressed = false;
 
 	//	System.out.println("RUNNING WAIT BEHAVIOR");
 		
 		while (!supressed)
 		{
-			
 			// System.out.println("Running " + supressed);
 
 			pilot.stop();
