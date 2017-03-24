@@ -12,32 +12,26 @@ import com.rb34.message.RobotInitMessage;
 import com.rb34.message.RobotStatusMessage;
 import com.rb34.message.TestMessage;
 
-public class RobotManager implements MessageListener
-{
+public class RobotManager implements MessageListener {
 
 	private static ArrayList<Robot> robotList;
 	private static ArrayList<Drop> dropoffList;
 
-	public RobotManager()
-	{
+	public RobotManager() {
 		robotList = new ArrayList<>();
 		dropoffList = new ArrayList<>();
 	}
 
-	public static Robot getRobot(int robotId)
-	{
+	public static Robot getRobot(int robotId) {
 		return robotList.get(robotId);
 	}
 
-	public static void addRobot(Robot newRobot)
-	{
+	public static void addRobot(Robot newRobot) {
 		robotList.add(newRobot);
 	}
-	
-	public static void initRobots()
-	{
-		for(Robot newRobot : robotList)
-		{
+
+	public static void initRobots() {
+		for (Robot newRobot : robotList) {
 			RobotInitMessage msg = new RobotInitMessage();
 			msg.setRobotId(newRobot.getRobotId());
 			msg.setX(newRobot.getXLoc());
@@ -47,71 +41,60 @@ public class RobotManager implements MessageListener
 		}
 	}
 
-	public static ArrayList<Robot> getRobots()
-	{
+	public static ArrayList<Robot> getRobots() {
 		return robotList;
 	}
 
-	public static void addDropoff(int x, int y){
-		dropoffList.add(new Drop(x,  y));
+	public static void addDropoff(int x, int y) {
+		dropoffList.add(new Drop(x, y));
 	}
-	
-	public static ArrayList<Drop> getDropoffList(){
+
+	public static ArrayList<Drop> getDropoffList() {
 		return dropoffList;
 	}
-	
-	
+
 	@Override
-	public void recievedTestMessage(TestMessage msg)
-	{
+	public void recievedTestMessage(TestMessage msg) {
 		System.out.println(msg.getText());
 	}
 
 	@Override
-	public void recievedNewPathMessage(NewPathMessage msg)
-	{
+	public void recievedNewPathMessage(NewPathMessage msg) {
 
 	}
 
 	@Override
-	public void recievedRobotStatusMessage(RobotStatusMessage msg)
-	{
+	public void recievedRobotStatusMessage(RobotStatusMessage msg) {
 		System.out.println(msg.toString());
-		
+
 		getRobot(msg.getRobotId()).setXLoc(msg.getX());
 		getRobot(msg.getRobotId()).setYLoc(msg.getY());
-		
-		if(msg.isOnRoute())
-		{
+
+		if (msg.isOnRoute()) {
 			getRobot(msg.getRobotId()).setRobotStatus(Status.RUNNING);
-		}else
-		{			
-			if(msg.isWaitingForNewPath())
-			{
+		} else {
+			if (msg.isWaitingForNewPath()) {
 				getRobot(msg.getRobotId()).setRobotStatus(Status.AT_ITEM);
 				System.out.println("WAITING FOR NEW PATH");
-				
-			}else
-			{
+
+			} else {
 				System.out.println("NOOOOOOOOOOT WAITING FOR NEW PATH");
 				getRobot(msg.getRobotId()).notifyOfLocation();
 			}
-		} 
+		}
 		if (!msg.isOnJob()) {
 			getRobot(msg.getRobotId()).setRobotStatus(Status.IDLE);
 		}
 	}
 
 	@Override
-	public void recievedRobotInitMessage(RobotInitMessage msg)
-	{
-		
+	public void recievedRobotInitMessage(RobotInitMessage msg) {
+
 	}
 
 	@Override
-	public void recievedLocationTypeMessage(LocationTypeMessage msg)
-	{
-		
+	public void recievedLocationTypeMessage(LocationTypeMessage msg) {
+
 	}
 
 }

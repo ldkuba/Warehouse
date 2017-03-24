@@ -9,8 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -26,15 +24,13 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
-import com.rb34.Start;
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
 import com.rb34.job_assignment.JobAssigner;
-import com.rb34.job_input.Job;
 import com.rb34.job_input.Reader;
 import com.rb34.job_selection.Selection;
 
-public class StartScreen{
+public class StartScreen {
 
 	private JFrame frame;
 	private JTextField textField;
@@ -104,7 +100,7 @@ public class StartScreen{
 		gbc_btnOpen.gridx = 3;
 		gbc_btnOpen.gridy = 2;
 		frame.getContentPane().add(btnOpen, gbc_btnOpen);
-		
+
 		pathName = "resources\\csv\\";
 
 		btnOpen.addActionListener(new ActionListener() {
@@ -193,7 +189,7 @@ public class StartScreen{
 				if (!type.equals("Select Robot")) {
 					val = Integer.parseInt(type);
 				}
-				
+
 				for (int i = 0; i < val; i++) {
 					Robot robot = new Robot();
 					RobotManager.addRobot(robot);
@@ -330,7 +326,7 @@ public class StartScreen{
 					Reader.setFilePath(pathName);
 
 					RobotManager.initRobots();
-					
+
 					if (shouldRun == true) {
 						RobotManager.addDropoff(0, 0);
 						new MainWindow(val).start();
@@ -341,9 +337,13 @@ public class StartScreen{
 
 				} else if (type2.equals("Localisation")) {
 					log4j.info("Implement Localisation");
-					// ADD LOCALISATION CODE
+
 					Reader.setFilePath(pathName);
 					log4j.info("Set Reader Path to: " + pathName);
+
+					for (Robot robot : RobotManager.getRobots()) {
+
+					}
 				} else if (type2.equals("Select Mode")) {
 					JOptionPane opt = new JOptionPane();
 					opt.showMessageDialog(frame, "Error: Please Select Robot Operating Mode AND Number of Robots");
@@ -363,17 +363,17 @@ public class StartScreen{
 		txtX = new JTextField();
 		txtX.setText("X");
 		txtX.addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
 				txtX.setText("");
-				
+
 			}
 		});
 		txtX.setBounds(144, 25, 45, 19);
@@ -383,19 +383,20 @@ public class StartScreen{
 		txtY = new JTextField();
 		txtY.setText("Y");
 		txtY.addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
 				txtY.setText("");
-				
+
 			}
-		});		txtY.setBounds(201, 25, 45, 19);
+		});
+		txtY.setBounds(201, 25, 45, 19);
 		rb1.add(txtY);
 		txtY.setColumns(10);
 
@@ -419,17 +420,17 @@ public class StartScreen{
 		txtX2 = new JTextField();
 		txtX2.setText("X");
 		txtX2.addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
 				txtX2.setText("");
-				
+
 			}
 		});
 		txtX2.setBounds(144, 25, 45, 19);
@@ -439,17 +440,17 @@ public class StartScreen{
 		txtY2 = new JTextField();
 		txtY2.setText("Y");
 		txtY2.addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
 				txtY2.setText("");
-				
+
 			}
 		});
 		txtY2.setBounds(201, 25, 45, 19);
@@ -476,17 +477,17 @@ public class StartScreen{
 		txtX3 = new JTextField();
 		txtX3.setText("X");
 		txtX3.addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
 				txtX3.setText("");
-				
+
 			}
 		});
 		txtX3.setBounds(144, 25, 45, 19);
@@ -496,17 +497,17 @@ public class StartScreen{
 		txtY3 = new JTextField();
 		txtY3.setText("Y");
 		txtY3.addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
 				txtY3.setText("");
-				
+
 			}
 		});
 		txtY3.setBounds(201, 25, 45, 19);

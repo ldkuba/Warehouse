@@ -1,7 +1,7 @@
 package com.rb34.route_planning;
 
-import com.rb34.route_planning.graph_entities.IEdge;
-import com.rb34.route_planning.graph_entities.IVertex;
+import com.rb34.route_planning.graph_entities.interfaces.IEdge;
+import com.rb34.route_planning.graph_entities.interfaces.IVertex;
 
 public class Edge implements IEdge {
 	private IVertex target;

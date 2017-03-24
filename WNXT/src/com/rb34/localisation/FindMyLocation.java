@@ -2,17 +2,11 @@ package com.rb34.localisation;
 
 import java.util.ArrayList;
 
-import lejos.nxt.LCD;
 import lejos.nxt.LightSensor;
-import lejos.nxt.Motor;
-import lejos.nxt.SensorPort;
 import lejos.nxt.addon.OpticalDistanceSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.util.Delay;
-import rp.config.WheeledRobotConfiguration;
 import rp.robotics.mapping.GridMap;
-import rp.systems.WheeledRobotSystem;
-import rp.util.HashMap;
 
 /* IMPORTANT!
    This class needs:

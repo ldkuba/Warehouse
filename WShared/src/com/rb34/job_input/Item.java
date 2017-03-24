@@ -3,18 +3,19 @@ package com.rb34.job_input;
 import com.rb34.job_input.interfaces.IItem;
 
 public class Item implements IItem {
-	
+
 	private String itemID;
 	private float reward;
 	private float weight;
 	private int xLoc;
 	private int yLoc;
 
-	public Item(String itemID, float reward, float weight){
+	public Item(String itemID, float reward, float weight) {
 		this.itemID = itemID;
 		this.reward = reward;
 		this.weight = weight;
 	}
+
 	@Override
 	public String getItemID() {
 		return itemID;
@@ -39,10 +40,12 @@ public class Item implements IItem {
 	public int getY() {
 		return yLoc;
 	}
+
 	@Override
 	public void setX(int xLoc) {
 		this.xLoc = xLoc;
 	}
+
 	@Override
 	public void setY(int yLoc) {
 		this.yLoc = yLoc;

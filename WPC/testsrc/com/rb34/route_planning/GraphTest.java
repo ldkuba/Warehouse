@@ -10,6 +10,7 @@ import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
 
 public class GraphTest {
+	
 	@Test
 	public void testCost() {
 		Graph graph = new Graph(1);

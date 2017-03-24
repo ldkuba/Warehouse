@@ -1,6 +1,8 @@
-package com.rb34.route_planning.graph_entities;
+package com.rb34.route_planning.graph_entities.interfaces;
 
 import java.util.Collection;
+
+import com.rb34.route_planning.graph_entities.Result;
 
 public interface IGraph {
 	void addVertex(String vertexId, IVertex vertex);

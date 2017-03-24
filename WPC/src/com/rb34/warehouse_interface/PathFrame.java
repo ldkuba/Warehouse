@@ -16,16 +16,15 @@ import javax.swing.JLabel;
 
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
-import com.rb34.general.interfaces.IRobot.Status;
 
 class PathFrame extends Thread{
 
 	/* Col , Row // X, Y
-			 r . . . . . . .  11,7
-			 ^ 				  .
-			 |				  .
-			 0,0 -> c . . . . 11,0
-	*/
+	 r . . . . . . .  11,7
+	 ^ 				  .
+	 |				  .
+	 0,0 -> c . . . . 11,0
+	 */
 
 	private JFrame frame;
 

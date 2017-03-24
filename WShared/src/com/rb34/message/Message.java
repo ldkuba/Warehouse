@@ -1,6 +1,5 @@
 package com.rb34.message;
 
-public interface Message
-{
+public interface Message {
 	byte[] toByteArray();
 }

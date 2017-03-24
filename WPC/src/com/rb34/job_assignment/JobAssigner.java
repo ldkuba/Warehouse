@@ -13,8 +13,7 @@ import com.rb34.job_input.Item;
 import com.rb34.job_input.Job;
 import com.rb34.route_planning.Graph;
 
-public class JobAssigner extends Thread
-{
+public class JobAssigner extends Thread {
 	final static Logger logger = Logger.getLogger(JobAssigner.class);
 
 	private PriorityQueue<Job> jobs;
@@ -22,11 +21,11 @@ public class JobAssigner extends Thread
 	private Graph graph;
 
 	@Override
-	public void run(){
+	public void run() {
 		assignJobs();
 	}
 
-	public JobAssigner(PriorityQueue<Job> jobs){
+	public JobAssigner(PriorityQueue<Job> jobs) {
 		logger.debug("Started JobAssigner");
 		this.jobs = jobs;
 		logger.debug("Received jobs");
@@ -36,12 +35,11 @@ public class JobAssigner extends Thread
 		graph = new Graph();
 	}
 
-	public void assignJobs()
-	{
+	public void assignJobs() {
 		ArrayList<Robot> robots = RobotManager.getRobots();
 		// run while there are jobs in the PriorityQueue
 		while (!jobs.isEmpty() || !areAllIdle(robots)) {
-			
+
 			// iterate through every robot and check the status
 			for (Robot robot : robots) {
 				if (!jobs.isEmpty() && robot.getRobotStatus() == Status.IDLE) {
@@ -81,7 +79,7 @@ public class JobAssigner extends Thread
 						robot.setCurrentlyGoingToItem(false);
 
 					// start route planning
-					
+
 					graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot);
 					logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
 							+ robot.getYLoc() + " to" + destination);
@@ -91,7 +89,7 @@ public class JobAssigner extends Thread
 
 				if (robot.getRobotStatus() == Status.AT_ITEM) {
 					logger.debug("Robot at item");
-					
+
 					ArrayList<Item> items = robot.getItemsToPick();
 
 					ArrayList<String> destinations = robot.getDestinations();
@@ -105,9 +103,9 @@ public class JobAssigner extends Thread
 						robot.setDestinations(destinations);
 						if (items.size() > 0) {
 							Item item = items.get(0);
-							
+
 							if (destination.equals(item.getX() + "|" + item.getY())) {
-								
+
 								robot.setCurrentlyGoingToItem(true);
 								robot.setCurrentItem(item);
 								items.remove(0);
@@ -120,11 +118,12 @@ public class JobAssigner extends Thread
 						logger.debug("Sent robot #" + robots.indexOf(robot) + " from " + robot.getXLoc() + "|"
 								+ robot.getYLoc() + " to" + destination);
 						graph.executeRoute(robot.getXLoc() + "|" + robot.getYLoc(), destination, robot);
-						
+
 						robot.setRobotStatus(Status.RUNNING);
 					} else {
-						//logger.debug("Robot #" + robot.getRobotId() + " has finished job "
-						//		+ robot.getCurrentJob().getJobId());
+						// logger.debug("Robot #" + robot.getRobotId() + " has
+						// finished job "
+						// + robot.getCurrentJob().getJobId());
 					}
 				}
 			}
@@ -135,10 +134,11 @@ public class JobAssigner extends Thread
 	private boolean areAllIdle(ArrayList<Robot> robots) {
 		boolean areAllIdle = true;
 		for (Robot robot : robots) {
-			if (robot.getRobotStatus() != Status.IDLE) 
+			if (robot.getRobotStatus() != Status.IDLE)
 				areAllIdle = false;
 		}
-		if (areAllIdle) System.out.println("all idle");
+		if (areAllIdle)
+			System.out.println("all idle");
 		return areAllIdle;
 	}
 }
