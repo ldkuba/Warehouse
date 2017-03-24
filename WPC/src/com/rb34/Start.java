@@ -10,6 +10,8 @@ import com.rb34.job_input.Drop;
 import com.rb34.job_input.Item;
 import com.rb34.job_input.Job;
 import com.rb34.job_input.Order;
+import com.rb34.job_input.Reader;
+import com.rb34.job_selection.Selection;
 import com.rb34.network.Master;
 
 public class Start
@@ -19,44 +21,17 @@ public class Start
 
 	public static void main(String[] args)
 	{
-
-		System.out.println("0");
-
-		Job job = new Job("1");
-
-		Item p1 = new Item("p1", 0f, 0f);
-		p1.setX(10);
-		p1.setY(0);
-
-		job.addItem("p1", new Order(p1, 1));
-
-		Job job2 = new Job("2");
-
-		Item p2 = new Item("p2", 0f, 0f);
-		p2.setX(9);
-		p2.setY(2);
-
-		job2.addItem("p2", new Order(p2, 1));		
+		Reader.setFilePath("myDocs/");
 		
-		ArrayList<Drop> drops = new ArrayList<>();
-		drops.add(new Drop(9, 0));
-
-		PriorityQueue<Job> orderedJobs = new PriorityQueue<>();
-
-		orderedJobs.add(job);
-		orderedJobs.add(job2);
-
-		System.out.println("2");
-
 		master = new Master();
 		master.start();
 		
 		Robot robot = new Robot();
-		robot.setXLoc(11);
-		robot.setYLoc(1);
-		robot.setHeading("S");
+		robot.setXLoc(0);
+		robot.setYLoc(0);
+		robot.setHeading("E");
 		robot.setRobotId(0);
-
+		/*
 		Robot robot2 = new Robot();
 		robot2.setXLoc(9);
 		robot2.setYLoc(0);
@@ -70,8 +45,15 @@ public class Start
 		robot3.setRobotId(2);
 		*/
 		
-		System.out.println("3");
+		ArrayList<Drop> drops = Reader.createDropList();
 
+		System.out.println(drops.size());
+		//System.out.println(Selection.sortJobs().size());
+		
+		for (Job job : Selection.sortJobs()) {
+			System.out.println(job.getJobId());
+		}
+		
 		while(!master.areAllConnected())
 		{
 			
@@ -79,17 +61,13 @@ public class Start
 		
 		RobotManager rm = new RobotManager();
 		rm.addRobot(robot);
-		rm.addRobot(robot2);
+	//	rm.addRobot(robot2);
 //		rm.addRobot(robot3);
-
-		System.out.println("4");
 
 		master.addListener(rm);
 		
-		JobAssigner jobAssigner = new JobAssigner(orderedJobs, rm, drops);
+		JobAssigner jobAssigner = new JobAssigner(Selection.sortJobs(), rm, drops);
 		jobAssigner.assignJobs(); // Runs Job_Assignment
-
-		System.out.println("5");
 
 		try
 		{

@@ -39,7 +39,7 @@ public class LineFollowing implements Behavior
 
 		robotConfig = new WheeledRobotConfiguration (0.059f, 0.115f, 0.17f, Motor.C, Motor.A);
 		pilot = new WheeledRobotSystem (robotConfig).getPilot();
-		pilot.setTravelSpeed((pilot.getMaxTravelSpeed()/10)*2);
+		pilot.setTravelSpeed((pilot.getMaxTravelSpeed()/10)*7); //change back to times 6 if this is too fast..
 		pilot.setRotateSpeed((pilot.getRotateMaxSpeed()/10)*2);
 
 	}
@@ -71,7 +71,7 @@ public class LineFollowing implements Behavior
 		// If left sensor on line && right sensor is not => Go left
 		while (leftOnBlack() && !rightOnBlack())
 		{
-			pilot.rotateLeft();
+			pilot.rotate(2.5, true);
 
 			if (Button.ESCAPE.isDown())
 			{ // make sure that robot will stop program if escape button is
@@ -79,7 +79,7 @@ public class LineFollowing implements Behavior
 				System.exit(0);
 				suppress();
 			}
-			Delay.msDelay(20);
+			//Delay.msDelay(70);
 		}
 	}
 
@@ -88,7 +88,7 @@ public class LineFollowing implements Behavior
 		// If right sensor on line && left sensor is not => Go right
 		while (!leftOnBlack() && rightOnBlack())
 		{
-			pilot.rotateRight();
+			pilot.rotate(-2.5, true);
 
 			if (Button.ESCAPE.isDown())
 			{ // make sure that robot will stop program if escape button is
@@ -96,7 +96,7 @@ public class LineFollowing implements Behavior
 				System.exit(0);
 				suppress();
 			}
-			Delay.msDelay(20);
+			//Delay.msDelay(70);
 		}
 	}
 

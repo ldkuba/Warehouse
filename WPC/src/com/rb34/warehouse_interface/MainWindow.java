@@ -3,31 +3,30 @@ package com.rb34.warehouse_interface;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
 
 import com.rb34.general.RobotManager;
-import com.rb34.jobInput.Item;
-
-import javax.swing.JLabel;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import javax.swing.JButton;
+import com.rb34.job_input.Item;
 
 public class MainWindow {
 
 	private JFrame frame;
 	static RobotManager manager;
 	static int robotNum;
-	final static Logger log4j = Logger.getLogger(WarehouseWindow.class);
+	final static Logger log4j = Logger.getLogger(MainWindow.class);
 
 	/**
 	 * Launch the application.

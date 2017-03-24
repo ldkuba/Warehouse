@@ -105,6 +105,30 @@ public class ArrayUtils
 		
 		return bytes;
 	}
+	
+	public static byte[] longToBytes(long a)
+	{
+		byte[] bytes = new byte[8];
+		for (int i = 0; i < 8; i++)
+		{
+			bytes[i] = (byte) (a >>> (i * 8));
+		}
+
+		return reverse(bytes);
+	}
+	
+	public static byte[] longArrayToBytes(long[] array)
+	{
+		byte[] bytes = new byte[4];
+		bytes = concat(bytes, intToBytes(array.length));
+		
+		for(int i = 0; i < array.length; i++)
+		{
+			bytes = concat(bytes, longToBytes(array[i]));
+		}
+		
+		return bytes;
+	}
 
 	public static byte[] stringToBytes(String s)
 	{
