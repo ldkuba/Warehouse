@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
+import com.rb34.Start;
 import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
 import com.rb34.job_assignment.JobAssigner;
@@ -49,15 +50,13 @@ public class StartScreen {
 	private String pathName;
 	JOptionPane opt;
 	final static Logger log4j = Logger.getLogger(StartScreen.class);
-	private JTextField DropX;
-	private JTextField DropY;
-	private JTextField Drop2X;
-	private JTextField Drop2Y;
+	private RobotManager robotManager;
 
 	/**
 	 * Create the application.
 	 */
 	public StartScreen() {
+		robotManager = new RobotManager();
 		initialize();
 		frame.setVisible(true);
 	}
@@ -134,7 +133,7 @@ public class StartScreen {
 		frame.getContentPane().add(lblNumberOfRobots, gbc_lblNumberOfRobots);
 
 		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Select Robot", "1", "2", "3" }));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3" }));
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
@@ -151,126 +150,13 @@ public class StartScreen {
 		frame.getContentPane().add(lblOperatingMode, gbc_lblOperatingMode);
 
 		JComboBox cmbMode = new JComboBox();
-		cmbMode.setModel(new DefaultComboBoxModel(new String[] { "Select Mode", "Localisation", "Manual" }));
+		cmbMode.setModel(new DefaultComboBoxModel(new String[] { "Localisation", "Manual" }));
 		GridBagConstraints gbc_cmbMode = new GridBagConstraints();
 		gbc_cmbMode.insets = new Insets(0, 0, 5, 5);
 		gbc_cmbMode.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cmbMode.gridx = 4;
 		gbc_cmbMode.gridy = 4;
 		frame.getContentPane().add(cmbMode, gbc_cmbMode);
-
-		
-		JLabel lblSetDropOff = new JLabel("Set Drop Off 1:");
-		GridBagConstraints gbc_lblSetDropOff = new GridBagConstraints();
-		gbc_lblSetDropOff.anchor = GridBagConstraints.WEST;
-		gbc_lblSetDropOff.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSetDropOff.gridx = 3;
-		gbc_lblSetDropOff.gridy = 5;
-		frame.getContentPane().add(lblSetDropOff, gbc_lblSetDropOff);
-		
-		DropX = new JTextField();
-		DropX.setText("X");
-		DropX.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				DropX.setText("");
-
-			}
-		});
-		GridBagConstraints gbc_DropX = new GridBagConstraints();
-		gbc_DropX.anchor = GridBagConstraints.WEST;
-		gbc_DropX.insets = new Insets(0, 0, 5, 5);
-		gbc_DropX.gridx = 3;
-		gbc_DropX.gridy = 6;
-		frame.getContentPane().add(DropX, gbc_DropX);
-		DropX.setColumns(10);
-		
-		DropY = new JTextField();
-		DropY.setText("Y");
-		DropY.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				DropY.setText("");
-
-			}
-		});
-		GridBagConstraints gbc_DropY = new GridBagConstraints();
-		gbc_DropY.anchor = GridBagConstraints.WEST;
-		gbc_DropY.insets = new Insets(0, 0, 5, 5);
-		gbc_DropY.gridx = 4;
-		gbc_DropY.gridy = 6;
-		frame.getContentPane().add(DropY, gbc_DropY);
-		DropY.setColumns(10);
-		
-		JLabel lblSetDropOff2 = new JLabel("Set Drop Off 2:");
-		GridBagConstraints gbc_lblSetDropOff2 = new GridBagConstraints();
-		gbc_lblSetDropOff2.anchor = GridBagConstraints.WEST;
-		gbc_lblSetDropOff2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSetDropOff2.gridx = 3;
-		gbc_lblSetDropOff2.gridy = 7;
-		frame.getContentPane().add(lblSetDropOff2, gbc_lblSetDropOff2);
-		
-		Drop2X = new JTextField();
-		Drop2X.setText("X");
-		Drop2X.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				Drop2X.setText("");
-
-			}
-		});
-		GridBagConstraints gbc_Drop2X = new GridBagConstraints();
-		gbc_Drop2X.anchor = GridBagConstraints.WEST;
-		gbc_Drop2X.insets = new Insets(0, 0, 5, 5);
-		gbc_Drop2X.gridx = 3;
-		gbc_Drop2X.gridy = 8;
-		frame.getContentPane().add(Drop2X, gbc_Drop2X);
-		Drop2X.setColumns(10);
-		
-		Drop2Y = new JTextField();
-		Drop2Y.setText("Y");
-		Drop2Y.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				Drop2Y.setText("");
-
-			}
-		});
-		GridBagConstraints gbc_Drop2Y = new GridBagConstraints();
-		gbc_Drop2Y.anchor = GridBagConstraints.WEST;
-		gbc_Drop2Y.insets = new Insets(0, 0, 5, 5);
-		gbc_Drop2Y.gridx = 4;
-		gbc_Drop2Y.gridy = 8;
-		frame.getContentPane().add(Drop2Y, gbc_Drop2Y);
-		Drop2Y.setColumns(10);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
@@ -294,42 +180,18 @@ public class StartScreen {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String type = (String) comboBox.getSelectedItem();
-				int val = 0;
-				if (!type.equals("Select Robot")) {
-					val = Integer.parseInt(type);
-				}
-
+				int val = Integer.parseInt(type);
 				for (int i = 0; i < val; i++) {
 					Robot robot = new Robot();
 					RobotManager.addRobot(robot);
+					System.err.println(RobotManager.getRobots().size());
+
 				}
+
 				boolean shouldRun = true;
-				int dropX = Integer.parseInt(DropX.getText());
-				int dropY = Integer.parseInt(DropY.getText());
-				
-				int dropX2 = Integer.parseInt(Drop2X.getText());
-				int dropY2 = Integer.parseInt(Drop2Y.getText());
-				
-				if (dropX <= 11 && dropX >= 0 && dropY <= 7 && dropY >= 0) {
-					RobotManager.addDropoff(dropX, dropY);
-				} else {
-					shouldRun = false;
-					opt.showMessageDialog(frame,
-							"Error: Coordinates are out of Range! Max X = 11 and Max Y = 7");
-				}
-				
-				if (dropX2 <= 11 && dropX2 >= 0 && dropY2 <= 7 && dropY2 >= 0) {
-					RobotManager.addDropoff(dropX2, dropY2);
-				} else {
-					shouldRun = false;
-					opt.showMessageDialog(frame,
-							"Error: Coordinates are out of Range! Max X = 11 and Max Y = 7");
-				}
-				
-				
-				
+
 				String type2 = (String) cmbMode.getSelectedItem();
-				
+
 				int xpos, ypos, xpos2, ypos2, xpos3, ypos3;
 				if (type2.equals("Manual")) {
 					if (val == 1) {
@@ -459,13 +321,23 @@ public class StartScreen {
 					Reader.setFilePath(pathName + "\\");
 					// ADD CODE FOR RUNNING JOBS
 
-					RobotManager.initRobots();
-
 					if (shouldRun == true) {
-						new MainWindow(val).start();
+						Start.master.start();
+						while (Start.master.areAllConnected()) {
+						}
+						RobotManager.setDropoffs(new Reader().createDropList());
+						RobotManager.initRobots();
+
+						Start.master.addListener(robotManager); // Initialize
+
 						frame.dispose();
 						JobAssigner assigner = new JobAssigner(Selection.sortJobs());
 						assigner.start();
+
+						// while(RobotManager.getRobot(0).getCurrentJob() ==
+						// null){}
+
+						new MainWindow(val).start();
 					}
 
 				} else if (type2.equals("Localisation")) {
@@ -656,14 +528,13 @@ public class StartScreen {
 		heading3.setBounds(144, 49, 92, 24);
 		rb3.add(heading3);
 
-		// tabbedPane.removeTabAt(2);
-
 		comboBox.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String type = (String) comboBox.getSelectedItem();
 				int val = Integer.parseInt(type);
+				
 				tabbedPane.removeAll();
 				tabbedPane.addTab("Robot 1", rb1);
 				tabbedPane.addTab("Robot 2", rb2);
@@ -678,6 +549,9 @@ public class StartScreen {
 
 			}
 		});
+		
+		tabbedPane.addTab("Robot 1", rb1);
+
 
 	}
 
