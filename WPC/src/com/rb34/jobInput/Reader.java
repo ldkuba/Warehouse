@@ -6,8 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-// import org.apache.logging.log4j.core.Logger;
-import org.apache.log4j.*;
+import org.apache.logging.log4j.core.Logger;
+
 
 
 public class Reader {
@@ -20,7 +20,7 @@ public class Reader {
 	public static ArrayList <Drop> createDropList(){
 		BufferedReader reader = null;
 		ArrayList<Drop> dropList = new ArrayList<Drop>();
-		final String FILE_PATH = "/Users/mitch/Documents/Uni/Robot Programming/Warehouse/";
+		final String FILE_PATH = "myDocs/";
 		
 		try {
 			File fileDrop = new File(FILE_PATH + "drops.csv");
@@ -58,7 +58,7 @@ public class Reader {
 	public static ArrayList<Job> createJobList() {
 		BufferedReader reader = null;
 		ArrayList<Item> itemList = new ArrayList<Item>();
-		final String FILE_PATH = "/Users/mitch/Documents/Uni/Robot Programming/Warehouse/";
+		final String FILE_PATH = "myDocs/";
 
 		try {			
 			//First: Reads items.csv and creates an ArrayList of Items
@@ -176,7 +176,7 @@ public class Reader {
 	public static ArrayList<Job> createSampleJobList() {
 		BufferedReader reader = null;
 		ArrayList<Item> itemList = new ArrayList<Item>();
-		final String FILE_PATH = "/Users/mitch/Documents/Uni/Robot Programming/Warehouse/";
+		final String FILE_PATH = "myDocs/";
 
 		try {			
 			//First: Reads items.csv and creates an ArrayList of Items
