@@ -112,10 +112,12 @@ public class LineFollowing implements Behavior
 	{
 		supressed = false;
 
+		System.out.println("RUNNING LINE BEHAVIOR");
+		
 		pilot.stop();
 		while (!supressed)
 		{
-
+			
 			if (shouldMove.isShouldMove())
 			{
 				pilot.forward();
@@ -153,38 +155,6 @@ public class LineFollowing implements Behavior
 				 */
 				Delay.msDelay(30);
 			}
-		}
-	}
-
-	public void doFirstAction()
-	{
-		doFirstAction = true;
-	}
-
-	public void doAction(int i)
-	{
-		switch (i)
-		{
-		case 0:
-			pilot.arc(80.5, 90, true);
-			// UpdateDirectionAndCo(0);
-			screen.updateState("Left");
-			break;
-		case 1:
-			pilot.arc(-80.5, -90, true);
-			// UpdateDirectionAndCo(1);
-			screen.updateState("Right");
-			break;
-		case 2:
-			pilot.travel(75.0, true);
-			// UpdateDirectionAndCo(2);
-			screen.updateState("Forward");
-			break;
-		case 3:
-			pilot.rotate(180, true);
-			// UpdateDirectionAndCo(3);
-			screen.updateState("Rotate");
-			break;
 		}
 	}
 

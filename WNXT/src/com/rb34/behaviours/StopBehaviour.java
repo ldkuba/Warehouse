@@ -15,7 +15,7 @@ public class StopBehaviour implements Behavior {
 	private boolean supressed;
 
 	public StopBehaviour() {
-		robotConfig = new WheeledRobotConfiguration (0.059f, 0.115f, 0.17f, Motor.A, Motor.C);
+		robotConfig = new WheeledRobotConfiguration (0.059f, 0.115f, 0.17f, Motor.C, Motor.A);
 		pilot = new WheeledRobotSystem (robotConfig).getPilot();
 		pilot.setTravelSpeed((pilot.getMaxTravelSpeed()/10)*2);
 		pilot.setRotateSpeed((pilot.getRotateMaxSpeed()/10)*2);
