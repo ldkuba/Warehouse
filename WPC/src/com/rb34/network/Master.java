@@ -1,6 +1,7 @@
 package com.rb34.network;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.rb34.connection.BluetoothConnection;
 import com.rb34.connection.Connection;
@@ -16,25 +17,30 @@ public class Master extends Thread
 	private ArrayList<Connection> connections;
 
 	private boolean running = true;
+	private HashMap<String, String> robotIds;
 
 	public Master()
 	{
 		connections = new ArrayList<Connection>();
+		robotIds = new HashMap<>();
+		robotIds.put("NiXTy", "001653157A48");
+		robotIds.put("Red Riding Hood", "0016531AFBBB");
+		robotIds.put("WALL-E", "001653115A7E");
 	}
 
 	public void run()
 	{
 		try
 		{
-			
+			/*
 			BluetoothConnection connection1 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "NiXTy", "001653157A48"));
 			connections.add(connection1);
 			connection1.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
-			/*
-			BluetoothConnection connection2 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "NXT", "0016531817C1"));
+			*/
+			BluetoothConnection connection2 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "Red Riding Hood", "0016531AFBBB"));
 			connections.add(connection2);
 			connection2.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
-			
+			/*
 			BluetoothConnection connection3 = new BluetoothConnection(new NXTInfo(NXTCommFactory.BLUETOOTH, "WALL-E", "001653115A7E"));
 			connections.add(connection3);
 			connection3.connect(NXTCommFactory.createNXTComm(NXTCommFactory.BLUETOOTH));
@@ -93,7 +99,6 @@ public class Master extends Thread
 	{
 		while(!areAllConnected())
 		{
-			System.out.println("Waiting for conneection");
 		}
 		
 		while(connections == null)

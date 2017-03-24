@@ -9,8 +9,7 @@ import com.rb34.Start;
 import com.rb34.general.PathChoices;
 import com.rb34.general.Robot;
 import com.rb34.message.NewPathMessage;
-import com.rb34.route_planning.graph_entities.IVertex;
-
+import com.rb34.route_planning.graph_entities.interfaces.IVertex;
 
 public class Execute {
 
@@ -18,34 +17,29 @@ public class Execute {
 	private ArrayList<IVertex> vertexPath;
 
 	private static final Logger log4j = LogManager.getLogger(Execute.class.getName());
-	
-	public Execute(){
-		
-	}
-	
+
+	public Execute() {}
+
 	public void runRoute(ArrayList<IVertex> path, Robot robot) {
-		 vertexPath = path;
-		 
-		 if(vertexPath == null) {
+		vertexPath = path;
+
+		if (vertexPath == null) {
 			log4j.error("Cannot convert to movement: Path is empty or in incorrect format for conversion");
 			throw new IllegalArgumentException("Path is empty");
-		 } 
-		 
+		}
+
 		ConvertToMovement converter = new ConvertToMovement();
 		log4j.trace("Initialised Movement Converting Object");
-		
+
 		String choosenPath = "";
 		for (IVertex node : path) {
-				choosenPath += node.getLabel().getName() + "; ";
+			choosenPath += node.getLabel().getName() + "; ";
 		}
-		
+
 		log4j.trace("Receieved Following Path for Conversion: " + choosenPath);
-		
-		
+
 		robotInstructions = converter.execute(vertexPath, robot);
 
-		
-		//Replace with method that sends to bluetooth
 		log4j.info("Converted Instructions" + robotInstructions);
 		int robotID = robot.getRobotId();
 		NewPathMessage msg = new NewPathMessage();

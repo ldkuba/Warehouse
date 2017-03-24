@@ -3,6 +3,8 @@ package com.rb34.route_planning.graph_entities;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import com.rb34.route_planning.graph_entities.interfaces.IVertex;
+
 // You return your results using this class. If all required
 // information is present, you get full marks. If you omit a solution
 // to a particular question, leave the corresponding field absent.

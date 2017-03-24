@@ -6,11 +6,9 @@ import java.util.Arrays;
 import com.rb34.general.PathChoices;
 import com.rb34.util.ArrayUtils;
 
-public class NewPathMessage implements Message
-{
+public class NewPathMessage implements Message {
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "NewPathMessage [type=" + type + ", robotId=" + robotId + ", commands=" + Arrays.toString(commands)
 				+ "]";
 	}
@@ -20,56 +18,44 @@ public class NewPathMessage implements Message
 
 	PathChoices[] commands;
 
-	public NewPathMessage()
-	{
+	public NewPathMessage() {
 	}
 
-	public int getRobotId()
-	{
+	public int getRobotId() {
 		return robotId;
 	}
 
-	public void setRobotId(int robotId)
-	{
+	public void setRobotId(int robotId) {
 		this.robotId = robotId;
 	}
 
-	public void setCommands(ArrayList<PathChoices> commandsList)
-	{
+	public void setCommands(ArrayList<PathChoices> commandsList) {
 		commands = new PathChoices[commandsList.size()];
-		for (int i = 0; i < commandsList.size(); i++)
-		{
-			if (commandsList.get(i).equals(PathChoices.FORWARD))
-			{
+		for (int i = 0; i < commandsList.size(); i++) {
+			if (commandsList.get(i).equals(PathChoices.FORWARD)) {
 				commands[i] = PathChoices.FORWARD;
-			} else if (commandsList.get(i).equals(PathChoices.LEFT))
-			{
+			} else if (commandsList.get(i).equals(PathChoices.LEFT)) {
 				commands[i] = PathChoices.LEFT;
-			} else if (commandsList.get(i).equals(PathChoices.RIGHT))
-			{
+			} else if (commandsList.get(i).equals(PathChoices.RIGHT)) {
 				commands[i] = PathChoices.RIGHT;
-			} else if (commandsList.get(i).equals(PathChoices.ROTATE))
-			{
+			} else if (commandsList.get(i).equals(PathChoices.ROTATE)) {
 				commands[i] = PathChoices.ROTATE;
 			}
 		}
 
 	}
 
-	public ArrayList<PathChoices> getCommands()
-	{
+	public ArrayList<PathChoices> getCommands() {
 		ArrayList<PathChoices> commandsList = new ArrayList<PathChoices>();
 
-		for (int i = 0; i < commands.length; i++)
-		{
+		for (int i = 0; i < commands.length; i++) {
 			commandsList.add(commands[i]);
 		}
 
 		return commandsList;
 	}
 
-	public byte[] toByteArray()
-	{
+	public byte[] toByteArray() {
 		int lengthInBytes = 4 + 4 + 4 * commands.length;
 
 		// GENERAL MESSAGE PARAMS
@@ -81,16 +67,14 @@ public class NewPathMessage implements Message
 
 		// COMMANDS
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(commands.length));
-		for (int i = 0; i < commands.length; i++)
-		{
+		for (int i = 0; i < commands.length; i++) {
 			output = ArrayUtils.concat(output, ArrayUtils.intToBytes(commands[i].ordinal()));
 		}
 
 		return output;
 	}
 
-	public static NewPathMessage fromByteArray(byte[] bytes)
-	{
+	public static NewPathMessage fromByteArray(byte[] bytes) {
 		NewPathMessage msg = new NewPathMessage();
 		int index = 0;
 
@@ -104,8 +88,7 @@ public class NewPathMessage implements Message
 		index += 4;
 		ArrayList<PathChoices> commands = new ArrayList<PathChoices>();
 
-		for (int i = 0; i < commandsLength; i++)
-		{
+		for (int i = 0; i < commandsLength; i++) {
 			commands.add(PathChoices.values()[ArrayUtils.bytesToInt(bytes, index)]);
 			index += 4;
 		}

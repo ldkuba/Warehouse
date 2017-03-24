@@ -57,6 +57,7 @@ public class JunctionFollower implements MessageListener {
 
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
 		arbitrator = new Arbitrator(behaviors);
+
 		arbitrator.start();	
 	}
 
@@ -68,10 +69,10 @@ public class JunctionFollower implements MessageListener {
 	@Override
 	public void recievedNewPathMessage(NewPathMessage msg) { //This is used by the network to set paths which the robot needs to follow
 		
-		System.out.println("Got path");
-		
+		System.out.println("Got path " + msg.getCommands().size());
 		turnBehavior.setPathFromMessage(msg.getCommands());
 		turnBehavior.setForceFirstAction(true);
+		waitBehavior.setFocingBehav(false);
 		waitBehavior.suppress();
 
 		// screen.updateState("Path size2: "+msg.getCommands().size());

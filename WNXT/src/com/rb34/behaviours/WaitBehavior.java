@@ -1,10 +1,5 @@
 package com.rb34.behaviours;
 
-import java.io.PrintStream;
-
-import rp.config.WheeledRobotConfiguration;
-import rp.systems.WheeledRobotSystem;
-
 import com.rb34.dummy.TrialMainNxt;
 import com.rb34.main.JunctionFollower;
 import com.rb34.message.RobotStatusMessage;
@@ -12,11 +7,11 @@ import com.rb34.robot_interface.RobotScreen;
 
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
-import lejos.nxt.Sound;
-import lejos.nxt.comm.RConsole;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
+import rp.config.WheeledRobotConfiguration;
+import rp.systems.WheeledRobotSystem;
 
 //This behaviour is used whenever the robot needs to wait.
 public class WaitBehavior implements Behavior {
@@ -91,7 +86,7 @@ public class WaitBehavior implements Behavior {
 					screen.resetCounter();
 				}
 			}
-
+			
 			if (Button.ENTER.isDown() && atPickup) { //Enter button should be pressed when picking/dropping is done
 				Delay.msDelay(750); //Making sure that the presses are registered correctly
 				screen.printPickingState();
@@ -157,7 +152,7 @@ public class WaitBehavior implements Behavior {
 				Delay.msDelay(750);
 				releaseCounter += 1;
 				screen.updateItemPickUpDecrease();
-				screen.printPickingState();
+				screen.printPickingState();  // 175:7 75:41
 			}
 
 			if (Button.ESCAPE.isDown()) {

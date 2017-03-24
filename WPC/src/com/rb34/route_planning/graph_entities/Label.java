@@ -2,6 +2,8 @@ package com.rb34.route_planning.graph_entities;
 
 import java.util.Optional;
 
+import com.rb34.route_planning.graph_entities.interfaces.IVertex;
+
 // A Label labels a vertex with a number of pieces of information: 
 
 public class Label {
@@ -17,7 +19,7 @@ public class Label {
 	// The name of the vertex with this label, in particular used for
 	// the dot file.
 	private String name;
-	
+
 	// x and y coordinates
 	private int x;
 	private int y;
@@ -64,7 +66,7 @@ public class Label {
 	public int getY() {
 		return y;
 	}
-	
+
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -72,11 +74,11 @@ public class Label {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
 	public void setTimestep(int time) {
 		this.timestep = time;
 	}
-	
+
 	public int getTimestep() {
 		return this.timestep;
 	}

@@ -94,8 +94,8 @@ public class LineFollowing implements Behavior {
 	@Override
 	public void action() {
 		supressed = false;
-
 		pilot.stop();
+
 		while (!supressed) {
 
 			if (shouldMove.isShouldMove()) {

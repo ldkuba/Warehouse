@@ -2,12 +2,11 @@ package com.rb34.message;
 
 import com.rb34.util.ArrayUtils;
 
-public class RobotInitMessage implements Message
-{
+public class RobotInitMessage implements Message {
 	@Override
-	public String toString()
-	{
-		return "RobotInitMessage [type=" + type + ", robotId=" + robotId + ", x=" + x + ", y=" + y + "]";
+	public String toString() {
+		return "RobotInitMessage [type=" + type + ", robotId=" + robotId + ", x=" + x + ", y=" + y + ", heading="
+				+ heading + "]";
 	}
 
 	private final byte type = 3;
@@ -15,45 +14,46 @@ public class RobotInitMessage implements Message
 
 	private int x;
 	private int y;
+	private String heading;
 
-	public RobotInitMessage()
-	{
+	public RobotInitMessage() {
 	}
 
-	public int getRobotId()
-	{
+	public String getHeading() {
+		return heading;
+	}
+
+	public void setHeading(String heading) {
+		this.heading = heading;
+	}
+
+	public int getRobotId() {
 		return robotId;
 	}
 
-	public void setRobotId(int robotId)
-	{
+	public void setRobotId(int robotId) {
 		this.robotId = robotId;
 	}
 
-	public int getX()
-	{
+	public int getX() {
 		return x;
 	}
 
-	public void setX(int x)
-	{
+	public void setX(int x) {
 		this.x = x;
 	}
 
-	public int getY()
-	{
+	public int getY() {
 		return y;
 	}
 
-	public void setY(int y)
-	{
+	public void setY(int y) {
 		this.y = y;
 	}
 
 	@Override
-	public byte[] toByteArray()
-	{
-		int lengthInBytes = 4 + 4 + 4;
+	public byte[] toByteArray() {
+		int lengthInBytes = 4 + 4 + 4 + 4 + 2 * heading.length();
 
 		byte[] output = { type };
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(lengthInBytes));
@@ -67,11 +67,14 @@ public class RobotInitMessage implements Message
 		// Y POS
 		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(y));
 
+		// HEADING
+		output = ArrayUtils.concat(output, ArrayUtils.intToBytes(heading.length() * 2));
+		output = ArrayUtils.concat(output, ArrayUtils.stringToBytes(heading));
+
 		return output;
 	}
 
-	public static RobotInitMessage fromByteArray(byte[] bytes)
-	{
+	public static RobotInitMessage fromByteArray(byte[] bytes) {
 		RobotInitMessage msg = new RobotInitMessage();
 		int index = 0;
 
@@ -89,6 +92,14 @@ public class RobotInitMessage implements Message
 		int y = ArrayUtils.bytesToInt(bytes, index);
 		index += 4;
 		msg.setY(y);
+
+		// HEADING
+		int headingLength = ArrayUtils.bytesToInt(bytes, index);
+		index += 4;
+		byte[] headingBytes = ArrayUtils.subArray(bytes, index, index + headingLength);
+		index += headingLength;
+		String head = ArrayUtils.bytesToString(headingBytes);
+		msg.setHeading(head);
 
 		return msg;
 	}

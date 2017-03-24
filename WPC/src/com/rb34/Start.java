@@ -1,103 +1,28 @@
 package com.rb34;
 
-import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
-import com.rb34.general.interfaces.IRobot.Status;
-import com.rb34.jobInput.Drop;
-import com.rb34.jobInput.Item;
-import com.rb34.jobInput.Job;
-import com.rb34.jobInput.Order;
-import com.rb34.jobInput.Reader;
-import com.rb34.job_assignment.JobAssigner;
+
 import com.rb34.network.Master;
+import com.rb34.warehouse_interface.StartScreen;
 
-import java.util.ArrayList;
-import java.util.PriorityQueue;
-
-public class Start
-{
-
+public class Start {
 	public static Master master;
 
-	public static void main(String[] args)
-	{
-
-		System.out.println("0");
-
-		Job job = new Job("1");
-
-		Item p1 = new Item("p1", 0f, 0f);
-		p1.setX(5);
-		p1.setY(6);
-
-		job.addItem("p1", new Order(p1, 1));
-
-		Job job2 = new Job("2");
-
-		Item p2 = new Item("p2", 0f, 0f);
-		p2.setX(3);
-		p2.setY(7);
-
-		job2.addItem("p2", new Order(p2, 1));		
-		
-		ArrayList<Drop> drops = new ArrayList<>();
-		drops.add(new Drop(0, 7));
-
-		PriorityQueue<Job> orderedJobs = new PriorityQueue<>();
-
-		orderedJobs.add(job);
-		orderedJobs.add(job2);
-
-		System.out.println("2");
-
+	public static void main(String[] args) {
 		master = new Master();
-		master.start();
-		
-		Robot robot = new Robot();
-		robot.setXLoc(0);
-		robot.setYLoc(4);
-		robot.setRobotId(0);
-/*		
-		Robot robot2 = new Robot();
-		robot2.setXLoc(0);
-		robot2.setYLoc(4);
-		robot2.setRobotId(1);
-
-		Robot robot3 = new Robot();
-		robot3.setXLoc(1);
-		robot3.setYLoc(0);
-		robot3.setRobotId(2);
-		*/
-		System.out.println("3");
-
-		while(!master.areAllConnected())
-		{
-			
+		Start.master.start();
+		while (Start.master.areAllConnected()) {
 		}
-		
-		RobotManager rm = new RobotManager();
-		rm.addRobot(robot);
-		//rm.addRobot(robot2);
-//		rm.addRobot(robot3);
 
-		System.out.println("4");
-
-		master.addListener(rm);
-		
-		JobAssigner jobAssigner = new JobAssigner(orderedJobs, rm, drops);
-		jobAssigner.assignJobs(); // Runs Job_Assignment
-
-		System.out.println("5");
-
-		try
-		{
+		master.addListener(new RobotManager()); // Initialize
+		System.out.println("A");
+		new StartScreen();
+		System.out.println("B");
+	
+		try {
 			master.join();
-		} catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		// Run Warehouse_Interface
 	}
-
 }

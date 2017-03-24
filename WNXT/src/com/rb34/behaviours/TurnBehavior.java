@@ -72,6 +72,7 @@ public class TurnBehavior implements Behavior {
 		pilot.setRotateSpeed((pilot.getRotateMaxSpeed() / 10) * 2);
 	}
 
+
 	// This behaviour will take control if both sensors see black, meaning that
 	// the robot is at a junction, or if the first action is being forced. First
 	// action is forced when a new path is given.
@@ -120,7 +121,19 @@ public class TurnBehavior implements Behavior {
 				}
 
 				pilot.rotate(90, true);
-			} else {
+			} else
+			{
+				pilot.travel(0.05, true);
+
+				while (!supressed && pilot.isMoving())
+				{
+
+					if (Button.ESCAPE.isDown())
+					{
+						System.exit(0);
+					}
+				}
+
 				pilot.rotateLeft();
 
 				while (!leftOnBlack()) {
@@ -137,10 +150,12 @@ public class TurnBehavior implements Behavior {
 				pilot.stop();
 			}
 
+
 			if (!lastAction) { // Makes sure that coordinates are updated,
 								// unless this is the last action, as update is
 								// not needed at that point.
 				updateCo(0);
+				updateDirection(0);
 			}
 			updateDirection(0); // Updates the heading of the robot after every
 								// action so that coordinates can be updated
@@ -154,6 +169,7 @@ public class TurnBehavior implements Behavior {
 										// is the first action then robot will
 										// turn right until right sensor sees
 										// black.
+
 				pilot.travel(0.05, true);
 
 				while (!supressed && pilot.isMoving()) {
@@ -183,32 +199,42 @@ public class TurnBehavior implements Behavior {
 
 			if (!lastAction) {
 				updateCo(1);
+				updateDirection(1);
 			}
-			updateDirection(1);
+
 			screen.updateState("Right");
 			break;
 		case 2: // moving forward
 			pilot.travel(0.05, true);
 			if (!lastAction) {
 				updateCo(2);
+				updateDirection(2);
 			}
-			updateDirection(2);
+
 			screen.updateState("Forward");
 			break;
-		case 3: // rotating 180 degrees
-			pilot.travel(0.05, true);
+		case 3:
+
+			System.out.println("180");
+
+			if (!forceFirstAction)
+			{
+				pilot.travel(0.05, true);
+			}
 
 			while (!supressed && pilot.isMoving()) {
 				if (Button.ESCAPE.isDown()) {
 					System.exit(0);
 				}
 			}
+			pilot.rotate(195, true);
 
-			pilot.rotate(180, true);
-			if (!lastAction) {
+			if (!lastAction)
+			{
 				updateCo(3);
+				updateDirection(3);
 			}
-			updateDirection(3);
+
 			screen.updateState("Rotate");
 			break;
 		case 4: // waiting for 1 time unit. (1 time unit is time taken to go

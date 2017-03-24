@@ -1,12 +1,12 @@
 package com.rb34.behaviours;
 
-import rp.config.WheeledRobotConfiguration;
-import rp.systems.WheeledRobotSystem;
 import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.addon.OpticalDistanceSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
+import rp.config.WheeledRobotConfiguration;
+import rp.systems.WheeledRobotSystem;
 
 // This behaviour will allow the robot to keep a specific distance away from obstacles/other robots. 
 
@@ -64,6 +64,7 @@ public class DistanceKeeping implements Behavior {
 	public void action() {
 		supressed = false;
 		System.out.println("In stopping action");
+		
 		pilot.stop(); // This means that while something is in the range i.e.
 						// too close the robot will just wait where it is.
 
