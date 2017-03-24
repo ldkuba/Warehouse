@@ -35,7 +35,7 @@ public class Graph implements IGraph {
 	boolean testing = false;
 
 	// Constructor with GridMap parameter
-	public Graph(RobotManager robotManager) {
+	public Graph() {
 		vertices = new HashMap<>();
 		reservationTable = new HashMap<>();
 
@@ -64,7 +64,7 @@ public class Graph implements IGraph {
 		for (int i = 0; i < robotTimeTracker.length; i++)
 			robotTimeTracker[i] = 0;
 
-		for (Robot robot : robotManager.getRobots()) {
+		for (Robot robot : RobotManager.getRobots()) {
 			if (!reservationTable.containsKey(robot.getXLoc() + "|" + robot.getYLoc())) {
 				ReservationInfo reservation = new ReservationInfo(robot.getRobotId(), 0);
 				ArrayList<ReservationInfo> reservations = new ArrayList<>();
@@ -355,6 +355,8 @@ public class Graph implements IGraph {
 		for (IVertex pathV : result.getPath().get()) {
 			path.add(pathV);
 		}
+		
+		result.setPath(path);
 
 		for (int i = 0; i < path.size(); i++) {
 			IVertex vertex = path.get(i);

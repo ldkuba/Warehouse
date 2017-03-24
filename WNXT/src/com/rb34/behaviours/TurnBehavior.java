@@ -202,7 +202,7 @@ public class TurnBehavior implements Behavior
 				pilot.stop();
 			}
 
-			if (!lastAction)
+			if(!lastAction)
 			{
 				updateCo(0);
 			}
@@ -247,7 +247,7 @@ public class TurnBehavior implements Behavior
 				pilot.stop();
 			}
 
-			if (!lastAction)
+			if(!lastAction)
 			{
 				updateCo(1);
 			}
@@ -259,7 +259,8 @@ public class TurnBehavior implements Behavior
 			System.out.println("FORWARD");
 			
 			pilot.travel(0.05, true);
-			if (!lastAction)
+			
+			if(!lastAction)
 			{
 				updateCo(2);
 			}
@@ -282,7 +283,8 @@ public class TurnBehavior implements Behavior
 			}
 
 			pilot.rotate(180, true);
-			if (!lastAction)
+				
+			if(!lastAction)
 			{
 				updateCo(3);
 			}

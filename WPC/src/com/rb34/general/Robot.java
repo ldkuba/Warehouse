@@ -60,9 +60,7 @@ public class Robot implements IRobot
 
 	public void setDestinations(ArrayList<String> destinations)
 	{
-		System.out.println("destinations set");
-		this.destinations.clear();
-		this.destinations = new ArrayList<>(destinations);
+		this.destinations = destinations;
 	}
 	
 	public int getXDes(){

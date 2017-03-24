@@ -30,7 +30,6 @@ import com.rb34.job_input.Item;
 public class RobotInformation {
 
 	private JFrame frmDetailedRobotBreakdown;
-	static RobotManager manager;
 	private JScrollPane scrollPane;
 	private JPanel panel;
 	private String lblName;
@@ -46,8 +45,7 @@ public class RobotInformation {
 	 */
 	
 	@SuppressWarnings("static-access")
-	public RobotInformation(RobotManager manager,int robotNum) {
-		this.manager = manager;
+	public RobotInformation(int robotNum) {
 		lblName = "";
 		this.robotNum = robotNum;
 	}  
@@ -167,11 +165,11 @@ public class RobotInformation {
 			public void actionPerformed(ActionEvent arg0) {
 				String type = (String)comboBox.getSelectedItem();
 				if(type.equals("Robot 1")) {
-					manager.getRobot(0).setRobotStatus(Status.IDLE);
+					RobotManager.getRobot(0).setRobotStatus(Status.IDLE);
 					log4j.info("Cancelled robot 1's current job");
 				} else if(type.equals("Robot 2")) {
 					if(robotNum==2) {
-						manager.getRobot(1).setRobotStatus(Status.IDLE);
+						RobotManager.getRobot(1).setRobotStatus(Status.IDLE);
 						log4j.info("Cancelled robot 2's current job");
 					} else {
 						panel.removeAll();
@@ -182,7 +180,7 @@ public class RobotInformation {
 					}
 				} else if(type.equals("Robot 3")) {
 					if(robotNum == 3) {
-						manager.getRobot(2).setRobotStatus(Status.IDLE);
+						RobotManager.getRobot(2).setRobotStatus(Status.IDLE);
 						log4j.info("Cancelled robot 3's current job");
 					} else {
 						panel.removeAll();
@@ -274,7 +272,7 @@ public class RobotInformation {
 	}
 	
 	public void setInformation(int robotId) {
-		ArrayList<Item> items = manager.getRobot(robotId).getItemsToPick();
+		ArrayList<Item> items = RobotManager.getRobot(robotId).getItemsToPick();
 		String itemName = "";
 		float itemReward = 0;
 		float itemWeight = 0;
@@ -283,7 +281,7 @@ public class RobotInformation {
 
 		panel.removeAll(); 
 		
-		String jobId = manager.getRobot(robotId).getCurrentJob().getJobId();
+		String jobId = RobotManager.getRobot(robotId).getCurrentJob().getJobId();
 		JLabel itemHead = new JLabel("<html><u>Current Job ID:</u> " + jobId + "</html>");
 		itemHead.setFont(new Font("Dialog", Font.BOLD, 15));
 		
@@ -325,13 +323,13 @@ public class RobotInformation {
 		destHead.setFont(new Font("Dialog", Font.BOLD, 15));
 		panel.add(destHead);
 		
-		ArrayList<String> dests = manager.getRobot(robotId).getDestinations();
+		ArrayList<String> dests = RobotManager.getRobot(robotId).getDestinations();
 		String destList = dests.toString();
 		
 		JLabel dest = new JLabel(destList);
 		panel.add(dest);
 		
-		boolean wasCancelled = manager.getRobot(robotId).getCurrentJob().getCancelled();
+		boolean wasCancelled = RobotManager.getRobot(robotId).getCurrentJob().getCancelled();
 		
 		if(wasCancelled) {
 			String cncl = "WARNING: This job was previously cancelled";

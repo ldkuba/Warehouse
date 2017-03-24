@@ -32,12 +32,19 @@ public class RobotManager implements MessageListener
 	public static void addRobot(Robot newRobot)
 	{
 		robotList.add(newRobot);
-		RobotInitMessage msg = new RobotInitMessage();
-		msg.setRobotId(newRobot.getRobotId());
-		msg.setX(newRobot.getXLoc());
-		msg.setY(newRobot.getYLoc());
-		msg.setHeading(newRobot.getHeading());
-		Start.master.send(msg, newRobot.getRobotId());
+	}
+	
+	public static void initRobots()
+	{
+		for(Robot newRobot : robotList)
+		{
+			RobotInitMessage msg = new RobotInitMessage();
+			msg.setRobotId(newRobot.getRobotId());
+			msg.setX(newRobot.getXLoc());
+			msg.setY(newRobot.getYLoc());
+			msg.setHeading(newRobot.getHeading());
+			Start.master.send(msg, newRobot.getRobotId());
+		}
 	}
 
 	public static ArrayList<Robot> getRobots()

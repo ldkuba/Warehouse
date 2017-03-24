@@ -157,21 +157,21 @@ class PathFrame extends Thread{
 		for(int i = 0; i < 3; i++){
 			robotImage.add(
 					new ImageIcon(
-							new ImageIcon("res/Robot" + (i + 1) + ".png")
+							new ImageIcon("resources/Robot" + (i + 1) + ".png")
 									.getImage()
 									.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH))
 			);
 
 			robotGoalImage.add(
 					new ImageIcon(
-							new ImageIcon("res/Robot" + (i + 1) + "Goal.png")
+							new ImageIcon("resources/Robot" + (i + 1) + "Goal.png")
 									.getImage()
 									.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH))
 			);
 
 			robotWaitImage.add(
 					new ImageIcon(
-							new ImageIcon("res/Robot" + (i + 1) + "Waiting.png")
+							new ImageIcon("resources/Robot" + (i + 1) + "Waiting.png")
 									.getImage()
 									.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH))
 			);
@@ -244,17 +244,17 @@ class PathFrame extends Thread{
 	 */
 	private synchronized void updateImageSizes(){
 		wallImage = new ImageIcon(
-				new ImageIcon("res/Wall.png")
+				new ImageIcon("resources/Wall.png")
 						.getImage()
 						.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH));
 
 		groundImage = new ImageIcon(
-				new ImageIcon("res/Ground.png")
+				new ImageIcon("resources/Ground.png")
 						.getImage()
 						.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH));
 
 		dropoffImage = new ImageIcon(
-				new ImageIcon("res/Dropoff.png")
+				new ImageIcon("resources/Dropoff.png")
 						.getImage()
 						.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH));
 
@@ -262,7 +262,7 @@ class PathFrame extends Thread{
 			robotImage.remove(i);
 			robotImage.add(
 					new ImageIcon(
-							new ImageIcon("res/Robot" + i + ".png")
+							new ImageIcon("resources/Robot" + i + ".png")
 									.getImage()
 									.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH))
 			);
@@ -270,7 +270,7 @@ class PathFrame extends Thread{
 			robotGoalImage.remove(i);
 			robotGoalImage.add(
 					new ImageIcon(
-							new ImageIcon("res/Robot" + i + "Goal.png")
+							new ImageIcon("resources/Robot" + i + "Goal.png")
 									.getImage()
 									.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH))
 			);
@@ -278,7 +278,7 @@ class PathFrame extends Thread{
 			robotWaitImage.remove(i);
 			robotWaitImage.add(
 					new ImageIcon(
-							new ImageIcon("res/Robot" + i + "Waiting.png")
+							new ImageIcon("resources/Robot" + i + "Waiting.png")
 									.getImage()
 									.getScaledInstance(frame.getWidth() / COLUMNS, frame.getHeight() / ROWS, Image.SCALE_SMOOTH))
 			);

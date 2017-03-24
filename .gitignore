@@ -15,7 +15,7 @@
 !/WPC
 !/WPC/src/
 !/WPC/testsrc/
-#!/WPC/res/
+!/WPC/resources/
 
 /WShared/*
 !/WShared
