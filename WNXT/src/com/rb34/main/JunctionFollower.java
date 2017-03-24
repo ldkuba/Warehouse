@@ -21,8 +21,11 @@ import lejos.nxt.SensorPort;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
+//This is the class where all the robot behaviours are brought together. The class implements MessageListner, which allows networking to work with robot motion
 public class JunctionFollower implements MessageListener {
+	
 	public static int RobotId;
+	private static RobotScreen screen;
 	private Arbitrator arbitrator;
 	private ArrayList<PathChoices> path; // Received via bluetooth;
 	private ArrayList<PathChoices> path1; // when we want to pre-define;
@@ -31,7 +34,6 @@ public class JunctionFollower implements MessageListener {
 	private LineFollowing followLine;
 	private TurnBehavior turnBehavior;
 	private WaitBehavior waitBehavior;
-	private static RobotScreen screen;
 	private String head;
 
 	public JunctionFollower(RobotScreen _screen) {
@@ -55,9 +57,7 @@ public class JunctionFollower implements MessageListener {
 
 		Behavior[] behaviors = { followLine, turnBehavior, waitBehavior };
 		arbitrator = new Arbitrator(behaviors);
-		arbitrator.start();
-
-		
+		arbitrator.start();	
 	}
 
 	@Override
@@ -66,8 +66,7 @@ public class JunctionFollower implements MessageListener {
 	}
 
 	@Override
-	public void recievedNewPathMessage(NewPathMessage msg) {
-		// System.exit(-1);
+	public void recievedNewPathMessage(NewPathMessage msg) { //This is used by the network to set paths which the robot needs to follow
 		
 		System.out.println("Got path");
 		

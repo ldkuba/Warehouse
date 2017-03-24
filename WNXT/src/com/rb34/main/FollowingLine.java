@@ -10,6 +10,7 @@ import lejos.nxt.SensorPort;
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 
+//This is the test class that checks used for making the robot follow lines.
 public class FollowingLine {
 	private Arbitrator arbitrator;
 	private LightSensor lightSensorR;

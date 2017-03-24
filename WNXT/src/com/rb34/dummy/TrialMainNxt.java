@@ -7,6 +7,8 @@ import com.rb34.network.Client;
 import com.rb34.robot_interface.RobotScreen;
 import lejos.nxt.comm.RConsole;
 
+
+//This is putting the robot motion and netwoking together
 public class TrialMainNxt {
 	private JunctionFollower robotMovement;
 	private RobotScreen screen;

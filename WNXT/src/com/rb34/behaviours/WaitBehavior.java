@@ -18,25 +18,24 @@ import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 import lejos.util.Delay;
 
-public class WaitBehavior implements Behavior
-{
+//This behaviour is used whenever the robot needs to wait.
+public class WaitBehavior implements Behavior {
 	private WheeledRobotConfiguration robotConfig;
 	private DifferentialPilot pilot;
 	private TurnBehavior behavior;
 	private RobotScreen screen;
 	private boolean supressed;
+	private boolean atPickup;
+	private boolean atDropoff;
+	private boolean dropDone;
+	private boolean forcingBehav;
+	private String pickingState;
 	private int itemCount;
 	private int releaseCounter;
 	private int toRelease;
 	private int itemCounter;
-	private boolean atPickup;
-	private boolean atDropoff;
-	private String pickingState;
-	private boolean dropDone;
-	private boolean forcingBehav;
 	
-	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen)
-	{
+	public WaitBehavior(TurnBehavior _behavior, RobotScreen _screen) {
 		this.behavior = _behavior;
 		this.screen = _screen;
 		robotConfig = new WheeledRobotConfiguration(0.059f, 0.115f, 0.17f, Motor.C, Motor.A);
@@ -51,62 +50,33 @@ public class WaitBehavior implements Behavior
 		atPickup = false;
 		atDropoff = false;
 		forcingBehav = true;
-
-	}
-
-	public void resetAllCounters()
-	{
-		itemCount = 0;
-		itemCounter = 0;
-		releaseCounter = 0;
-		toRelease = 0;
 	}
 
 	@Override
-	public boolean takeControl()
-	{
-		
-		if (behavior.checkIfNoRoute() || forcingBehav)
-		{
+	public boolean takeControl() { //This behaviour will take control if the robot does not have a route or if the behvaiour is being forced.
+		if (behavior.checkIfNoRoute() || forcingBehav) {
 			return true;
-		} else
-		{
+		} else {
 			return false;
 		}
 	}
 
-	public void setFocingBehav(boolean b)
-	{
-		forcingBehav = b;
-	}
-
 	@Override
-	public void action()
-	{
+	public void action() {
 		supressed = false;
-
-		System.out.println("RUNNING WAIT BEHAVIOR");
 		
-		while (!supressed)
-		{
-			
-			// System.out.println("Running " + supressed);
-
+		while (!supressed) {
 			pilot.stop();
 
-			if (Button.RIGHT.isDown())
-			{ // multiple times for pick up, just
-				// once for drop off
-				Delay.msDelay(750);
-				if (atPickup)
-				{
+			if (Button.RIGHT.isDown()) { //Multiple times for pick up, just once for drop off
+				Delay.msDelay(750);//Making sure that the presses are registered correctly
+				if (atPickup) { //At a pick up point
 					itemCounter += 1;
 					screen.updateItemPickUpIncrease();
 					screen.printPickingState();
-				} else if (atDropoff)
-				{
+				} else if (atDropoff) { //At a drop off point
 					dropDone = true;
-					RobotStatusMessage msg2 = new RobotStatusMessage();
+					RobotStatusMessage msg2 = new RobotStatusMessage(); //Sending message to PC so that robot status is up to date
 					msg2.setX(behavior.getX());
 					msg2.setY(behavior.getY());
 					msg2.setOnJob(false);
@@ -122,20 +92,14 @@ public class WaitBehavior implements Behavior
 				}
 			}
 
-			if (Button.ENTER.isDown() && atPickup)
-			{ // right button should be
-				// pressed when
-				// picking/dropping is
-				// done
-				Delay.msDelay(750);
+			if (Button.ENTER.isDown() && atPickup) { //Enter button should be pressed when picking/dropping is done
+				Delay.msDelay(750); //Making sure that the presses are registered correctly
 				screen.printPickingState();
-
-				switch (pickingState)
-				{
+				
+				switch (pickingState) { //what should be done depending on what the robot should be doing
 				case "picking":
-					if (itemCount == itemCounter && atPickup)
-					{
-						RobotStatusMessage msg2 = new RobotStatusMessage();
+					if (itemCount == itemCounter && atPickup) { //If pick has been completed correctly
+						RobotStatusMessage msg2 = new RobotStatusMessage(); //Message sent to PC updating robot's status
 						msg2.setX(behavior.getX());
 						msg2.setY(behavior.getY());
 						msg2.setOnJob(true);
@@ -144,25 +108,22 @@ public class WaitBehavior implements Behavior
 						msg2.setWaitingForNewPath(true);
 						msg2.setRobotId(JunctionFollower.RobotId);
 						TrialMainNxt.client.send(msg2);
-						setAtPickup(false);
+						setAtPickup(false); 
 						setPickingState("done");
 						atPickup = false;
 						resetAllCounters();
 						screen.resetCounter();
-					} else if (itemCounter > itemCount)
-					{
+					} else if (itemCounter > itemCount) {
 						toRelease = Math.abs(itemCount - itemCounter);
 						setPickingState("dropping");
-					} else
-					{
+					} else {
 						this.itemCount = itemCount - itemCounter;
 						itemCounter = 0;
 						setPickingState("picking");
 					}
 					break;
 				case "dropping":
-					if (toRelease == releaseCounter)
-					{
+					if (toRelease == releaseCounter) {
 						RobotStatusMessage msg2 = new RobotStatusMessage();
 						msg2.setX(behavior.getX());
 						msg2.setY(behavior.getY());
@@ -177,12 +138,10 @@ public class WaitBehavior implements Behavior
 						atPickup = false;
 						resetAllCounters();
 						screen.resetCounter();
-					} else if (toRelease > releaseCounter)
-					{
+					} else if (toRelease > releaseCounter) {
 						toRelease = toRelease - releaseCounter;
 						setPickingState("dropping");
-					} else
-					{
+					} else {
 						itemCount = Math.abs(releaseCounter - toRelease);
 						setPickingState("picking");
 					}
@@ -194,53 +153,56 @@ public class WaitBehavior implements Behavior
 				}
 			}
 
-			if (Button.LEFT.isDown())
-			{ // to decrease items picked up
+			if (Button.LEFT.isDown()) { // To decrease items picked up if too many have been picked
 				Delay.msDelay(750);
 				releaseCounter += 1;
 				screen.updateItemPickUpDecrease();
-				screen.printPickingState();  // 175:7 75:41
+				screen.printPickingState();
 			}
 
-			if (Button.ESCAPE.isDown())
-			{
+			if (Button.ESCAPE.isDown()) {
 				Delay.msDelay(750);
 				System.exit(0);
 				suppress();
 			}
 		}
 	}
+	
+	@Override
+	public void suppress() {
+		supressed = true;
 
-	public void setItemCount(int i)
-	{
+	}
+	
+	public void resetAllCounters() { //Makes sure all values are reset once picking is complete for each job.
+		itemCount = 0;
+		itemCounter = 0;
+		releaseCounter = 0;
+		toRelease = 0;
+	}
+	
+	public void setFocingBehav(boolean b) { //For forcing/un-forcing the behaviour.
+		forcingBehav = b;
+	}
+
+	public void setItemCount(int i) {
 		itemCount = i;
 	}
 
-	public int getItemCount()
-	{
+	public int getItemCount() {
 		return itemCount;
 	}
 
-	public void setAtPickup(boolean b)
-	{
+	public void setAtPickup(boolean b) {
 		atPickup = b;
 	}
 
-	public void setatDropoff(boolean b)
-	{
+	public void setatDropoff(boolean b) {
 		atDropoff = b;
 	}
 
-	public void setPickingState(String s)
-	{
+	public void setPickingState(String s) {
 		pickingState = s;
-	}
-
-	@Override
-	public void suppress()
-	{
-		supressed = true;
-
 	}
 
 }
