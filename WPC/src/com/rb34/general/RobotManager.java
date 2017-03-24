@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import com.rb34.Start;
 import com.rb34.general.interfaces.IRobot.Status;
 import com.rb34.job_input.Drop;
+import com.rb34.message.LocalisationResultMessage;
 import com.rb34.message.LocationTypeMessage;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
 import com.rb34.message.RobotInitMessage;
 import com.rb34.message.RobotStatusMessage;
+import com.rb34.message.StartLocalisationMessage;
 import com.rb34.message.TestMessage;
 
 public class RobotManager implements MessageListener {
@@ -93,8 +95,7 @@ public class RobotManager implements MessageListener {
 				System.out.println("NOOOOOOOOOOT WAITING FOR NEW PATH");
 				getRobot(msg.getRobotId()).notifyOfLocation();
 			}
-		} 	
-		
+		}
 	}
 
 	@Override
@@ -105,6 +106,18 @@ public class RobotManager implements MessageListener {
 	@Override
 	public void recievedLocationTypeMessage(LocationTypeMessage msg) {
 
+	}
+
+	@Override
+	public void recieveedStartLocalisationMessage(StartLocalisationMessage msg)
+	{
+		
+	}
+
+	@Override
+	public void recieveedLocalisationResultMessage(LocalisationResultMessage msg)
+	{
+		
 	}
 
 }

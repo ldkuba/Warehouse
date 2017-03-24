@@ -8,11 +8,13 @@ import com.rb34.behaviours.TurnBehavior;
 import com.rb34.behaviours.WaitBehavior;
 import com.rb34.dummy.TrialMainNxt;
 import com.rb34.general.PathChoices;
+import com.rb34.message.LocalisationResultMessage;
 import com.rb34.message.LocationTypeMessage;
 import com.rb34.message.MessageListener;
 import com.rb34.message.NewPathMessage;
 import com.rb34.message.RobotInitMessage;
 import com.rb34.message.RobotStatusMessage;
+import com.rb34.message.StartLocalisationMessage;
 import com.rb34.message.TestMessage;
 import com.rb34.robot_interface.RobotScreen;
 
@@ -134,6 +136,20 @@ public class JunctionFollower implements MessageListener {
 			this.screen.printDropOffState();
 		}
 		
+		
+	}
+
+	@Override
+	public void recieveedStartLocalisationMessage(StartLocalisationMessage msg)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void recieveedLocalisationResultMessage(LocalisationResultMessage msg)
+	{
+		// TODO Auto-generated method stub
 		
 	}
 }
