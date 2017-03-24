@@ -67,7 +67,7 @@ public class Selection {
 			job.setJobValue(jobValue);
 			queue.offer(job);
 			count++;
-			logger.debug("Job number " + count + " has been added to the queue.");
+			//logger.debug("Job number " + count + " has been added to the queue.");
 		}
 		// Return the sorted list of jobs.
 		logger.debug("Queue has been returned.");

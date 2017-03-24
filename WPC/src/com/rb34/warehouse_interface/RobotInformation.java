@@ -23,6 +23,7 @@ import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
 
+import com.rb34.general.Robot;
 import com.rb34.general.RobotManager;
 import com.rb34.general.interfaces.IRobot.Status;
 import com.rb34.job_input.Item;
@@ -40,6 +41,7 @@ public class RobotInformation {
 	private JButton btnRefresh;
 	private JCheckBox chckbxAutoRefresh;
 	static int robotNum;
+	private float rew;
 
 	/**
 	 * Launch the application.
@@ -49,6 +51,7 @@ public class RobotInformation {
 	public RobotInformation(int robotNum) {
 		lblName = "";
 		this.robotNum = robotNum;
+		rew = 0;
 	}
 
 	public void run() {
@@ -140,6 +143,22 @@ public class RobotInformation {
 					}
 				} else if (type.equals("")) {
 					panel.removeAll();
+					JLabel lbl = new JLabel("Select Robot for Detailed Information: ");
+					panel.add(lbl);
+					ArrayList<Robot> robots = RobotManager.getRobots();
+					
+					boolean incrementReward = RobotManager.getRewardBoolean();
+					
+					if(incrementReward == true) {
+						for (Robot rbt : robots) {
+							rew = rew + rbt.getCurrentJob().getTotalReward();
+							//RobotManager.rewardBoolean = false;
+						}
+					}
+					
+					JLabel reward = new JLabel("Current Reward Total: " + rew);
+					panel.add(reward);
+					
 					frmDetailedRobotBreakdown.validate();
 					frmDetailedRobotBreakdown.repaint();
 				}
@@ -236,6 +255,21 @@ public class RobotInformation {
 					}
 				} else if (type.equals("")) {
 					panel.removeAll();
+					JLabel lbl = new JLabel("Select Robot for Detailed Information: ");
+					panel.add(lbl);
+					ArrayList<Robot> robots = RobotManager.getRobots();
+					
+					boolean incrementReward = RobotManager.getRewardBoolean();
+					
+					if(incrementReward == true) {
+						for (Robot rbt : robots) {
+							rew = rew + rbt.getCurrentJob().getTotalReward();
+						}
+					}
+					
+					JLabel reward = new JLabel("Current Reward Total: " + rew);
+					panel.add(reward);
+					
 					frmDetailedRobotBreakdown.validate();
 					frmDetailedRobotBreakdown.repaint();
 				}
@@ -376,6 +410,21 @@ public class RobotInformation {
 					}
 				} else if (type.equals("")) {
 					panel.removeAll();
+					JLabel lbl = new JLabel("Select Robot for Detailed Information: ");
+					panel.add(lbl);
+					ArrayList<Robot> robots = RobotManager.getRobots();
+					
+					boolean incrementReward = RobotManager.getRewardBoolean();
+					
+					if(incrementReward == true) {
+						for (Robot rbt : robots) {
+							rew = rew + rbt.getCurrentJob().getTotalReward();
+						}
+					}
+					
+					JLabel reward = new JLabel("Current Reward Total: " + rew);
+					panel.add(reward);
+					
 					frmDetailedRobotBreakdown.validate();
 					frmDetailedRobotBreakdown.repaint();
 				}

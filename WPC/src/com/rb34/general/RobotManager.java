@@ -16,10 +16,11 @@ public class RobotManager implements MessageListener {
 
 	private static ArrayList<Robot> robotList;
 	private static ArrayList<Drop> dropoffList;
-
+	public static boolean rewardBoolean;
 	public RobotManager() {
 		robotList = new ArrayList<>();
 		dropoffList = new ArrayList<>();
+		rewardBoolean = false;
 	}
 
 	public static Robot getRobot(int robotId) {
@@ -74,6 +75,7 @@ public class RobotManager implements MessageListener {
 		if(msg.isOnRoute())
 		{
 			getRobot(msg.getRobotId()).setRobotStatus(Status.RUNNING);
+			rewardBoolean = false;
 		}else
 		{			
 			if(msg.isWaitingForNewPath())
@@ -83,9 +85,11 @@ public class RobotManager implements MessageListener {
 				if (getRobot(msg.getRobotId()).getDestinations().isEmpty()) 
 				{
 					getRobot(msg.getRobotId()).setRobotStatus(Status.IDLE);
+					rewardBoolean = true;
 				}else
 				{
 					getRobot(msg.getRobotId()).setRobotStatus(Status.AT_ITEM);
+					rewardBoolean = false;
 				}
 			}else
 			{
@@ -109,6 +113,11 @@ public class RobotManager implements MessageListener {
 	public static void setDropoffs(ArrayList<Drop> createDropList) {
 		dropoffList = createDropList;
 		
+	}
+
+	public static boolean getRewardBoolean()
+	{
+		return rewardBoolean;
 	}
 
 }

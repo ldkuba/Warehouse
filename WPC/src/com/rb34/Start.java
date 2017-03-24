@@ -12,9 +12,7 @@ public class Start {
 	public static void main(String[] args) {
 		master = new Master();
 		
-		System.out.println("A");
 		new StartScreen();
-		System.out.println("B");
 	
 		try {
 			master.join();

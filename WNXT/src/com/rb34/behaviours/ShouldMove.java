@@ -1,22 +1,20 @@
 package com.rb34.behaviours;
 
-public class ShouldMove
-{
+//This class is used to make sure that the robot only moves when it should
+
+public class ShouldMove {
 	private boolean shouldMove;
-	
+
 	public ShouldMove() {
 		shouldMove = false;
 	}
 
-	public boolean isShouldMove()
-	{
+	public boolean isShouldMove() {
 		return shouldMove;
 	}
 
-	public void setShouldMove(boolean shouldMove)
-	{
+	public void setShouldMove(boolean shouldMove) {
 		this.shouldMove = shouldMove;
 	}
-	
-	
+
 }
